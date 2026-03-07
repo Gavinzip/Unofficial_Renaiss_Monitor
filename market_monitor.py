@@ -13,6 +13,39 @@ import market_report_vision as mrv
 DB_PATH = os.path.join(os.path.dirname(__file__), "renaiss_full_db.sqlite")
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
 
+def init_db():
+    """初始化資料庫架構 (如果不存在)"""
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS cards (
+            item_id TEXT PRIMARY KEY,
+            name TEXT,
+            number TEXT,
+            set_code TEXT,
+            grade TEXT,
+            grading_company TEXT,
+            year INTEGER,
+            pack_name TEXT,
+            buyback_usd REAL,
+            pc_url TEXT,
+            snkr_url TEXT,
+            last_updated TEXT
+        )
+    ''')
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS price_history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            item_id TEXT,
+            source TEXT,
+            date TEXT,
+            price_usd REAL,
+            grade TEXT
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
 # Rename the parse function so it can be used standalone or from scrape_all_cards_db
 def parse_renaiss_name(full_name):
     grade_m = re.search(r'(PSA|BGS|CGC|SGC)\s+(\d+(?:\.\d+)?)', full_name)
@@ -280,6 +313,7 @@ def run_monitor_cycle():
 
 if __name__ == "__main__":
     print("啟動 Renaiss 極致「全實時」監控機器人 (現場抓取分析模式)...")
+    init_db()  # 確保資料庫架構已備妥
     
     while True:
         try:
