@@ -23,7 +23,7 @@ DEFAULT_PRICE_THRESHOLD = 20.0                  # 報警價差門檻 (USD)
 
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL") or DEFAULT_DISCORD_WEBHOOK
 WINDOW_DAYS = int(os.getenv("WINDOW_DAYS") or DEFAULT_WINDOW_DAYS)
-PRICE_THRESHOLD = float(os.getenv("PRICE_THRESHOLD") or DEFAULT_PRICE_THRESHOLD)
+PRICE_THRESHOLD = abs(float(os.getenv("PRICE_THRESHOLD") or DEFAULT_PRICE_THRESHOLD))
 
 # 📦 狀態管理：追蹤已處理過的掛單 ID
 SEEN_IDS_FILE = os.path.join(os.path.dirname(__file__), "seen_ids.txt")
@@ -407,17 +407,17 @@ if __name__ == "__main__":
     # 🚀 初次啟動：強行針對前 5 筆進行實時分析測試
     try:
         run_monitor_cycle(limit=5, force_process=True)
-        print(f"\n[{datetime.now().strftime('%H:%M:%S')}] 🏁 啟動測試完成，5 秒後進入 1 分鐘循環監控...")
+        print(f"\n[{datetime.now().strftime('%H:%M:%S')}] 🏁 啟動測試完成，5 秒後進入 1 分鐘循環監控...", flush=True)
         time.sleep(5)
     except Exception as e:
-        print(f"Startup Test Failed: {e}")
+        print(f"Startup Test Failed: {e}", flush=True)
 
     while True:
         try:
-            print(f"[{datetime.now().strftime('%H:%M:%S')}] 🔃 正在掃描市場新掛單...")
+            print(f"[{datetime.now().strftime('%H:%M:%S')}] 🔃 正在掃描市場新掛單...", flush=True)
             run_monitor_cycle()
         except Exception as e:
-            print(f"Monitor Crash: {e}")
+            print(f"Monitor Crash: {e}", flush=True)
 
             
         time.sleep(60)
