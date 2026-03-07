@@ -354,10 +354,20 @@ if __name__ == "__main__":
     print(f"⚙️  當前設定: 價差門檻=${PRICE_THRESHOLD} USD | 時間窗口={WINDOW_DAYS} 天")
     print(f"🔔  Discord 通知: {'已開啟' if DISCORD_WEBHOOK_URL else '未開啟 (請設定 DISCORD_WEBHOOK_URL)'}")
     
-    # 初次啟動：先測試前 5 筆
+    # 💥 初始狀態初始化：將目前所有掛單視為「已見過」
+    print("📡 正在初始化市場狀態...")
     try:
-        run_monitor_cycle(limit=5)
-        print(f"\n[{datetime.now().strftime('%H:%M:%S')}] 🏁 啟動測試完成，5 秒後進入正式循環...")
+        initial_items = fetch_market_data()
+        for it in initial_items:
+            SEEN_IDS.add(it['item_id'])
+        print(f"✅ 已將目前 {len(SEEN_IDS)} 筆掛單標記為舊資料 (增量模式啟動)")
+    except Exception as e:
+        print(f"Initialization Failed: {e}")
+
+    # 🚀 初次啟動：強行針對前 5 筆進行實時分析測試
+    try:
+        run_monitor_cycle(limit=5, force_process=True)
+        print(f"\n[{datetime.now().strftime('%H:%M:%S')}] 🏁 啟動測試完成，5 秒後進入 1 分鐘循環監控...")
         time.sleep(5)
     except Exception as e:
         print(f"Startup Test Failed: {e}")
@@ -369,5 +379,4 @@ if __name__ == "__main__":
             print(f"Monitor Crash: {e}")
 
             
-        print(f"[{datetime.now().strftime('%H:%M:%S')}] 休眠 5 分鐘...")
-        time.sleep(300)
+        time.sleep(60)
