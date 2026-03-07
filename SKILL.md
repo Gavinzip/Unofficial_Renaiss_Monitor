@@ -1,40 +1,55 @@
 ---
-name: market-arbitrage-monitor
-description: Monitor Renaiss marketplace in real-time, comparing listings with PriceCharting/SNKRDUNK for arbitrage opportunities.
+name: renassis-market-arbitrage-monitor
+description: Real-time arbitrage monitor for Renaiss marketplace, cross-referencing PriceCharting and SNKRDUNK.
 ---
 
-# Market Arbitrage Monitor 📈
+# Renassis Market Arbitrage Monitor
 
-This skill enables an AI agent to monitor the Renaiss marketplace and identify arbitrage opportunities by comparing current asking prices with historical averages from PriceCharting and SNKRDUNK.
+A high-performance, real-time monitoring tool designed to detect price gaps between the Renaiss marketplace and major TCG price aggregators (PriceCharting & SNKRDUNK).
 
-## Prerequisites & Setup
-Before usage, the environment **MUST** be configured via a `.env` file (see `.env.example`):
+## 🚀 Quick Start for Agents
 
-1. **Discord Setup**: `DISCORD_WEBHOOK_URL` is required for alerts.
-2. **Thresholds**: 
-   - `WINDOW_DAYS` (Default: 30): Rolling window for average price calculation.
-   - `PRICE_THRESHOLD` (Default: 20.0): Price difference (USD) to trigger an alert.
-3. **AI Vision (Optional)**: Set `MINIMAX_API_KEY` or `OPENAI_API_KEY` for card identification if titles are ambiguous.
+1. **Environment Setup**:
+   Ensure `.env` is configured in the project root with `DISCORD_WEBHOOK_URL`.
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-### Quick Start
-```bash
-# 1. Initialize environment
-cp .env.example .env
+2. **Launch Monitor**:
+   Execute the script from the root directory. It is designed to run persistently in the background.
+   ```bash
+   python3 scripts/market_monitor.py
+   ```
 
-# 2. Install dependencies
-pip install -r requirements.txt
+## 🧠 Core Logic & Capabilities
 
-# 3. Launch monitor
-python3 scripts/market_monitor.py
-```
+### 1. Incremental Scanning (Efficiency)
+- The monitor fetches all listings from Renaiss but only performs expensive price crawls for **newly discovered IDs**.
+- **Persistence**: It maintains a `seen_ids.txt` file in the `scripts/` directory. Even after a restart, it will skip previously analyzed items to prevent alert spam.
 
-## Agent Capabilities & Logic
-- **Real-Time Analysis**: Direct scraping of PC and SNKR using Jina/BeautifulSoup.
-- **Incremental Scanning**: Tracks `SEEN_IDS` in memory; only analyzes genuine **NEW** listings to save API calls.
-- **30-Day Filtering**: Robust date parsing ensures averages reflect current market heat.
-- **Independent Alerts**: Triggers if **either** source shows a significant price gap.
+### 2. Startup Test Mode
+- At launch, the monitor ignores the "seen" status for the **first 5 items** and forces a real-time crawl. This serves as an immediate functional test.
 
-## Interaction Patterns
-- **Adjusting Rules**: Suggest the user to update `.env` or edit the "Manual Configuration" block in `market_monitor.py`.
-- **Status Checks**: Run `tail -f market_monitor.log` to observe real-time scanning activity.
-- **Troubleshooting**: If no prices are found, verify if the card title needs clarification via the Vision API.
+### 3. Cross-Platform Analysis
+- **PriceCharting (PC)**: Crawls recent sales data with grade matching (PSA/BGS/CGC). Calculates a 30-day rolling average with IQR outlier filtering.
+- **SNKRDUNK (SNKR)**: Uses native API for Japanese market prices, matching specific variants (Manga/Parallel/Special Card).
+
+### 4. Alert Trigger
+- **Threshold**: Default is **$20 USD** profit potential.
+- **Logic**: `Alert = (PC_AVG - Ask >= $20) OR (SNKR_AVG - Ask >= $20)`.
+
+## 🛠 Agent Operational Guidance
+
+### Logs Interpretation
+- `🔃 正在掃描市場新掛單...`: Heartbeat signal. The script is active and checking for new listings.
+- `✨ 發現 N 筆新品上架`: The script has identified new items and is about to start crawling.
+- `🚨 [真正撿漏警報]`: A high-probability arbitrage opportunity was found and sent to Discord.
+
+### Troubleshooting
+- **Jina 429 Errors**: If the logs show 429 errors, the crawlers are being rate-limited. The script will automatically skip the item and retry in the next cycle.
+- **Missing Alerts**: Check if `DISCORD_WEBHOOK_URL` is set in the `.env` file. Verify `scripts/seen_ids.txt` to see if the item was already "seen".
+
+## ⚙️ Configuration (.env)
+- `DISCORD_WEBHOOK_URL`: Target channel for alerts.
+- `PRICE_THRESHOLD`: Minimum profit to trigger an alert (default: 20.0).
+- `WINDOW_DAYS`: Rolling average window in days (default: 30).

@@ -26,7 +26,26 @@ WINDOW_DAYS = int(os.getenv("WINDOW_DAYS") or DEFAULT_WINDOW_DAYS)
 PRICE_THRESHOLD = float(os.getenv("PRICE_THRESHOLD") or DEFAULT_PRICE_THRESHOLD)
 
 # 📦 狀態管理：追蹤已處理過的掛單 ID
+SEEN_IDS_FILE = os.path.join(os.path.dirname(__file__), "seen_ids.txt")
 SEEN_IDS = set()
+
+def load_seen_ids():
+    """從檔案載入已見過的 ID"""
+    if os.path.exists(SEEN_IDS_FILE):
+        try:
+            with open(SEEN_IDS_FILE, "r") as f:
+                return set(line.strip() for line in f if line.strip())
+        except Exception as e:
+            print(f"⚠️ 載入 seen_ids.txt 失敗: {e}")
+    return set()
+
+def save_seen_id(item_id):
+    """將單一 ID 追加到檔案中"""
+    try:
+        with open(SEEN_IDS_FILE, "a") as f:
+            f.write(f"{item_id}\n")
+    except Exception as e:
+        print(f"⚠️ 儲存 seen_ids 失敗: {e}")
 
 def parse_date_string(date_str):
     """解析 PC 和 SNKR 的各種日期格式，返回 datetime 對象"""
@@ -356,8 +375,10 @@ def run_monitor_cycle(limit=None, force_process=False):
             # 發送 Discord Webhook
             send_discord_alert(full_name, ask, pc_res, snkr_res)
         
-        # 標記為已見過
-        SEEN_IDS.add(item_id)
+        # 標記為已見過並持久化
+        if item_id not in SEEN_IDS:
+            SEEN_IDS.add(item_id)
+            save_seen_id(item_id)
 
 
 if __name__ == "__main__":
@@ -365,13 +386,21 @@ if __name__ == "__main__":
     print(f"⚙️  當前設定: 價差門檻=${PRICE_THRESHOLD} USD | 時間窗口={WINDOW_DAYS} 天")
     print(f"🔔  Discord 通知: {'已開啟' if DISCORD_WEBHOOK_URL else '未開啟 (請設定 DISCORD_WEBHOOK_URL)'}")
     
-    # 💥 初始狀態初始化：將目前所有掛單視為「已見過」
+    # 💥 初始狀態初始化：載入持久化數據 + 同步目前市場掛單
     print("📡 正在初始化市場狀態...")
+    SEEN_IDS = load_seen_ids()
+    print(f"📂 已從檔案載入 {len(SEEN_IDS)} 筆歷史記錄")
+    
     try:
         initial_items = fetch_market_data()
+        new_count = 0
         for it in initial_items:
-            SEEN_IDS.add(it['item_id'])
-        print(f"✅ 已將目前 {len(SEEN_IDS)} 筆掛單標記為舊資料 (增量模式啟動)")
+            iid = it['item_id']
+            if iid not in SEEN_IDS:
+                SEEN_IDS.add(iid)
+                save_seen_id(iid)
+                new_count += 1
+        print(f"✅ 已同步目前市場 {len(initial_items)} 筆掛單 (新增 {new_count} 筆至持久化)")
     except Exception as e:
         print(f"Initialization Failed: {e}")
 
