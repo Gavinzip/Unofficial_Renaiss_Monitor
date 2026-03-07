@@ -25,7 +25,7 @@ cp .env.example .env
 pip install -r requirements.txt
 
 # 3. Launch monitor
-python3 market_monitor.py
+python3 scripts/market_monitor.py
 ```
 
 ## Agent Capabilities & Logic

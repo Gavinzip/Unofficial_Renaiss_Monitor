@@ -39,7 +39,7 @@ cp .env.example .env
 
 # 背景啟動
 python3 -m pip install -r requirements.txt
-nohup python3 -u market_monitor.py > market_monitor.log 2>&1 &
+nohup python3 -u scripts/market_monitor.py > market_monitor.log 2>&1 &
 ```
 
 ---
