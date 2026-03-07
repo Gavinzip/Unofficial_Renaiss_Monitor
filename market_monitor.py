@@ -12,7 +12,7 @@ import market_report_vision as mrv
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
 # 🆕 加入可條整參數
 WINDOW_DAYS = int(os.getenv("WINDOW_DAYS", 30))
-PRICE_THRESHOLD = float(os.getenv("PRICE_THRESHOLD", 30))
+PRICE_THRESHOLD = float(os.getenv("PRICE_THRESHOLD", 20))
 
 def parse_date_string(date_str):
     """解析 PC 和 SNKR 的各種日期格式，返回 datetime 對象"""
@@ -281,12 +281,16 @@ def send_discord_alert(full_name, ask, pc_info, snkr_info):
 # LEGACY: background_idle_update removed for real-time focus
 
 
-def run_monitor_cycle():
+def run_monitor_cycle(limit=None):
     items = fetch_market_data()
     if not items:
         return
         
-    print(f"\n[{datetime.now().strftime('%H:%M:%S')}] 成功抓取 {len(items)} 筆目前市場掛單，開始進行逐一實時查價...")
+    if limit:
+        items = items[:limit]
+        print(f"\n[{datetime.now().strftime('%H:%M:%S')}] 🧪 啟動測試模式：僅檢查前 {limit} 筆掛單...")
+    else:
+        print(f"\n[{datetime.now().strftime('%H:%M:%S')}] 成功抓取 {len(items)} 筆目前市場掛單，開始進行逐一實時查價...")
     
     for item in items:
         item_id = item['item_id']
@@ -330,6 +334,14 @@ if __name__ == "__main__":
     print(f"⚙️  當前設定: 價差門檻=${PRICE_THRESHOLD} USD | 時間窗口={WINDOW_DAYS} 天")
     print(f"🔔  Discord 通知: {'已開啟' if DISCORD_WEBHOOK_URL else '未開啟 (請設定 DISCORD_WEBHOOK_URL)'}")
     
+    # 初次啟動：先測試前 5 筆
+    try:
+        run_monitor_cycle(limit=5)
+        print(f"\n[{datetime.now().strftime('%H:%M:%S')}] 🏁 啟動測試完成，5 秒後進入正式循環...")
+        time.sleep(5)
+    except Exception as e:
+        print(f"Startup Test Failed: {e}")
+
     while True:
         try:
             run_monitor_cycle()
