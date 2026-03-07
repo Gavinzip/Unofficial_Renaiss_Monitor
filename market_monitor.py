@@ -10,13 +10,19 @@ import sys
 import market_report_vision as mrv
 from dotenv import load_dotenv
 
-# 📜 載入 .env 檔案
+# 📜 載入 .env 檔案 (推薦)
 load_dotenv()
 
-DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
-# 🆕 加入可條整參數
-WINDOW_DAYS = int(os.getenv("WINDOW_DAYS", 30))
-PRICE_THRESHOLD = float(os.getenv("PRICE_THRESHOLD", 20))
+# 📝 手動設定區 (若不使用 .env，請直接在此修改引號內的內容)
+# ---------------------------------------------------------
+DEFAULT_DISCORD_WEBHOOK = ""  # 在此填入 Webhook 網址
+DEFAULT_WINDOW_DAYS = 30                        # 價格計算窗口 (天)
+DEFAULT_PRICE_THRESHOLD = 20.0                  # 報警價差門檻 (USD)
+# ---------------------------------------------------------
+
+DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL") or DEFAULT_DISCORD_WEBHOOK
+WINDOW_DAYS = int(os.getenv("WINDOW_DAYS") or DEFAULT_WINDOW_DAYS)
+PRICE_THRESHOLD = float(os.getenv("PRICE_THRESHOLD") or DEFAULT_PRICE_THRESHOLD)
 
 # 📦 狀態管理：追蹤已處理過的掛單 ID
 SEEN_IDS = set()
