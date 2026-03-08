@@ -280,8 +280,12 @@ def clean_price(v):
     return float(v) / 100
 
 def fetch_market_data():
-    url = "https://www.renaiss.xyz/marketplace"
-    headers = {"User-Agent": "Mozilla/5.0"}
+    url = f"https://www.renaiss.xyz/marketplace?_t={int(time.time())}"
+    headers = {
+        "User-Agent": "Mozilla/5.0",
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache"
+    }
     try:
         resp = requests.get(url, headers=headers, timeout=15)
         # Capture the whole item JSON object
@@ -294,8 +298,8 @@ def fetch_market_data():
                 raw_json_str = m.group(0).encode().decode('unicode_escape')
                 data = json.loads(raw_json_str)
                 parsed_items.append({
-                    "id": data.get("id"),
-                    "item_id": data.get("itemId"),
+                    "id": str(data.get("id")),
+                    "item_id": str(data.get("itemId")),
                     "name": data.get("name"),
                     "ask_price": clean_price(data.get("askPriceInUSDT")),
                     "fmv": clean_price(data.get("fmvPriceInUSD")),
