@@ -33,16 +33,43 @@ SEEN_IDS = {}
 WHITELIST_FILE = os.path.join(os.path.dirname(__file__), "whitelist.txt")
 
 def load_whitelist():
-    """從檔案載入白名單關鍵字"""
+    """從檔案載入白名單關鍵字與條件"""
     if not os.path.exists(WHITELIST_FILE):
         try:
             with open(WHITELIST_FILE, "w", encoding="utf-8") as f:
-                f.write("# 在這裡輸入你想要「無條件」追蹤的卡片關鍵字 (每行一個)\n# 全部小寫模糊匹配，例如: pikachu v 005\n")
+                f.write("# 在這裡輸入你想要追蹤的卡片關鍵字 (每行一個)\n"
+                        "# 若要無條件觸發，例如: pikachu v 005\n"
+                        "# 若要低於特定價格才觸發，請加上 <= 價格，例如: pikachu v 005 <= 1500\n"
+                        "# 全部小寫模糊匹配\n")
         except: pass
         return []
+    
+    rules = []
     try:
         with open(WHITELIST_FILE, "r", encoding="utf-8") as f:
-            return [line.strip().lower() for line in f if line.strip() and not line.startswith('#')]
+            for line in f:
+                line = line.strip().lower()
+                if not line or line.startswith('#'):
+                    continue
+                
+                max_price = None
+                if "<=" in line:
+                    parts = line.split("<=")
+                    kw_str = parts[0].strip()
+                    try:
+                        max_price = float(parts[1].strip())
+                    except ValueError:
+                        pass
+                else:
+                    kw_str = line
+                
+                if kw_str:
+                    rules.append({
+                        "keywords": kw_str.split(),
+                        "max_price": max_price,
+                        "raw_rule": line
+                    })
+        return rules
     except Exception as e:
         print(f"⚠️ 載入 whitelist.txt 失敗: {e}")
         return []
@@ -538,21 +565,25 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
         full_name = item['name']
         
         # 白名單秒收機制
-        # 支援多關鍵字無序匹配 (例如 "pikachu sv promo 001" 拆分為 4 個獨立關鍵字，全部包含即算命中)
+        # 支援多關鍵字無序匹配，並可選設定價格上限
         is_whitelisted = False
+        whitelist_triggered_rule = None
         full_name_lower = full_name.lower()
-        for w in whitelist:
-            if not w.strip(): continue
-            # 檢查這個 whitelist 規則內的所有單字，是否都存在於 full_name 裡面
-            if all(kw in full_name_lower for kw in w.split()):
-                is_whitelisted = True
-                break
+        for rule in whitelist:
+            if all(kw in full_name_lower for kw in rule["keywords"]):
+                if rule["max_price"] is None or float(ask) <= rule["max_price"]:
+                    is_whitelisted = True
+                    whitelist_triggered_rule = rule
+                    break
         
         if is_whitelisted:
             print(f"\n🌟 [白名單命中] {full_name}")
             print(f"   => 賣家開價: ${ask:.2f} USD")
-            print(f"   🔥 你的追蹤清單命中這張卡，無條件發送通知！\n")
-            send_discord_alert(full_name, ask, None, None, custom_trigger="WHITELIST (白名單無條件命中)", debug_mode=bool(debug_dir))
+            cond_str = f" (價格 <= ${whitelist_triggered_rule['max_price']})" if whitelist_triggered_rule['max_price'] is not None else " (無條件)"
+            print(f"   🔥 你的追蹤清單命中這張卡{cond_str}，發送通知！\n")
+            
+            trigger_reason = f"WHITELIST 白名單命中{cond_str}"
+            send_discord_alert(full_name, ask, None, None, custom_trigger=trigger_reason, debug_mode=bool(debug_dir))
             if item_id not in SEEN_IDS or SEEN_IDS[item_id] != float(ask):
                 SEEN_IDS[item_id] = float(ask)
                 save_seen_id(item_id, float(ask))
@@ -599,7 +630,16 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Renaiss Market Monitor")
     parser.add_argument("--debug", help="Enable debug mode and specify output directory for traces")
+    parser.add_argument("--clear-history", action="store_true", help="Clear the seen_ids historical record")
     args = parser.parse_args()
+
+    if args.clear_history:
+        if os.path.exists(SEEN_IDS_FILE):
+            os.remove(SEEN_IDS_FILE)
+            print("🗑️  歷史紀錄 (seen_ids.txt) 已成功清空！")
+        else:
+            print("⚠️ 歷史紀錄已是空的，不需清空。")
+        sys.exit(0)
 
     if args.debug:
         mrv._set_debug_dir(args.debug)

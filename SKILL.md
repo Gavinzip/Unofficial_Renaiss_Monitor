@@ -42,7 +42,8 @@ A high-performance, real-time monitoring tool designed to detect price gaps betw
 
 ### 5. Instant Whitelist Alerts
 - Automatically loads `scripts/whitelist.txt` on every cycle.
-- If a card name contains a substring listed in the whitelist (case-insensitive), the system skips deep pricing checks and immediately sends a **Whitelisted!** Discord alert regardless of its price.
+- You can specify exact price conditions by adding `<= [PRICE]` after keywords (e.g., `pikachu promo 001 <= 1500`).
+- If a card name contains a substring listed in the whitelist (case-insensitive) and satisfies the price condition (if any), the system skips deep pricing checks and immediately sends a Discord alert.
 
 ## 🛠 Agent Operational Guidance
 
@@ -54,6 +55,7 @@ A high-performance, real-time monitoring tool designed to detect price gaps betw
 ### Troubleshooting
 - **Jina 429 Errors**: If the logs show 429 errors, the crawlers are being rate-limited. The script will automatically skip the item and retry in the next cycle.
 - **Missing Alerts**: Check if `DISCORD_WEBHOOK_URL` is set in the `.env` file. Verify `scripts/seen_ids.txt` to see if the item was already "seen".
+- **Clearing History**: Run `python3 scripts/market_monitor.py --clear-history` to empty `seen_ids.txt` and force the script to re-evaluate all listings.
 
 ## ⚙️ Configuration (.env)
 - `DISCORD_WEBHOOK_URL`: Target channel for alerts.
