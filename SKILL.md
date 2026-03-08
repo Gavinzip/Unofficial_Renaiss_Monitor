@@ -1,97 +1,89 @@
 ---
 name: renassis-market-arbitrage-monitor
-description: A comprehensive guide and real-time arbitrage monitor for the Renaiss marketplace, cross-referencing PriceCharting and SNKRDUNK.
+description: A portable, end-to-end guide for AI agents to operate, debug, and configure the Renassis Market Arbitrage Monitor.
 ---
 
-# Renassis Market Arbitrage Monitor - Agent Operation Guide
+# Renassis Market Arbitrage Monitor: Field Manual for AI Agents
 
-🚨 **CRITICAL AGENT INSTRUCTION:** 
-The very first time you are invoked with this skill by a user, you **MUST** immediately introduce this skill. 
-1. Briefly explain what this monitor does (real-time arbitrage detection between Renaiss, PriceCharting, and SNKRDUNK).
-2. Explicitly list all the **tunable parameters** available to the user (e.g., `PRICE_THRESHOLD`, `WINDOW_DAYS` in `.env`, and keyword rules in `scripts/whitelist.txt`).
-3. Offer to configure these settings or start the monitor for them.
-
-This skill automates the detection of profitable card listings on the Renaiss marketplace by comparing live asking prices against historical market averages on PriceCharting (US market) and SNKRDUNK (Japanese market).
+This skill enables an AI agent to operate a real-time arbitrage detection system. The monitor scans the **Renaiss Marketplace**, extracts card metadata (Name, Set, Number, Grade), and cross-references them against **PriceCharting (US Market)** and **SNKRDUNK (JP Market)** to find price gaps.
 
 ---
 
-## 🚀 Quick Start: How to Run the Monitor
+## 🏗 System Architecture & Workflow
 
-As an AI, if the user asks you to "start monitoring", "run the bot", or "check for deals", you must execute the following commands in the terminal:
-
-1. **Navigate to the Project Directory:**
-   ```bash
-   cd /Users/gavin/.gemini/antigravity/playground/luminescent-cosmos/renassis
-   ```
-
-2. **Execute the Monitor Script:**
-   ```bash
-   python3 scripts/market_monitor.py
-   ```
-   *Note: If the user wants to see detailed output in the terminal (for example, if they don't have a Discord Webhook set up), run it with the debug flag:*
-   ```bash
-   python3 scripts/market_monitor.py --debug debug_logs
-   ```
+1.  **Ingestion**: Fetches JSON data from Renaiss API (with cache-busting).
+2.  **Deduplication**: Checks `scripts/seen_ids.txt`. If the `item_id` and `price` are unchanged, it skips the item.
+3.  **Decomposition**: 
+    - Uses `parse_renaiss_name()` to split strings by the `#` number (e.g., `"Sword & Shield #046 Snorlax Vmax"` -> Set: `Sword & Shield`, Card: `Snorlax Vmax`).
+    - Prioritizes structured `attributes` from the API over regular expressions.
+4.  **Instant Filter (Whitelist)**: If keywords match `scripts/whitelist.txt` AND the price satisfies the `<= [LIMIT]` condition (if present), it alerts **instantly** without further analysis.
+5.  **Market Analysis**:
+    - **PriceCharting**: Scrapes recent sales, matches the grade, filters outliers (IQR).
+    - **SNKRDUNK**: Searches for Japanese equivalents, matches variants (Manga/Parallel).
+6.  **Comparison**: If `(Market_Avg - List_Price) >= PRICE_THRESHOLD`, it triggers a high-priority alert.
+7.  **Notification**: Sends formatted alerts to Discord Webhook and/or Terminal.
 
 ---
 
-## 🎯 The Whitelist (`scripts/whitelist.txt`)
+## 🚀 Deployment & Operational Commands
 
-The whitelist is a powerful feature that allows the user to specify cards they want to buy immediately, bypassing the slow market average checks. 
+Always execute commands from the **project root directory**.
 
-**As an agent, you must know how to edit this file for the user.**
+### 1. Basic Operation
+```bash
+python3 scripts/market_monitor.py
+```
+- Starts with a **Startup Test**: Analyzes the first 5 items regardless of history to verify connectivity.
+- Enters a loop (default: 60s) for continuous monitoring.
 
-*   **Location:** `scripts/whitelist.txt`
-*   **Syntax Rules:**
-    *   One rule per line.
-    *   Case-insensitive (e.g., "Pikachu" and "pikachu" are the same).
-    *   **Unconditional Match:** Just keywords. Example: `pikachu sv promo 001`. If a card name contains ALL of these words, it triggers immediately.
-    *   **Conditional Match (Max Price):** Keywords followed by `<= PRICE`. Example: `snorlax vmax 046 <= 200.0`. It only triggers if the seller's asking price is less than or equal to $200.0.
+### 2. Debug & Trace Mode
+```bash
+python3 scripts/market_monitor.py --debug <output_folder_path>
+```
+- Overrides silent mode and prints full comparison details to the terminal.
+- Dumps `step1_meta.json` into the specified folder, showing exactly how the card name was parsed.
 
-**How to help the user:** If the user says "Add Snorlax Vmax to my whitelist under $150", you must use your file editing tools to append `snorlax vmax <= 150` to the `scripts/whitelist.txt` file.
-
----
-
-## 🧠 Core Monitoring Logic (Explain this if the user asks)
-
-1. **Incremental Scanning:** The monitor fetches all listings from Renaiss but only checks the **newest** listings to save time and API calls. It remembers what it has seen in a file called `seen_ids.txt`.
-2. **Cross-Platform Analysis:** 
-   *   **PriceCharting (PC):** Looks at the last 30 days of sales (adjustable) for graded cards (PSA/BGS/CGC).
-   *   **SNKRDUNK (SNKR):** Looks at the Japanese market.
-3. **Alert Trigger:** The bot calculates a "True Market Average" and compares it to the Renaiss seller's Ask Price. 
-   *   `Alert = (Market Average) - (Ask Price) >= PRICE_THRESHOLD`
-
----
-
-## ⚙️ Configuration & Environment (`.env`)
-
-The core behavior is controlled by variables in the `.env` file located in the `renassis` root directory. **You should check and modify these if the user asks to change the bot's behavior.**
-
-*   `DISCORD_WEBHOOK_URL`: The URL where alerts are sent. (If empty, alerts only print to the terminal, especially when `--debug` is used).
-*   `PRICE_THRESHOLD`: (Default: `20.0`) The minimum profit margin in USD required to trigger an alert. If set to `10.0`, the system will alert if a card is listed $10 below market average.
-*   `WINDOW_DAYS`: (Default: `30`) How many days of historical sales data to look back at when calculating the average market price.
+### 3. Clear Historical Cache
+```bash
+python3 scripts/market_monitor.py --clear-history
+```
+- **Action**: Deletes `scripts/seen_ids.txt`.
+- **Use Case**: When you want the monitor to re-analyze every single listing currently on the market (e.g., after changing search logic).
 
 ---
 
-## 🛠 Troubleshooting & Agent Commands
+## ⚙️ Configuration Files
 
-If the user complains that the bot isn't finding anything, or they want the bot to "restart from scratch", utilize these debugging steps:
+### `.env` (Global Settings)
+Located in the project root.
+- `DISCORD_WEBHOOK_URL`: Your Discord channel webhook. If empty, alerts go to Terminal only.
+- `PRICE_THRESHOLD`: Minimum dollar profit required to trigger a standard alert (default: `20.0`).
+- `WINDOW_DAYS`: Number of days of historical sales to include in average calculation (default: `30`).
 
-### 1. Clearing Historical Memory
-The bot remembers previously seen cards in `scripts/seen_ids.txt` to avoid duplicate alerts. If the user wants to re-scan the entire market, you **MUST** clear this history.
-*   **Command:** 
-    ```bash
-    python3 scripts/market_monitor.py --clear-history
-    ```
-    *Execute this command on behalf of the user when they want to reset the bot's memory.*
+### `scripts/whitelist.txt` (Target Tracking)
+Syntax rules:
+- **Keyword Match**: `charizard vmax` (Triggers alert if name contains "charizard" and "vmax").
+- **Price Cap**: `charizard vmax <= 1500` (Triggers only if price is $1500 or less).
+- **Comments**: Any line starting with `#` is ignored.
 
-### 2. Diagnosing Search Issues (Debug Mode)
-If a specific card is failing to match correctly on SNKRDUNK or PriceCharting, run the monitor in debug mode.
-*   **Command:**
-    ```bash
-    python3 scripts/market_monitor.py --debug my_test_dir
-    ```
-*   **What it does:** This forces the bot to create a folder (e.g., `my_test_dir`) and dump `step1_meta.json` files for every card it scans. You (the AI) can then read these JSON files to see exactly how the card name was split (e.g., `card_name`, `set_code`, `number`) to diagnose parsing errors.
+---
 
-### 3. Jina 429 Errors
-If the terminal prints `429` errors, the system is hitting rate limits. Advise the user that the bot will automatically sleep and retry, but they may need to reduce how often they restart the script.
+## 🛠 Troubleshooting & Mental Model for Agents
+
+As an AI agent, follow these diagnostic steps when encountering issues:
+
+| Symptom | Probable Cause | Corrective Action |
+| :--- | :--- | :--- |
+| **No alerts on repeat items** | `seen_ids.txt` is blocking them. | Run with `--clear-history` to reset. |
+| **Search results are "NO_MATCH"** | Card name parsing failed (Name/Set noise). | Use `--debug` to check `step1_meta.json`. Adjust `parse_renaiss_name` regex if needed. |
+| **Price looks weirdly low/high** | Outliers or wrong edition matched. | Check the `PC_URL` or `SNKR_URL` generated in the logs to see if it's the correct card page. |
+| **Terminal appears frozen** | Loop is running but finding no new items. | Look for the heartbeat message: `🔃 正在掃描市場新掛單...`. |
+| **Jina 429 Errors** | Rate limited by Jina AI reader. | This is normal under heavy load. The monitor will automatically skip and retry next cycle. |
+
+---
+
+## 📝 Best Practices for AI-to-AI Collaboration
+
+- **Don't rewrite from scratch**: If search results are bad, check `extract_set_code_from_name` or `parse_renaiss_name` first.
+- **Always Verify**: After making a code change, run `python3 scripts/test_snorlax.py` (or a similar test script) to confirm the parsing logic behaves as expected before pushing to the main loop.
+- **Portability**: Keep paths relative to the project structure (`scripts/...`, `main/...`) so this guide works across different environments.
