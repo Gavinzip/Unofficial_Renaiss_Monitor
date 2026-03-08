@@ -20,6 +20,7 @@ load_dotenv(dotenv_path)
 DEFAULT_DISCORD_WEBHOOK = ""  # 在此填入 Webhook 網址
 DEFAULT_WINDOW_DAYS = 30                        # 價格計算窗口 (天)
 DEFAULT_PRICE_THRESHOLD = 20.0                  # 報警價差門檻 (USD)
+JPY_TO_USD_RATE = 150.0                         # 日幣對美金固定匯率 (用於 SNKRDUNK 換算)
 # ---------------------------------------------------------
 
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL") or DEFAULT_DISCORD_WEBHOOK
@@ -285,9 +286,10 @@ def fetch_and_analyze_realtime(item_id, full_name, grading_company, year):
         target_grade=grade_tag, is_alt_art=is_alt_art, card_language="JP" if is_jp else "EN",
         snkr_variant_kws=snkr_variants
     )
-    snkr_avg, snkr_count = calculate_source_average(snkr_records, grade_tag, window_days=WINDOW_DAYS)
+    snkr_avg_jpy, snkr_count = calculate_source_average(snkr_records, grade_tag, window_days=WINDOW_DAYS)
+    snkr_avg_usd = (snkr_avg_jpy / JPY_TO_USD_RATE) if snkr_avg_jpy else None
     
-    return (pc_avg, pc_count, pc_url), (snkr_avg, snkr_count, snkr_url)
+    return (pc_avg, pc_count, pc_url), (snkr_avg_usd, snkr_count, snkr_url)
 
 
 def send_discord_alert(full_name, ask, pc_info, snkr_info, custom_trigger=None):
