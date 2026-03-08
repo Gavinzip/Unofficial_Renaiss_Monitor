@@ -38,6 +38,10 @@ A high-performance, real-time monitoring tool designed to detect price gaps betw
 - **Threshold**: Default is **$20 USD** profit potential.
 - **Logic**: `Alert = (PC_AVG - Ask >= $20) OR (SNKR_AVG - Ask >= $20)`.
 
+### 5. Instant Whitelist Alerts
+- Automatically loads `scripts/whitelist.txt` on every cycle.
+- If a card name contains a substring listed in the whitelist (case-insensitive), the system skips deep pricing checks and immediately sends a **Whitelisted!** Discord alert regardless of its price.
+
 ## 🛠 Agent Operational Guidance
 
 ### Logs Interpretation

@@ -30,6 +30,23 @@ PRICE_THRESHOLD = float(os.getenv("PRICE_THRESHOLD") or DEFAULT_PRICE_THRESHOLD)
 SEEN_IDS_FILE = os.path.join(os.path.dirname(__file__), "seen_ids.txt")
 SEEN_IDS = set()
 
+WHITELIST_FILE = os.path.join(os.path.dirname(__file__), "whitelist.txt")
+
+def load_whitelist():
+    """從檔案載入白名單關鍵字"""
+    if not os.path.exists(WHITELIST_FILE):
+        try:
+            with open(WHITELIST_FILE, "w", encoding="utf-8") as f:
+                f.write("# 在這裡輸入你想要「無條件」追蹤的卡片關鍵字 (每行一個)\n# 全部小寫模糊匹配，例如: pikachu v 005\n")
+        except: pass
+        return []
+    try:
+        with open(WHITELIST_FILE, "r", encoding="utf-8") as f:
+            return [line.strip().lower() for line in f if line.strip() and not line.startswith('#')]
+    except Exception as e:
+        print(f"⚠️ 載入 whitelist.txt 失敗: {e}")
+        return []
+
 def load_seen_ids():
     """從檔案載入已見過的 ID"""
     if os.path.exists(SEEN_IDS_FILE):
@@ -273,13 +290,13 @@ def fetch_and_analyze_realtime(item_id, full_name, grading_company, year):
     return (pc_avg, pc_count, pc_url), (snkr_avg, snkr_count, snkr_url)
 
 
-def send_discord_alert(full_name, ask, pc_info, snkr_info):
+def send_discord_alert(full_name, ask, pc_info, snkr_info, custom_trigger=None):
     """發送 Discord Webhook 通知 (含雙來源詳細數據)"""
     if not DISCORD_WEBHOOK_URL:
         return
     
-    pc_avg, pc_count, pc_url = pc_info
-    snkr_avg, snkr_count, snkr_url = snkr_info
+    pc_avg, pc_count, pc_url = pc_info if pc_info else (None, 0, None)
+    snkr_avg, snkr_count, snkr_url = snkr_info if snkr_info else (None, 0, None)
 
     fields = [
         {"name": "卡片名稱", "value": full_name, "inline": False},
@@ -291,14 +308,25 @@ def send_discord_alert(full_name, ask, pc_info, snkr_info):
     if snkr_avg:
         fields.append({"name": "SNKR 30天均價", "value": f"${snkr_avg:.2f} USD ({snkr_count}筆)", "inline": True})
 
+    is_whitelist = "WHITELIST" in (custom_trigger or "")
+    
+    trigger_text = custom_trigger if custom_trigger else f"觸發來源: 價格判定 (門檻: ${PRICE_THRESHOLD})"
+    title_text = "✨ 白名單指定卡片上架！" if is_whitelist else "發現套利機會！"
+    color_code = 16766720 if is_whitelist else 16711680 # Gold for whitelist, red for arbitrage
+
+    desc_links = []
+    if pc_url: desc_links.append(f"[🔗 PriceCharting]({pc_url})")
+    if snkr_url: desc_links.append(f"[🔗 SNKRDUNK]({snkr_url})")
+    desc_str = "\n".join(desc_links) if desc_links else "無可用的參考連結"
+
     payload = {
-        "content": f"🚨 **[真正撿漏警報]** {full_name}",
+        "content": f"🚨 **[{'白名單秒殺警告' if is_whitelist else '真正撿漏警報'}]** {full_name}",
         "embeds": [
             {
-                "title": f"發現套利機會！(觸發門檻: ${PRICE_THRESHOLD})",
-                "color": 16711680,  # Red
+                "title": title_text,
+                "color": color_code,
                 "fields": fields,
-                "description": f"[🔗 PriceCharting]({pc_url or 'https://www.pricecharting.com'})\n[🔗 SNKRDUNK]({snkr_url or 'https://snkrdunk.com'})"
+                "description": f"**{trigger_text}**\n\n{desc_str}"
             }
         ]
     }
@@ -337,6 +365,8 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
         if not limit:
             print(f"\n[{datetime.now().strftime('%H:%M:%S')}] 成功抓取 {len(items)} 筆掛單進行完全查價...")
     
+    whitelist = load_whitelist()
+    
     for idx, item in enumerate(items, 1):
         if debug_dir:
             safe_name = re.sub(r'[^A-Za-z0-9_]', '_', item['name'])[:50]
@@ -349,6 +379,18 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
         ask = item['ask_price']
         full_name = item['name']
         
+        # 白名單秒收機制
+        is_whitelisted = any(w in full_name.lower() for w in whitelist)
+        if is_whitelisted:
+            print(f"\n🌟 [白名單命中] {full_name}")
+            print(f"   => 賣家開價: ${ask:.2f} USD")
+            print(f"   🔥 你的追蹤清單命中這張卡，無條件發送通知！\n")
+            send_discord_alert(full_name, ask, None, None, custom_trigger="WHITELIST (白名單無條件命中)")
+            if item_id not in SEEN_IDS:
+                SEEN_IDS.add(item_id)
+                save_seen_id(item_id)
+            continue # 跳過耗時的市價查詢直接進入下一張卡
+            
         # 1. 直接發動實時爬蟲
         company = full_name.split()[0] if "PSA" in full_name or "BGS" in full_name else "Unknown"
         year_match = re.search(r'20\d{2}', full_name)

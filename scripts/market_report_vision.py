@@ -299,11 +299,21 @@ def _fetch_pc_prices_from_url(product_url, md_content=None, skip_hi_res=False, t
                     except: pass
             break
 
-    _debug_log(f"PriceCharting: 成功提取 {len(records)} 筆價格紀錄")
-    for r in records[:5]:
+    _debug_log(f"PriceCharting: 成功提取 {len(records)} 筆價格紀錄 (包含全等級)")
+    
+    snkr_target = target_grade.replace(" ", "")
+    matched_records = []
+    for r in records:
+        r_grade = r.get('grade', '')
+        if r_grade == target_grade: matched_records.append(r)
+        elif target_grade == "Unknown" and r_grade in ("Ungraded", "裸卡", "A"): matched_records.append(r)
+        elif r_grade == snkr_target: matched_records.append(r)
+        
+    _debug_log(f"PriceCharting: 其中符合 '{target_grade}' 的紀錄有 {len(matched_records)} 筆")
+    for r in matched_records[:5]:
         _debug_log(f"  - [{r.get('date', '')}] {r.get('grade', '')} : ${r.get('price', 0)}")
-    if len(records) > 5:
-        _debug_log(f"  ... (還有 {len(records) - 5} 筆不顯示)")
+    if len(matched_records) > 5:
+        _debug_log(f"  ... (還有 {len(matched_records) - 5} 筆不顯示)")
 
     return records, product_url, pc_img_url
 
@@ -712,11 +722,22 @@ def search_snkrdunk(en_name, jp_name, number, set_code, target_grade, is_alt_art
                 
     resolved_url = f"https://snkrdunk.com/apparels/{product_id}" if product_id else None
                 
-    _debug_log(f"SNKRDUNK: 成功提取 {len(records)} 筆價格紀錄")
-    for r in records[:5]:
+    _debug_log(f"SNKRDUNK: 成功提取 {len(records)} 筆價格紀錄 (包含全等級)")
+    
+    snkr_target = target_grade.replace(" ", "")
+    matched_records = []
+    for r in records:
+        r_grade = r.get('grade', '')
+        if r_grade == target_grade: matched_records.append(r)
+        elif target_grade == "Unknown" and r_grade in ("Ungraded", "裸卡", "A"): matched_records.append(r)
+        elif r_grade == snkr_target: matched_records.append(r)
+        elif "A" in r_grade or "裸卡" in r_grade: matched_records.append(r) # SNKRDUNK A grade fallback
+
+    _debug_log(f"SNKRDUNK: 其中符合 '{target_grade}' (或條件允許) 的紀錄有 {len(matched_records)} 筆")
+    for r in matched_records[:5]:
         _debug_log(f"  - [{r.get('date', '')}] {r.get('grade', '')} : ¥{r.get('price', 0)}")
-    if len(records) > 5:
-        _debug_log(f"  ... (還有 {len(records) - 5} 筆不顯示)")
+    if len(matched_records) > 5:
+        _debug_log(f"  ... (還有 {len(matched_records) - 5} 筆不顯示)")
                 
     return records, img_url, resolved_url
 
