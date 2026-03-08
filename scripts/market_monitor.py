@@ -477,6 +477,7 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
                 new_items.append(it)
                 
         if not new_items:
+            print(f"  └ 目前沒有發現新掛單或賣家改價，將繼續監控...")
             return # 沒有新品或價格異動，直接結束
         items = new_items
         print(f"\n[{datetime.now().strftime('%H:%M:%S')}] ✨ 發現 {len(items)} 筆新品或價格異動上架，開始查價...")
