@@ -28,7 +28,7 @@ PRICE_THRESHOLD = float(os.getenv("PRICE_THRESHOLD") or DEFAULT_PRICE_THRESHOLD)
 
 # 📦 狀態管理：追蹤已處理過的掛單 ID
 SEEN_IDS_FILE = os.path.join(os.path.dirname(__file__), "seen_ids.txt")
-SEEN_IDS = set()
+SEEN_IDS = {}
 
 WHITELIST_FILE = os.path.join(os.path.dirname(__file__), "whitelist.txt")
 
@@ -48,20 +48,30 @@ def load_whitelist():
         return []
 
 def load_seen_ids():
-    """從檔案載入已見過的 ID"""
+    """從檔案載入已見過的 ID 與對應價格"""
+    result = {}
     if os.path.exists(SEEN_IDS_FILE):
         try:
             with open(SEEN_IDS_FILE, "r") as f:
-                return set(line.strip() for line in f if line.strip())
+                for line in f:
+                    line = line.strip()
+                    if not line: continue
+                    parts = line.split(":")
+                    if len(parts) == 2:
+                        iid, price = parts[0], float(parts[1])
+                        result[iid] = price
+                    else:
+                        # 相容舊有的純 ID 格式
+                        result[line] = 0.0
         except Exception as e:
             print(f"⚠️ 載入 seen_ids.txt 失敗: {e}")
-    return set()
+    return result
 
-def save_seen_id(item_id):
-    """將單一 ID 追加到檔案中"""
+def save_seen_id(item_id, price=0.0):
+    """將單一 ID 與價格追加到檔案中（覆蓋或新增交給檔案追加，讀檔時會以最新為準）"""
     try:
         with open(SEEN_IDS_FILE, "a") as f:
-            f.write(f"{item_id}\n")
+            f.write(f"{item_id}:{price}\n")
     except Exception as e:
         print(f"⚠️ 儲存 seen_ids 失敗: {e}")
 
@@ -454,11 +464,18 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
     
     # 過濾已見過的 ID (除非強制處理)
     if not force_process:
-        new_items = [it for it in items if it['item_id'] not in SEEN_IDS]
+        new_items = []
+        for it in items:
+            iid = it['item_id']
+            ask = float(it['ask_price'])
+            # 若沒見過，或者見過但是賣家價格改變了，都視為 new_items
+            if iid not in SEEN_IDS or SEEN_IDS[iid] != ask:
+                new_items.append(it)
+                
         if not new_items:
-            return # 沒有新品，直接結束
+            return # 沒有新品或價格異動，直接結束
         items = new_items
-        print(f"\n[{datetime.now().strftime('%H:%M:%S')}] ✨ 發現 {len(items)} 筆新品上架，開始查價...")
+        print(f"\n[{datetime.now().strftime('%H:%M:%S')}] ✨ 發現 {len(items)} 筆新品或價格異動上架，開始查價...")
     else:
         if not limit:
             print(f"\n[{datetime.now().strftime('%H:%M:%S')}] 成功抓取 {len(items)} 筆掛單進行完全查價...")
@@ -494,9 +511,9 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
             print(f"   => 賣家開價: ${ask:.2f} USD")
             print(f"   🔥 你的追蹤清單命中這張卡，無條件發送通知！\n")
             send_discord_alert(full_name, ask, None, None, custom_trigger="WHITELIST (白名單無條件命中)")
-            if item_id not in SEEN_IDS:
-                SEEN_IDS.add(item_id)
-                save_seen_id(item_id)
+            if item_id not in SEEN_IDS or SEEN_IDS[item_id] != float(ask):
+                SEEN_IDS[item_id] = float(ask)
+                save_seen_id(item_id, float(ask))
             continue # 跳過耗時的市價查詢直接進入下一張卡
             
         # 1. 直接發動實時爬蟲
@@ -531,10 +548,10 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
             # 發送 Discord Webhook
             send_discord_alert(full_name, ask, pc_res, snkr_res)
         
-        # 標記為已見過並持久化
-        if item_id not in SEEN_IDS:
-            SEEN_IDS.add(item_id)
-            save_seen_id(item_id)
+        # 標記為已見過並持久化 (含最新價格)
+        if item_id not in SEEN_IDS or SEEN_IDS[item_id] != float(ask):
+            SEEN_IDS[item_id] = float(ask)
+            save_seen_id(item_id, float(ask))
 
 
 if __name__ == "__main__":
@@ -560,9 +577,10 @@ if __name__ == "__main__":
         new_count = 0
         for it in initial_items:
             iid = it['item_id']
-            if iid not in SEEN_IDS:
-                SEEN_IDS.add(iid)
-                save_seen_id(iid)
+            ask = float(it['ask_price'])
+            if iid not in SEEN_IDS or SEEN_IDS[iid] != ask:
+                SEEN_IDS[iid] = ask
+                save_seen_id(iid, ask)
                 new_count += 1
         print(f"✅ 已同步目前市場 {len(initial_items)} 筆掛單 (新增 {new_count} 筆至持久化)")
     except Exception as e:
