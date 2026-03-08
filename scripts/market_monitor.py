@@ -186,58 +186,21 @@ def parse_renaiss_name(full_name):
     grade_m = re.search(r'(PSA|BGS|CGC|SGC)\s+(\d+(?:\.\d+)?)', full_name)
     grade_tag = f"{grade_m.group(1)} {grade_m.group(2)}" if grade_m else "Unknown"
 
-    clean_name = full_name
+    m = re.search(r'#([-A-Za-z0-9]+)', full_name)
+    if not m:
+        m = re.search(r'\s+([A-Z0-9]{2,}/\d+)$', full_name)
+        if not m:
+            return full_name, "0", "", grade_tag
+
+    number = m.group(1)
+    clean_name = full_name.replace(f"#{number}", "").strip()
     if grade_m:
-        clean_name = clean_name.replace(grade_m.group(0), "")
+        clean_name = clean_name.replace(grade_m.group(0), "").strip()
 
-    # Look for '#<number>' pattern to split
-    m = re.search(r'#([-A-Za-z0-9]+)\s+(.*)', clean_name)
-    
-    character_name = ""
-    number = "0"
-    set_code = ""
-    set_name = ""
+    sc_m = re.search(r'([A-Za-z0-9]{2,}\d[A-Za-z]?)-', full_name)
+    set_code = sc_m.group(1) if sc_m else ""
 
-    if m:
-        number = m.group(1)
-        character_name = m.group(2).strip()
-        before_hash = clean_name[:m.start()].strip()
-        
-        # Regex to find set code like SV10
-        possible_sets = re.findall(r'\b([A-Za-z0-9]{2,}\d[A-Za-z]?)\b', before_hash)
-        possible_sets = [s for s in possible_sets if not re.match(r'^(19|20)\d{2}$', s)]
-        
-        # Determine strict Set Code
-        set_code = possible_sets[-1].upper() if possible_sets else ""
-        
-        # Extract the pure textual set name
-        set_parts = before_hash
-        # 1. Strip condition texts
-        set_parts = re.sub(r'(?i)\b(Gem Mint|Mint|NM-MT|NM|EX-MT|EX|VG-EX|VG|Good|PR)\b', '', set_parts).strip()
-        # 2. Strip Year
-        set_parts = re.sub(r'\b(19|20)\d{2}\b', '', set_parts).strip()
-        # 3. Strip Game Name and common Languages
-        set_parts = re.sub(r'(?i)\b(Pokemon|One Piece|Japanese|English|Simplified Chinese|Traditional Chinese)\b', '', set_parts).strip()
-        # 4. Strip internal prefixes like Tef En-, Blk En-
-        set_parts = re.sub(r'(?i)\b([A-Za-z0-9]{2,}\s*[a-zA-Z]{2}-)', '', set_parts).strip()
-        # 5. Extract and remove the standard set code to leave just the descriptive text
-        if possible_sets:
-            set_parts = set_parts.replace(possible_sets[-1], "").strip()
-        # 6. Cleanup trailing dashes and double spaces
-        set_parts = re.sub(r'\s+', ' ', set_parts)
-        set_name = set_parts.strip(" -")
-    else:
-        # fallback for missing #
-        op_m = re.search(r'\b([A-Za-z0-9]{2,}\d[A-Za-z]?)[-\s](\d+)\s+(.*)', clean_name)
-        if op_m:
-            set_code = op_m.group(1).upper()
-            number = op_m.group(2)
-            character_name = op_m.group(3).strip()
-        else:
-            # worst case fallback
-            character_name = clean_name.strip()
-            
-    # Clean variant keywords from the character name just in case
+    return clean_name, number, set_code, grade_tag
     variant_kws = ["FOIL", "SP", "ALT ART", "Parallel", "WANTED", "Leader", "SEC", "SR", "R", "UC", "C", "L", "Special Card", "Promo"]
     for kw in variant_kws:
         character_name = re.sub(rf'\b{re.escape(kw)}\b', '', character_name, flags=re.IGNORECASE).strip()
@@ -257,20 +220,23 @@ def fetch_market_data():
     headers = {"User-Agent": "Mozilla/5.0"}
     try:
         resp = requests.get(url, headers=headers, timeout=15)
-        pattern = r'\{\\"id\\":\\"[^"]+\\",\\"tokenId\\":\\"[^"]+\\",\\"itemId\\":\\"[^"]+\\",\\"name\\":\\".*?\\"buybackBaseValueInUSD\\":\\".*?\\"\}'
-        matches = re.findall(pattern, resp.text)
+        # Capture the whole item JSON object
+        pattern = r'\{\\"id\\":\\"[^"]+\\",\\"tokenId\\":\\"[^"]+\\".*?\\"buybackBaseValueInUSD\\":\\"[^"]+\\"\}'
+        matches = re.finditer(pattern, resp.text)
         
         parsed_items = []
         for m in matches:
             try:
-                data = json.loads(m.encode().decode('unicode_escape'))
+                raw_json_str = m.group(0).encode().decode('unicode_escape')
+                data = json.loads(raw_json_str)
                 parsed_items.append({
                     "id": data.get("id"),
                     "item_id": data.get("itemId"),
                     "name": data.get("name"),
                     "ask_price": clean_price(data.get("askPriceInUSDT")),
                     "fmv": clean_price(data.get("fmvPriceInUSD")),
-                    "grade": f"{data.get('gradingCompany')} {data.get('grade')}"
+                    "grade": f"{data.get('gradingCompany')} {data.get('grade')}",
+                    "attributes": data.get("attributes", [])
                 })
             except: pass
         return parsed_items
@@ -278,17 +244,31 @@ def fetch_market_data():
         print(f"[{datetime.now().strftime('%H:%M:%S')}] 網路請求失敗: {e}")
         return []
 
-def fetch_and_analyze_realtime(item_id, full_name, grading_company, year, current_jpy_rate=150.0):
+def fetch_and_analyze_realtime(item_id, full_name, grading_company, year, current_jpy_rate=150.0, attributes=None):
     """現場發動爬蟲並分析價格 (分開回傳 PC 與 SNKR 的數據)"""
     print(f"  🔍 正在對 {full_name} 進行實時市場分析... (匯率: 1 USD = {current_jpy_rate} JPY)")
     card_name, number, set_code, set_name, grade_tag = parse_renaiss_name(full_name)
+    
+    is_jp = "Japanese" in full_name
+    
+    if attributes:
+        for attr in attributes:
+            t = attr.get("trait", "").lower()
+            v = attr.get("value", "").strip()
+            if not v: continue
+            if t == "set":
+                set_name = v
+                # We do NOT override set_code here, because SNKRDUNK heavily relies 
+                # on the regex-extracted short code like 'sv2a'. set_name is just the fallback.
+            elif t == "card number":
+                number = v.replace("#", "")
+            elif t == "language":
+                is_jp = ("japanese" in v.lower())
     
     # 類別偵測
     category = "Pokemon"
     if any(kw in full_name or kw in (set_code or "") for kw in ["One Piece", "OP0", "ST0", "EB0", "WANTED", "Parallel", "Alt-Art"]):
         category = "One Piece"
-    
-    is_jp = "Japanese" in full_name
     
     # 變體偵測
     variant_map = {
@@ -434,8 +414,9 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
         company = full_name.split()[0] if "PSA" in full_name or "BGS" in full_name else "Unknown"
         year_match = re.search(r'20\d{2}', full_name)
         year = year_match.group(0) if year_match else 0
-        
-        pc_res, snkr_res = fetch_and_analyze_realtime(item_id, full_name, company, year, current_jpy_rate)
+        pc_res, snkr_res = fetch_and_analyze_realtime(
+            item_id, full_name, company, year, current_jpy_rate, attributes=item.get("attributes")
+        )
         pc_avg, pc_count, pc_url = pc_res
         snkr_avg, snkr_count, snkr_url = snkr_res
         

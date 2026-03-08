@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Debug & Logs
+debug/
+*.log
+seen_ids.txt
+
+# Environment
+.env
+
+# OS
+.DS_Store
