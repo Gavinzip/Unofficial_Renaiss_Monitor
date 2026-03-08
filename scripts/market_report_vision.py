@@ -299,6 +299,12 @@ def _fetch_pc_prices_from_url(product_url, md_content=None, skip_hi_res=False, t
                     except: pass
             break
 
+    _debug_log(f"PriceCharting: 成功提取 {len(records)} 筆價格紀錄")
+    for r in records[:5]:
+        _debug_log(f"  - [{r.get('date', '')}] {r.get('grade', '')} : ${r.get('price', 0)}")
+    if len(records) > 5:
+        _debug_log(f"  ... (還有 {len(records) - 5} 筆不顯示)")
+
     return records, product_url, pc_img_url
 
 def extract_price(price_str):
@@ -705,6 +711,12 @@ def search_snkrdunk(en_name, jp_name, number, set_code, target_grade, is_alt_art
                 })
                 
     resolved_url = f"https://snkrdunk.com/apparels/{product_id}" if product_id else None
+                
+    _debug_log(f"SNKRDUNK: 成功提取 {len(records)} 筆價格紀錄")
+    for r in records[:5]:
+        _debug_log(f"  - [{r.get('date', '')}] {r.get('grade', '')} : ¥{r.get('price', 0)}")
+    if len(records) > 5:
+        _debug_log(f"  ... (還有 {len(records) - 5} 筆不顯示)")
                 
     return records, img_url, resolved_url
 
