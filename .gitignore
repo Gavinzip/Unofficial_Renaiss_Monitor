@@ -1,15 +1,14 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Debug & Logs
-debug/
-*.log
-seen_ids.txt
-
 # Environment
 .env
 
-# OS
-.DS_Store
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Debug output directories
+debug/
+debug_sniping_mode/
+
+# Runtime state
+scripts/seen_ids.txt
