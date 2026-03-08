@@ -30,6 +30,10 @@ PRICE_THRESHOLD = float(os.getenv("PRICE_THRESHOLD") or DEFAULT_PRICE_THRESHOLD)
 SEEN_IDS_FILE = os.path.join(os.path.dirname(__file__), "seen_ids.txt")
 SEEN_IDS = {}
 
+# 📣 報警冷卻管理：防止同一張卡短期內重覆轟炸
+SEEN_NAMES_FILE = os.path.join(os.path.dirname(__file__), "seen_names.json")
+SEEN_NAMES = {} # 格式: { "name_grade": { "last_price": 100.0, "last_time": 1709900000 } }
+
 WHITELIST_FILE = os.path.join(os.path.dirname(__file__), "whitelist.txt")
 
 def load_whitelist():
@@ -93,6 +97,24 @@ def load_seen_ids():
         except Exception as e:
             print(f"⚠️ 載入 seen_ids.txt 失敗: {e}")
     return result
+
+def load_seen_names():
+    """載入卡片名稱級別的報警歷史"""
+    if os.path.exists(SEEN_NAMES_FILE):
+        try:
+            with open(SEEN_NAMES_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except:
+            return {}
+    return {}
+
+def save_seen_names():
+    """儲存卡片名稱級別的報警歷史"""
+    try:
+        with open(SEEN_NAMES_FILE, "w", encoding="utf-8") as f:
+            json.dump(SEEN_NAMES, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"⚠️ 儲存 seen_names.json 失敗: {e}")
 
 def save_seen_id(item_id, price=0.0):
     """將單一 ID 與價格追加到檔案中（覆蓋或新增交給檔案追加，讀檔時會以最新為準）"""
@@ -522,35 +544,51 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
     - force_process: 是否忽略 SEEN_IDS 檢查 (用於啟動測試)
     - debug_dir: 儲存 debug 紀錄的資料夾
     """
-    items = fetch_market_data()
-    if not items:
+    raw_items = fetch_market_data()
+    if not raw_items:
         return
         
     if limit:
-        items = items[:limit]
+        raw_items = raw_items[:limit]
         print(f"\n[{datetime.now().strftime('%H:%M:%S')}] 🧪 測試模式：僅檢查前 {limit} 筆掛單...")
     
-    # 過濾已見過的 ID (除非強制處理)
+    # ── Step 1: 同週期去重 (同一張卡多個賣家時，只保留最划算的那個) ──────
+    # 將卡片依據名稱與等級分組
+    grouped_items = {}
+    for it in raw_items:
+        # 建立卡片唯一標識 (名稱 + 等級)
+        # 注意：fetch_market_data 已經提供了 name 和 grade
+        key = f"{it['name']}_{it['grade']}".lower()
+        if key not in grouped_items:
+            grouped_items[key] = it
+        else:
+            # 如果發現同款卡片更便宜的掛單，替換掉
+            if float(it['ask_price']) < float(grouped_items[key]['ask_price']):
+                grouped_items[key] = it
+    
+    items = list(grouped_items.values())
+
+    # ── Step 2: 過濾已見過的 ID (如果是全新的 ID 或改價才處理) ──────────
     if not force_process:
         new_items = []
         for it in items:
             iid = it['item_id']
             ask = float(it['ask_price'])
-            # 若沒見過，或者見過但是賣家價格改變了，都視為 new_items
             if iid not in SEEN_IDS or SEEN_IDS[iid] != ask:
                 new_items.append(it)
                 
         if not new_items:
             print(f"  └ 目前沒有發現新掛單或賣家改價，將繼續監控...")
-            return # 沒有新品或價格異動，直接結束
+            return 
         items = new_items
-        print(f"\n[{datetime.now().strftime('%H:%M:%S')}] ✨ 發現 {len(items)} 筆新品或價格異動上架，開始查價...")
+        print(f"\n[{datetime.now().strftime('%H:%M:%S')}] ✨ 發現 {len(items)} 筆新品或價格異動上架，開始檢查...")
     else:
         if not limit:
-            print(f"\n[{datetime.now().strftime('%H:%M:%S')}] 成功抓取 {len(items)} 筆掛單進行完全查價...")
+            print(f"\n[{datetime.now().strftime('%H:%M:%S')}] 成功抓取 {len(items)} 筆掛單進行完全分析...")
     
     current_jpy_rate = fetch_jpy_rate()
     whitelist = load_whitelist()
+    now_ts = time.time()
     
     for idx, item in enumerate(items, 1):
         if debug_dir:
@@ -561,35 +599,61 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
             mrv._set_debug_dir(item_debug_dir)
 
         item_id = item['item_id']
-        ask = item['ask_price']
+        ask = float(item['ask_price'])
         full_name = item['name']
-        
-        # 白名單秒收機制
-        # 支援多關鍵字無序匹配，並可選設定價格上限
+        grade = item['grade']
+        name_grade_key = f"{full_name}_{grade}".lower()
+
+        # ── Step 3: 名稱級別的報警冷卻與降價判斷 ─────────────────────
+        # 邏輯：如果 1 小時內報過同一張卡，且沒降價超過 5%，就跳過通知
+        def check_cooldown(p_key, current_p):
+            if p_key in SEEN_NAMES:
+                hist = SEEN_NAMES[p_key]
+                last_time = hist.get("last_time", 0)
+                last_price = hist.get("last_price", 999999)
+                
+                # 如果在 1 小時內
+                if now_ts - last_time < 3600:
+                    # 除非降價超過 5%
+                    if current_p >= last_price * 0.95:
+                        return True, last_price # 處於冷卻中
+            return False, None
+
+        # 白名單命中判斷
         is_whitelisted = False
         whitelist_triggered_rule = None
         full_name_lower = full_name.lower()
         for rule in whitelist:
             if all(kw in full_name_lower for kw in rule["keywords"]):
-                if rule["max_price"] is None or float(ask) <= rule["max_price"]:
+                if rule["max_price"] is None or ask <= rule["max_price"]:
                     is_whitelisted = True
                     whitelist_triggered_rule = rule
                     break
         
         if is_whitelisted:
-            print(f"\n🌟 [白名單命中] {full_name}")
-            print(f"   => 賣家開價: ${ask:.2f} USD")
-            cond_str = f" (價格 <= ${whitelist_triggered_rule['max_price']})" if whitelist_triggered_rule['max_price'] is not None else " (無條件)"
-            print(f"   🔥 你的追蹤清單命中這張卡{cond_str}，發送通知！\n")
+            is_cool, old_p = check_cooldown(name_grade_key, ask)
+            if is_cool:
+                print(f"  [冷卻中] {full_name} | 現價: ${ask:.2f} | 上次報警: ${old_p:.2f} (1小時內且無過 5% 降幅，跳過通知)")
+            else:
+                print(f"\n🌟 [白名單命中] {full_name}")
+                print(f"   => 賣家開價: ${ask:.2f} USD")
+                cond_str = f" (價格 <= ${whitelist_triggered_rule['max_price']})" if whitelist_triggered_rule['max_price'] is not None else " (無條件)"
+                print(f"   🔥 你的追蹤清單命中這張卡{cond_str}，發送通知！\n")
+                
+                trigger_reason = f"WHITELIST 白名單命中{cond_str}"
+                send_discord_alert(full_name, ask, None, None, custom_trigger=trigger_reason, debug_mode=bool(debug_dir))
+                
+                # 更新報警歷史
+                SEEN_NAMES[name_grade_key] = {"last_time": now_ts, "last_price": ask}
+                save_seen_names()
+
+            # 無論是否通知，都要更新 ID 歷史避免重覆跑實時分析
+            if item_id not in SEEN_IDS or SEEN_IDS[item_id] != ask:
+                SEEN_IDS[item_id] = ask
+                save_seen_id(item_id, ask)
+            continue
             
-            trigger_reason = f"WHITELIST 白名單命中{cond_str}"
-            send_discord_alert(full_name, ask, None, None, custom_trigger=trigger_reason, debug_mode=bool(debug_dir))
-            if item_id not in SEEN_IDS or SEEN_IDS[item_id] != float(ask):
-                SEEN_IDS[item_id] = float(ask)
-                save_seen_id(item_id, float(ask))
-            continue # 跳過耗時的市價查詢直接進入下一張卡
-            
-        # 1. 直接發動實時爬蟲
+        # 1. 直接發動實時爬蟲 (市價查詢)
         company = full_name.split()[0] if "PSA" in full_name or "BGS" in full_name else "Unknown"
         year_match = re.search(r'20\d{2}', full_name)
         year = year_match.group(0) if year_match else 0
@@ -610,16 +674,24 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
         print(f"  [掃描中] {full_name} | Ask: ${ask:.2f} | {' / '.join(log_parts) if log_parts else f'無{WINDOW_DAYS}天內數據'}")
 
         if alert_pc or alert_snkr:
-            triggered_by = []
-            if alert_pc: triggered_by.append(f"PC(${(pc_avg-ask):.2f})")
-            if alert_snkr: triggered_by.append(f"SNKR(${(snkr_avg-ask):.2f})")
-            
-            print(f"\n🚨 [真正撿漏警報] {full_name}")
-            print(f"   => 賣家開價: ${ask:.2f} USD")
-            print(f"   🔥 觸發來源: {' & '.join(triggered_by)}！(門檻: ${PRICE_THRESHOLD}, 窗口: {WINDOW_DAYS}天) 請立刻注意把這張卡買下來！\n")
-            
-            # 發送 Discord Webhook
-            send_discord_alert(full_name, ask, pc_res, snkr_res, debug_mode=bool(debug_dir))
+            is_cool, old_p = check_cooldown(name_grade_key, ask)
+            if is_cool:
+                 print(f"  [警報冷卻中] {full_name} 已滿足撿漏條件，但 1 小時內已發過通知且未顯著跌價，不重覆觸發。")
+            else:
+                triggered_by = []
+                if alert_pc: triggered_by.append(f"PC(${(pc_avg-ask):.2f})")
+                if alert_snkr: triggered_by.append(f"SNKR(${(snkr_avg-ask):.2f})")
+                
+                print(f"\n🚨 [真正撿漏警報] {full_name}")
+                print(f"   => 賣家開價: ${ask:.2f} USD")
+                print(f"   🔥 觸發來源: {' & '.join(triggered_by)}！(門檻: ${PRICE_THRESHOLD}, 窗口: {WINDOW_DAYS}天) 請立刻注意把這張卡買下來！\n")
+                
+                # 發送 Discord Webhook
+                send_discord_alert(full_name, ask, pc_res, snkr_res, debug_mode=bool(debug_dir))
+                
+                # 更新報警歷史
+                SEEN_NAMES[name_grade_key] = {"last_time": now_ts, "last_price": ask}
+                save_seen_names()
         
         # 標記為已見過並持久化 (含最新價格)
         if item_id not in SEEN_IDS or SEEN_IDS[item_id] != float(ask):
@@ -652,7 +724,8 @@ if __name__ == "__main__":
     # 💥 初始狀態初始化：載入持久化數據 + 同步目前市場掛單
     print("📡 正在初始化市場狀態...")
     SEEN_IDS = load_seen_ids()
-    print(f"📂 已從檔案載入 {len(SEEN_IDS)} 筆歷史記錄")
+    SEEN_NAMES = load_seen_names()
+    print(f"📂 已從檔案載入 {len(SEEN_IDS)} 筆 ID 記錄與 {len(SEEN_NAMES)} 筆報警歷史")
     
     try:
         initial_items = fetch_market_data()
