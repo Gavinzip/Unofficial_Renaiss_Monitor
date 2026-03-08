@@ -182,30 +182,84 @@ def calculate_true_average_with_window(pc_records, snkr_records, target_grade):
     pc_avg, pc_count = calculate_source_average(pc_records, target_grade, window_days=WINDOW_DAYS)
     snkr_avg, snkr_count = calculate_source_average(snkr_records, target_grade, window_days=WINDOW_DAYS)
     return (pc_avg, pc_count), (snkr_avg, snkr_count)
+def extract_set_code_from_name(full_name):
+    """從 full_name 提取 Set Code 短碼（如 S8b, sv2a, OP02, sv1s, SV5K）
+    優先順序：最長/最精確的匹配優先
+    """
+    # 航海王格式：OP+數字, ST+數字, EB+數字 (必須在寶可夢之前，避免被 SV 吃掉)
+    m = re.search(r'\b(OP\d+|ST\d+|EB\d+)\b', full_name, re.IGNORECASE)
+    if m:
+        return m.group(1).upper()
+    # 寶可夢 SV 系列：SV+數字+可選字母 (e.g. SV5K, sv2a, SV1S)
+    m = re.search(r'\b(SV\d+[A-Za-z]*)\b', full_name, re.IGNORECASE)
+    if m:
+        return m.group(1)
+    # 寶可夢 SWSH 系列：S+數字+可選字母 (e.g. S8b, S9a, S12a)
+    m = re.search(r'\b(S\d+[A-Za-z]?)\b', full_name)
+    if m:
+        # 防止誤匹配 SEC、SR 等縮寫
+        candidate = m.group(1)
+        if re.match(r'^S\d', candidate):
+            return candidate
+    # 寶可夢 Sun & Moon 系列：SM+數字+可選字母 (e.g. SM1+, SM8b)
+    m = re.search(r'\b(SM\d*[A-Za-z+]?)\b', full_name, re.IGNORECASE)
+    if m:
+        return m.group(1)
+    # 寶可夢 XY 系列：XY+數字+可選字母
+    m = re.search(r'\b(XY\d*[A-Za-z]?)\b', full_name, re.IGNORECASE)
+    if m:
+        return m.group(1)
+    return ""
+
+
 def parse_renaiss_name(full_name):
+    """從 full_name 提取 grade, number, set_code, set_name, card_name
+    注意：這只是後備方案，正確做法是優先從 attributes 取得結構化資料
+    """
+    # 1. 提取 grade
     grade_m = re.search(r'(PSA|BGS|CGC|SGC)\s+(\d+(?:\.\d+)?)', full_name)
     grade_tag = f"{grade_m.group(1)} {grade_m.group(2)}" if grade_m else "Unknown"
 
-    m = re.search(r'#([-A-Za-z0-9]+)', full_name)
+    # 2. 提取卡片編號（#XXX 或 #XXX/YYY 格式）
+    m = re.search(r'#([A-Za-z0-9]+(?:/[A-Za-z0-9-]+)?)', full_name)
     if not m:
-        m = re.search(r'\s+([A-Z0-9]{2,}/\d+)$', full_name)
-        if not m:
-            return full_name, "0", "", grade_tag
+        return full_name, "0", "", "", grade_tag
 
     number = m.group(1)
-    clean_name = full_name.replace(f"#{number}", "").strip()
+
+    # 3. 提取 set_code 短碼
+    set_code = extract_set_code_from_name(full_name)
+
+    # 4. 建立 clean_name（去掉 grade、編號）
+    clean_name = full_name
     if grade_m:
-        clean_name = clean_name.replace(grade_m.group(0), "").strip()
+        clean_name = clean_name.replace(grade_m.group(0), "")
+    clean_name = clean_name.replace(f"#{number}", "").strip()
+    clean_name = re.sub(r'\s+', ' ', clean_name).strip()
 
-    sc_m = re.search(r'([A-Za-z0-9]{2,}\d[A-Za-z]?)-', full_name)
-    set_code = sc_m.group(1) if sc_m else ""
+    # 5. 建立 set_name（去除噪音關鍵字的純文字 set 名稱）
+    set_name_candidate = clean_name
+    if set_code:
+        set_name_candidate = re.sub(re.escape(set_code) + r'[^\s]*', '', set_name_candidate, flags=re.IGNORECASE).strip()
+    set_name_candidate = re.sub(r'\b20\d{2}\b', '', set_name_candidate).strip()
+    for kw in ["Pokemon", "Japanese", "English", "Simplified Chinese", "Traditional Chinese",
+               "Korean", "Gem Mint", "Mint", "One Piece"]:
+        set_name_candidate = re.sub(rf'\b{re.escape(kw)}\b', '', set_name_candidate, flags=re.IGNORECASE).strip()
+    for kw in ["FOIL", "SP", "ALT ART", "Parallel", "WANTED", "Leader", "SEC", "SR", "Special Card", "Promo"]:
+        set_name_candidate = re.sub(rf'\b{re.escape(kw)}\b', '', set_name_candidate, flags=re.IGNORECASE).strip()
+    set_name = ' '.join(set_name_candidate.split())
 
-    return clean_name, number, set_code, grade_tag
-    variant_kws = ["FOIL", "SP", "ALT ART", "Parallel", "WANTED", "Leader", "SEC", "SR", "R", "UC", "C", "L", "Special Card", "Promo"]
-    for kw in variant_kws:
-        character_name = re.sub(rf'\b{re.escape(kw)}\b', '', character_name, flags=re.IGNORECASE).strip()
-        
-    return character_name, number, set_code, set_name, grade_tag
+    # 6. 純 card_name：從 clean_name 中再去掉 set_code 和年份、語言等噪音
+    card_name = clean_name
+    if set_code:
+        card_name = re.sub(re.escape(set_code) + r'[^\s]*', '', card_name, flags=re.IGNORECASE)
+    card_name = re.sub(r'\b20\d{2}\b', '', card_name)
+    for kw in ["Pokemon", "Japanese", "English", "Simplified Chinese", "Traditional Chinese",
+               "Korean", "Gem Mint", "Mint", "One Piece"]:
+        card_name = re.sub(rf'\b{re.escape(kw)}\b', '', card_name, flags=re.IGNORECASE)
+    card_name = ' '.join(card_name.split()).strip()
+
+    return card_name, number, set_code, set_name, grade_tag
 
 
 def clean_price(v):
@@ -247,30 +301,58 @@ def fetch_market_data():
 def fetch_and_analyze_realtime(item_id, full_name, grading_company, year, current_jpy_rate=150.0, attributes=None):
     """現場發動爬蟲並分析價格 (分開回傳 PC 與 SNKR 的數據)"""
     print(f"  🔍 正在對 {full_name} 進行實時市場分析... (匯率: 1 USD = {current_jpy_rate} JPY)")
+    
+    # ── Step 1: 用 regex 後備方案拆解 full_name ─────────────────────────────
     card_name, number, set_code, set_name, grade_tag = parse_renaiss_name(full_name)
-    
     is_jp = "Japanese" in full_name
-    
-    if attributes:
-        for attr in attributes:
-            t = attr.get("trait", "").lower()
-            v = attr.get("value", "").strip()
-            if not v: continue
-            if t == "set":
-                set_name = v
-                # We do NOT override set_code here, because SNKRDUNK heavily relies 
-                # on the regex-extracted short code like 'sv2a'. set_name is just the fallback.
-            elif t == "card number":
-                number = v.replace("#", "")
-            elif t == "language":
-                is_jp = ("japanese" in v.lower())
-    
-    # 類別偵測
-    category = "Pokemon"
-    if any(kw in full_name or kw in (set_code or "") for kw in ["One Piece", "OP0", "ST0", "EB0", "WANTED", "Parallel", "Alt-Art"]):
+    category = "One Piece" if any(
+        kw in full_name for kw in ["One Piece", "WANTED"]
+    ) or (set_code and re.match(r'^(OP|ST|EB)\d', set_code, re.I)) else "Pokemon"
+
+    # ── Step 2: 用 attributes (結構化資料) 覆蓋 regex 結果 ─────────────────
+    # attributes 來自 Renaiss marketplace API，優先度高於 regex
+    attr_number = ""
+    attr_set_name = ""
+    attr_language = ""
+    attr_category = ""
+    for attr in (attributes or []):
+        t = attr.get("trait", "").lower()
+        v = attr.get("value", "").strip()
+        if not v:
+            continue
+        if t == "card number":
+            attr_number = v.replace("#", "").strip()
+        elif t == "set":
+            attr_set_name = v
+        elif t == "language":
+            attr_language = v
+        elif t == "category":
+            attr_category = v
+
+    # 覆蓋：attributes 優先
+    if attr_number:
+        number = attr_number
+        print(f"    📋 attributes.card_number 覆蓋 → {number}")
+    if attr_set_name:
+        set_name = attr_set_name
+        # 同時嘗試從 set_name 推斷 set_code（如果 regex 沒抓到的話）
+        if not set_code:
+            set_code = extract_set_code_from_name(attr_set_name)
+        print(f"    📋 attributes.set 覆蓋 → set_name={set_name}, set_code={set_code or '(從名稱提取)'}")
+    if attr_language:
+        is_jp = "japanese" in attr_language.lower()
+        print(f"    📋 attributes.language 覆蓋 → is_jp={is_jp}")
+    if attr_category:
+        category = attr_category
+        print(f"    📋 attributes.category 覆蓋 → {category}")
+
+    # 類別二次補強（以 set_code 輔助確認）
+    if set_code and re.match(r'^(OP|ST|EB)\d', set_code, re.I):
         category = "One Piece"
     
-    # 變體偵測
+    print(f"    🔑 搜尋參數 → name={card_name!r} | number={number!r} | set_code={set_code!r} | grade={grade_tag} | lang={'JP' if is_jp else 'EN'}")
+
+    # ── Step 3: 變體偵測 ────────────────────────────────────────────────────
     variant_map = {
         "manga": ["コミパラ", "manga"],
         "parallel": ["パラレル"],
@@ -282,21 +364,19 @@ def fetch_and_analyze_realtime(item_id, full_name, grading_company, year, curren
     }
     snkr_variants = []
     name_lower = full_name.lower()
-    for category_kw, kws in variant_map.items():
+    for _kw, kws in variant_map.items():
         if any(kw in name_lower for kw in kws):
             snkr_variants.append(kws[0])
-            
     is_alt_art = len(snkr_variants) > 0 or any(x in name_lower for x in ["special card", "alt art", "alternative"])
-    
-    # 執行 PC 搜尋與計算
+
+    # ── Step 4: 執行搜尋 ────────────────────────────────────────────────────
     pc_records, pc_url, _ = mrv.search_pricecharting(
         name=card_name, number=number, set_code=set_code,
         target_grade=grade_tag, is_alt_art=is_alt_art, category=category,
         set_name=set_name
     )
     pc_avg, pc_count = calculate_source_average(pc_records, grade_tag, window_days=WINDOW_DAYS)
-    
-    # 執行 SNKR 搜尋與計算
+
     snkr_records, _, snkr_url = mrv.search_snkrdunk(
         en_name=card_name, jp_name="", number=number, set_code=set_code,
         target_grade=grade_tag, is_alt_art=is_alt_art, card_language="JP" if is_jp else "EN",
@@ -304,7 +384,7 @@ def fetch_and_analyze_realtime(item_id, full_name, grading_company, year, curren
     )
     snkr_avg_jpy, snkr_count = calculate_source_average(snkr_records, grade_tag, window_days=WINDOW_DAYS)
     snkr_avg_usd = (snkr_avg_jpy / current_jpy_rate) if snkr_avg_jpy else None
-    
+
     return (pc_avg, pc_count, pc_url), (snkr_avg_usd, snkr_count, snkr_url)
 
 
