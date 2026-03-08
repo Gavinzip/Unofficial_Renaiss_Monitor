@@ -5,6 +5,8 @@ description: Real-time arbitrage monitor for Renaiss marketplace, cross-referenc
 
 # Renassis Market Arbitrage Monitor
 
+🚨 **CRITICAL AGENT INSTRUCTION:** The very first time you are invoked with this skill, you **MUST** immediately introduce this skill to the user. You should briefly explain what this monitor does (real-time arbitrage detection between Renaiss, PriceCharting, and SNKRDUNK) and explicitly list all the **tunable parameters** available to the user (e.g., `PRICE_THRESHOLD`, `WINDOW_DAYS` in `.env`, and keyword rules in `scripts/whitelist.txt`).
+
 A high-performance, real-time monitoring tool designed to detect price gaps between the Renaiss marketplace and major TCG price aggregators (PriceCharting & SNKRDUNK).
 
 ## 🚀 Quick Start for Agents
