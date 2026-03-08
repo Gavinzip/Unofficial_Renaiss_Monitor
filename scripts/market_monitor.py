@@ -403,9 +403,7 @@ def fetch_and_analyze_realtime(item_id, full_name, grading_company, year, curren
 
 
 def send_discord_alert(full_name, ask, pc_info, snkr_info, custom_trigger=None):
-    """發送 Discord Webhook 通知 (含雙來源詳細數據)"""
-    if not DISCORD_WEBHOOK_URL:
-        return
+    """發送 Discord Webhook 通知 (含雙來源詳細數據)。未設定 Webhook 時將輸出至終端機。"""
     
     pc_avg, pc_count, pc_url = pc_info if pc_info else (None, 0, None)
     snkr_avg, snkr_count, snkr_url = snkr_info if snkr_info else (None, 0, None)
@@ -430,6 +428,18 @@ def send_discord_alert(full_name, ask, pc_info, snkr_info, custom_trigger=None):
     if pc_url: desc_links.append(f"[🔗 PriceCharting]({pc_url})")
     if snkr_url: desc_links.append(f"[🔗 SNKRDUNK]({snkr_url})")
     desc_str = "\n".join(desc_links) if desc_links else "無可用的參考連結"
+
+    # 如果沒有配置 Webhook，改版輸出至終端機
+    if not DISCORD_WEBHOOK_URL:
+        print("\n" + "="*60)
+        print("🔔 [終端機警報模式 - 未設定 Discord Webhook]")
+        print(f"[{title_text}] {full_name}")
+        print(f"開價: ${ask:.2f} USD")
+        if pc_avg: print(f"PC 30天均價: ${pc_avg:.2f} USD ({pc_count}筆)")
+        if snkr_avg: print(f"SNKR 30天均價: ${snkr_avg:.2f} USD ({snkr_count}筆)")
+        print(f"{trigger_text}")
+        print("="*60 + "\n")
+        return
 
     payload = {
         "content": f"🚨 **[{'白名單秒殺警告' if is_whitelist else '真正撿漏警報'}]** {full_name}",
