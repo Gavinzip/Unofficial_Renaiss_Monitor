@@ -230,44 +230,50 @@ def parse_renaiss_name(full_name):
     grade_m = re.search(r'(PSA|BGS|CGC|SGC)\s+(\d+(?:\.\d+)?)', full_name)
     grade_tag = f"{grade_m.group(1)} {grade_m.group(2)}" if grade_m else "Unknown"
 
-    # 2. 提取卡片編號（#XXX 或 #XXX/YYY 格式）
-    m = re.search(r'#([A-Za-z0-9]+(?:/[A-Za-z0-9-]+)?)', full_name)
-    if not m:
-        return full_name, "0", "", "", grade_tag
-
-    number = m.group(1)
-
-    # 3. 提取 set_code 短碼
+    # 2. 提取 set_code 短碼
     set_code = extract_set_code_from_name(full_name)
 
-    # 4. 建立 clean_name（去掉 grade、編號）
-    clean_name = full_name
-    if grade_m:
-        clean_name = clean_name.replace(grade_m.group(0), "")
-    clean_name = clean_name.replace(f"#{number}", "").strip()
-    clean_name = re.sub(r'\s+', ' ', clean_name).strip()
+    # 3. 檢查有無卡片編號（#XXX 或 #XXX/YYY 格式），以此為界切分 系列名(前) 與 卡名(後)
+    m = re.search(r'#([A-Za-z0-9]+(?:/[A-Za-z0-9-]+)?)', full_name)
+    if m:
+        number = m.group(1)
+        before_num = full_name[:m.start()]
+        after_num = full_name[m.end():]
+        
+        set_name_candidate = before_num
+        card_name_candidate = after_num
+    else:
+        number = "0"
+        set_name_candidate = full_name
+        card_name_candidate = full_name
 
-    # 5. 建立 set_name（去除噪音關鍵字的純文字 set 名稱）
-    set_name_candidate = clean_name
+    # 4. 清洗 set_name (去除年份、語言、品相字眼)
+    if grade_m:
+        set_name_candidate = set_name_candidate.replace(grade_m.group(0), "")
     if set_code:
         set_name_candidate = re.sub(re.escape(set_code) + r'[^\s]*', '', set_name_candidate, flags=re.IGNORECASE).strip()
     set_name_candidate = re.sub(r'\b20\d{2}\b', '', set_name_candidate).strip()
+    
     for kw in ["Pokemon", "Japanese", "English", "Simplified Chinese", "Traditional Chinese",
                "Korean", "Gem Mint", "Mint", "One Piece"]:
-        set_name_candidate = re.sub(rf'\b{re.escape(kw)}\b', '', set_name_candidate, flags=re.IGNORECASE).strip()
-    for kw in ["FOIL", "SP", "ALT ART", "Parallel", "WANTED", "Leader", "SEC", "SR", "Special Card", "Promo"]:
         set_name_candidate = re.sub(rf'\b{re.escape(kw)}\b', '', set_name_candidate, flags=re.IGNORECASE).strip()
     set_name = ' '.join(set_name_candidate.split())
 
-    # 6. 純 card_name：從 clean_name 中再去掉 set_code 和年份、語言等噪音
-    card_name = clean_name
+    # 5. 清洗 card_name (去除雜訊字眼與版本字眼)
+    if grade_m:
+        card_name_candidate = card_name_candidate.replace(grade_m.group(0), "")
     if set_code:
-        card_name = re.sub(re.escape(set_code) + r'[^\s]*', '', card_name, flags=re.IGNORECASE)
-    card_name = re.sub(r'\b20\d{2}\b', '', card_name)
+        card_name_candidate = re.sub(re.escape(set_code) + r'[^\s]*', '', card_name_candidate, flags=re.IGNORECASE).strip()
+    card_name_candidate = re.sub(r'\b20\d{2}\b', '', card_name_candidate).strip()
+    
     for kw in ["Pokemon", "Japanese", "English", "Simplified Chinese", "Traditional Chinese",
-               "Korean", "Gem Mint", "Mint", "One Piece"]:
-        card_name = re.sub(rf'\b{re.escape(kw)}\b', '', card_name, flags=re.IGNORECASE)
-    card_name = ' '.join(card_name.split()).strip()
+               "Korean", "Gem Mint", "Mint", "One Piece", "FOIL", "SP", "ALT ART", "Parallel", "WANTED", "Leader", "SEC", "SR", "Special Card", "Promo"]:
+        card_name_candidate = re.sub(rf'\b{re.escape(kw)}\b', '', card_name_candidate, flags=re.IGNORECASE).strip()
+    card_name = ' '.join(card_name_candidate.split())
+
+    # 若切分完發現後半段是空的(可能是特例)，就 fallback 回 set_name
+    if not card_name:
+        card_name = set_name
 
     return card_name, number, set_code, set_name, grade_tag
 
@@ -382,6 +388,25 @@ def fetch_and_analyze_realtime(item_id, full_name, grading_company, year, curren
         if any(kw in name_lower for kw in kws):
             snkr_variants.append(kws[0])
     is_alt_art = len(snkr_variants) > 0 or any(x in name_lower for x in ["special card", "alt art", "alternative"])
+
+    # 輸出結構化的解析結果至 debug 資料夾，方便核對為什麼會這樣搜
+    meta_json = {
+        "name": card_name,
+        "set_code": set_code,
+        "number": number,
+        "grade": grade_tag,
+        "jp_name": "",
+        "c_name": "",
+        "category": category,
+        "release_info": f"{year} - {set_name}" if set_name else str(year),
+        "illustrator": "Unknown",
+        "market_heat": "N/A",
+        "features": ", ".join(snkr_variants) if snkr_variants else "",
+        "collection_value": "N/A",
+        "competitive_freq": "N/A",
+        "is_alt_art": is_alt_art
+    }
+    mrv._debug_save("step1_meta.json", json.dumps(meta_json, indent=2, ensure_ascii=False))
 
     # ── Step 4: 執行搜尋 ────────────────────────────────────────────────────
     pc_records, pc_url, _ = mrv.search_pricecharting(
