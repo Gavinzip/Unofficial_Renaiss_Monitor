@@ -479,7 +479,16 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
         full_name = item['name']
         
         # 白名單秒收機制
-        is_whitelisted = any(w in full_name.lower() for w in whitelist)
+        # 支援多關鍵字無序匹配 (例如 "pikachu sv promo 001" 拆分為 4 個獨立關鍵字，全部包含即算命中)
+        is_whitelisted = False
+        full_name_lower = full_name.lower()
+        for w in whitelist:
+            if not w.strip(): continue
+            # 檢查這個 whitelist 規則內的所有單字，是否都存在於 full_name 裡面
+            if all(kw in full_name_lower for kw in w.split()):
+                is_whitelisted = True
+                break
+        
         if is_whitelisted:
             print(f"\n🌟 [白名單命中] {full_name}")
             print(f"   => 賣家開價: ${ask:.2f} USD")
