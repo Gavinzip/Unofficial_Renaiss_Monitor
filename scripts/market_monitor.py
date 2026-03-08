@@ -402,8 +402,8 @@ def fetch_and_analyze_realtime(item_id, full_name, grading_company, year, curren
     return (pc_avg, pc_count, pc_url), (snkr_avg_usd, snkr_count, snkr_url)
 
 
-def send_discord_alert(full_name, ask, pc_info, snkr_info, custom_trigger=None):
-    """發送 Discord Webhook 通知 (含雙來源詳細數據)。未設定 Webhook 時將輸出至終端機。"""
+def send_discord_alert(full_name, ask, pc_info, snkr_info, custom_trigger=None, debug_mode=False):
+    """發送 Discord Webhook 通知 (含雙來源詳細數據)。未設定 Webhook 或開啟 debug_mode 時將輸出至終端機。"""
     
     pc_avg, pc_count, pc_url = pc_info if pc_info else (None, 0, None)
     snkr_avg, snkr_count, snkr_url = snkr_info if snkr_info else (None, 0, None)
@@ -429,16 +429,18 @@ def send_discord_alert(full_name, ask, pc_info, snkr_info, custom_trigger=None):
     if snkr_url: desc_links.append(f"[🔗 SNKRDUNK]({snkr_url})")
     desc_str = "\n".join(desc_links) if desc_links else "無可用的參考連結"
 
-    # 如果沒有配置 Webhook，改版輸出至終端機
-    if not DISCORD_WEBHOOK_URL:
+    # 如果沒有配置 Webhook 或開啟了 debug_mode，改版輸出至終端機
+    if not DISCORD_WEBHOOK_URL or debug_mode:
         print("\n" + "="*60)
-        print("🔔 [終端機警報模式 - 未設定 Discord Webhook]")
+        print("🔔 [終端機警報模式]")
         print(f"[{title_text}] {full_name}")
         print(f"開價: ${ask:.2f} USD")
         if pc_avg: print(f"PC 30天均價: ${pc_avg:.2f} USD ({pc_count}筆)")
         if snkr_avg: print(f"SNKR 30天均價: ${snkr_avg:.2f} USD ({snkr_count}筆)")
         print(f"{trigger_text}")
         print("="*60 + "\n")
+        
+    if not DISCORD_WEBHOOK_URL:
         return
 
     payload = {
@@ -525,7 +527,7 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
             print(f"\n🌟 [白名單命中] {full_name}")
             print(f"   => 賣家開價: ${ask:.2f} USD")
             print(f"   🔥 你的追蹤清單命中這張卡，無條件發送通知！\n")
-            send_discord_alert(full_name, ask, None, None, custom_trigger="WHITELIST (白名單無條件命中)")
+            send_discord_alert(full_name, ask, None, None, custom_trigger="WHITELIST (白名單無條件命中)", debug_mode=bool(debug_dir))
             if item_id not in SEEN_IDS or SEEN_IDS[item_id] != float(ask):
                 SEEN_IDS[item_id] = float(ask)
                 save_seen_id(item_id, float(ask))
@@ -561,7 +563,7 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
             print(f"   🔥 觸發來源: {' & '.join(triggered_by)}！(門檻: ${PRICE_THRESHOLD}, 窗口: {WINDOW_DAYS}天) 請立刻注意把這張卡買下來！\n")
             
             # 發送 Discord Webhook
-            send_discord_alert(full_name, ask, pc_res, snkr_res)
+            send_discord_alert(full_name, ask, pc_res, snkr_res, debug_mode=bool(debug_dir))
         
         # 標記為已見過並持久化 (含最新價格)
         if item_id not in SEEN_IDS or SEEN_IDS[item_id] != float(ask):
