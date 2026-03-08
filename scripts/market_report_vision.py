@@ -230,7 +230,7 @@ def _fetch_pc_prices_from_url(product_url, md_content=None, skip_hi_res=False, t
                     })
 
     # Parser 2: 嘗試 Jina 新版的 TSV 格式 (日期獨立一行，標題與價格在下一行)
-    if not records:
+    if not records: 
         current_date = None
         date_regex_tsv = r'^(\d{4}-\d{2}-\d.2}|[A-Z][a-z]{2}\s\d{1,2},\s\d{4})'
         for line in lines:
@@ -748,7 +748,7 @@ def search_snkrdunk(en_name, jp_name, number, set_code, target_grade, is_alt_art
                 
     return records, img_url, resolved_url
 
-async def analyze_image_with_openai(image_path, api_key):
+async def analyze_image_with_openai(image_path, api_key, lang="zh"):
     api_key = api_key.strip()
     url = "https://api.openai.com/v1/chat/completions"
     headers = {
@@ -827,7 +827,7 @@ async def analyze_image_with_openai(image_path, api_key):
             print(f"⚠️ OpenAI 解析失敗: {e}")
     return None
 
-async def analyze_image_with_minimax(image_path, api_key):
+async def analyze_image_with_minimax(image_path, api_key, lang="zh"):
     # 清理 API Key，避免複製貼上時混入隱藏的換行或特殊字元 (\u2028 等) 導致 \u2028 latin-1 編碼錯誤
     api_key = api_key.strip().replace('\u2028', '').replace('\n', '').replace('\r', '')
     # Determine MIME type
@@ -1279,18 +1279,18 @@ async def process_single_image(image_path, api_key, out_dir=None, debug_session_
         
     return final_report
 
-async def process_image_for_candidates(image_path, api_key):
+async def process_image_for_candidates(image_path, api_key, lang="zh"):
     """(Manual Mode) Analyzes image and returns URL candidates from PC and SNKRDUNK."""
     if not os.path.exists(image_path):
         return None, "找不到圖片檔案"
         
     openai_key = os.getenv("OPENAI_API_KEY")
     if openai_key:
-        card_info = await analyze_image_with_openai(image_path, openai_key)
+        card_info = await analyze_image_with_openai(image_path, openai_key, lang=lang)
         if not card_info:
-            card_info = await analyze_image_with_minimax(image_path, api_key)
+            card_info = await analyze_image_with_minimax(image_path, api_key, lang=lang)
     else:
-        card_info = await analyze_image_with_minimax(image_path, api_key)
+        card_info = await analyze_image_with_minimax(image_path, api_key, lang=lang)
     if not card_info:
         return None, "卡片影像辨識失敗"
     

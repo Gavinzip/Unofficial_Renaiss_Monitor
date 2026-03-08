@@ -19,7 +19,7 @@ load_dotenv(dotenv_path)
 # ---------------------------------------------------------
 DEFAULT_DISCORD_WEBHOOK = ""  # 在此填入 Webhook 網址
 DEFAULT_WINDOW_DAYS = 30                        # 價格計算窗口 (天)
-DEFAULT_PRICE_THRESHOLD = 20.0                  # 報警價差門檻 (USD)
+DEFAULT_PRICE_THRESHOLD = -30.0                  # 報警價差門檻 (USD) (預設 -30 代表接受高於均價 30 元以內的提示)
 # ---------------------------------------------------------
 
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL") or DEFAULT_DISCORD_WEBHOOK
