@@ -196,15 +196,36 @@ def parse_renaiss_name(full_name):
     character_name = ""
     number = "0"
     set_code = ""
+    set_name = ""
 
     if m:
         number = m.group(1)
         character_name = m.group(2).strip()
         before_hash = clean_name[:m.start()].strip()
         
+        # Regex to find set code like SV10
         possible_sets = re.findall(r'\b([A-Za-z0-9]{2,}\d[A-Za-z]?)\b', before_hash)
         possible_sets = [s for s in possible_sets if not re.match(r'^(19|20)\d{2}$', s)]
+        
+        # Determine strict Set Code
         set_code = possible_sets[-1].upper() if possible_sets else ""
+        
+        # Extract the pure textual set name
+        set_parts = before_hash
+        # 1. Strip condition texts
+        set_parts = re.sub(r'(?i)\b(Gem Mint|Mint|NM-MT|NM|EX-MT|EX|VG-EX|VG|Good|PR)\b', '', set_parts).strip()
+        # 2. Strip Year
+        set_parts = re.sub(r'\b(19|20)\d{2}\b', '', set_parts).strip()
+        # 3. Strip Game Name and common Languages
+        set_parts = re.sub(r'(?i)\b(Pokemon|One Piece|Japanese|English|Simplified Chinese|Traditional Chinese)\b', '', set_parts).strip()
+        # 4. Strip internal prefixes like Tef En-, Blk En-
+        set_parts = re.sub(r'(?i)\b([A-Za-z0-9]{2,}\s*[a-zA-Z]{2}-)', '', set_parts).strip()
+        # 5. Extract and remove the standard set code to leave just the descriptive text
+        if possible_sets:
+            set_parts = set_parts.replace(possible_sets[-1], "").strip()
+        # 6. Cleanup trailing dashes and double spaces
+        set_parts = re.sub(r'\s+', ' ', set_parts)
+        set_name = set_parts.strip(" -")
     else:
         # fallback for missing #
         op_m = re.search(r'\b([A-Za-z0-9]{2,}\d[A-Za-z]?)[-\s](\d+)\s+(.*)', clean_name)
@@ -221,7 +242,7 @@ def parse_renaiss_name(full_name):
     for kw in variant_kws:
         character_name = re.sub(rf'\b{re.escape(kw)}\b', '', character_name, flags=re.IGNORECASE).strip()
         
-    return character_name, number, set_code, grade_tag
+    return character_name, number, set_code, set_name, grade_tag
 
 
 def clean_price(v):
@@ -260,7 +281,7 @@ def fetch_market_data():
 def fetch_and_analyze_realtime(item_id, full_name, grading_company, year, current_jpy_rate=150.0):
     """現場發動爬蟲並分析價格 (分開回傳 PC 與 SNKR 的數據)"""
     print(f"  🔍 正在對 {full_name} 進行實時市場分析... (匯率: 1 USD = {current_jpy_rate} JPY)")
-    card_name, number, set_code, grade_tag = parse_renaiss_name(full_name)
+    card_name, number, set_code, set_name, grade_tag = parse_renaiss_name(full_name)
     
     # 類別偵測
     category = "Pokemon"
@@ -290,7 +311,8 @@ def fetch_and_analyze_realtime(item_id, full_name, grading_company, year, curren
     # 執行 PC 搜尋與計算
     pc_records, pc_url, _ = mrv.search_pricecharting(
         name=card_name, number=number, set_code=set_code,
-        target_grade=grade_tag, is_alt_art=is_alt_art, category=category
+        target_grade=grade_tag, is_alt_art=is_alt_art, category=category,
+        set_name=set_name
     )
     pc_avg, pc_count = calculate_source_average(pc_records, grade_tag, window_days=WINDOW_DAYS)
     
@@ -298,7 +320,7 @@ def fetch_and_analyze_realtime(item_id, full_name, grading_company, year, curren
     snkr_records, _, snkr_url = mrv.search_snkrdunk(
         en_name=card_name, jp_name="", number=number, set_code=set_code,
         target_grade=grade_tag, is_alt_art=is_alt_art, card_language="JP" if is_jp else "EN",
-        snkr_variant_kws=snkr_variants
+        snkr_variant_kws=snkr_variants, set_name=set_name
     )
     snkr_avg_jpy, snkr_count = calculate_source_average(snkr_records, grade_tag, window_days=WINDOW_DAYS)
     snkr_avg_usd = (snkr_avg_jpy / current_jpy_rate) if snkr_avg_jpy else None

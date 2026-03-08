@@ -324,7 +324,7 @@ def extract_price(price_str):
     except:
         return 0.0
 
-def search_pricecharting(name, number, set_code, target_grade, is_alt_art, category="Pokemon", is_flagship=False, return_candidates=False):
+def search_pricecharting(name, number, set_code, target_grade, is_alt_art, category="Pokemon", is_flagship=False, return_candidates=False, set_name=""):
     # Basic Name cleaning (strip parentheses like "Queen (Flagship Battle Top 8 Prize)")
     name_query = re.sub(r'\(.*?\)', '', name).strip()
     
@@ -355,6 +355,9 @@ def search_pricecharting(name, number, set_code, target_grade, is_alt_art, categ
     if final_set_code:
         queries_to_try.append(f"{name_query} {final_set_code} {number_clean}".replace(" ", "+"))
     
+    if set_name:
+        queries_to_try.append(f"{name_query} {set_name} {number_clean}".replace(" ", "+"))
+        
     queries_to_try.append(f"{name_query} {number_clean}".replace(" ", "+"))
 
     is_one_piece = category.lower() == "one piece"
@@ -514,7 +517,7 @@ def search_pricecharting(name, number, set_code, target_grade, is_alt_art, categ
     
     return records, resolved_url, pc_img_url
 
-def search_snkrdunk(en_name, jp_name, number, set_code, target_grade, is_alt_art=False, card_language="JP", snkr_variant_kws=None, return_candidates=False):
+def search_snkrdunk(en_name, jp_name, number, set_code, target_grade, is_alt_art=False, card_language="JP", snkr_variant_kws=None, return_candidates=False, set_name=""):
     # Strip prefix like "No." (e.g. "No.025" -> "25"), then apply lstrip('0')
     if '-' in number and re.search(r'[A-Z]+\d+-\d+', number):
         number_clean = number.split('-')[-1].lstrip('0')
@@ -549,6 +552,11 @@ def search_snkrdunk(en_name, jp_name, number, set_code, target_grade, is_alt_art
     if not terms_to_try and number_padded != "000":
         if jp_name_query:
             terms_to_try.append(f"{jp_name_query} {number_padded}")
+        
+        # SNKRDUNK fallback with full textual Set Name instead of Set Code
+        if set_name:
+            terms_to_try.append(f"{en_name_query} {set_name} {number_padded}")
+            
         terms_to_try.append(f"{en_name_query} {number_padded}")
         
     if not terms_to_try:
@@ -731,9 +739,8 @@ def search_snkrdunk(en_name, jp_name, number, set_code, target_grade, is_alt_art
         if r_grade == target_grade: matched_records.append(r)
         elif target_grade == "Unknown" and r_grade in ("Ungraded", "裸卡", "A"): matched_records.append(r)
         elif r_grade == snkr_target: matched_records.append(r)
-        elif "A" in r_grade or "裸卡" in r_grade: matched_records.append(r) # SNKRDUNK A grade fallback
 
-    _debug_log(f"SNKRDUNK: 其中符合 '{target_grade}' (或條件允許) 的紀錄有 {len(matched_records)} 筆")
+    _debug_log(f"SNKRDUNK: 其中符合 '{target_grade}' 的紀錄有 {len(matched_records)} 筆")
     for r in matched_records[:5]:
         _debug_log(f"  - [{r.get('date', '')}] {r.get('grade', '')} : ¥{r.get('price', 0)}")
     if len(matched_records) > 5:
