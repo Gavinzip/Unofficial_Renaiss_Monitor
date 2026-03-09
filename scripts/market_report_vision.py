@@ -401,6 +401,14 @@ def search_pricecharting(name, number, set_code, target_grade, is_alt_art, categ
         # 「名稱 slug」用純角色名（去掉括號內的版本描述，如 Leader Parallel / SP Foil 等）
         name_for_slug = re.sub(r'\(.*?\)', '', name).strip()
         name_slug = re.sub(r'[^a-zA-Z0-9]', '-', name_for_slug.lower()).strip('-')
+        
+        # --- Mega / M 別名處理 ---
+        name_slug_alt = ""
+        if name_slug.startswith("m-") and len(name_slug) > 2:
+            name_slug_alt = "mega-" + name_slug[2:]
+        elif name_slug.startswith("mega-") and len(name_slug) > 5:
+            name_slug_alt = "m-" + name_slug[5:]
+        
         # 編號的 0-padded 3位形式，修復 URL slug 內 026 不能被 26 regex 匹配的問題
         number_padded_pc = number_clean.zfill(3)
         # 航海王模式：set_code slug 用來做額外驗證 (e.g. "OP02" -> "op02")
@@ -414,6 +422,16 @@ def search_pricecharting(name, number, set_code, target_grade, is_alt_art, categ
         def _set_match(slug):
             """set_code 匹配：URL slug 含有 set_code 的核心字母數字部分"""
             return bool(set_code_slug) and set_code_slug in slug.replace('-', '')
+            
+        def _name_match(slug):
+            """名稱匹配：考慮 name_slug 及其 mega/m 別名"""
+            if not name_slug:
+                return False
+            if name_slug in slug:
+                return True
+            if name_slug_alt and name_slug_alt in slug:
+                return True
+            return False
 
         matching_both = []   # 名稱 + 編號 (+ set_code for OP)
         matching_name = []   # 只有名稱 (+ set_code for OP)
@@ -426,7 +444,7 @@ def search_pricecharting(name, number, set_code, target_grade, is_alt_art, categ
                 # ── 航海王模式：必須包含 set_code，再依名稱/編號分級 ──
                 has_set = _set_match(u_end)
                 has_num = _num_match(u_end)
-                has_name = bool(name_slug) and name_slug in u_end
+                has_name = _name_match(u_end)
 
                 if has_name and has_num and has_set:
                     matching_both.append(u)
@@ -443,13 +461,16 @@ def search_pricecharting(name, number, set_code, target_grade, is_alt_art, categ
                 else:
                     _debug_log(f"  ❌ [OP] URL 不符合: {u}")
             else:
-                if name_slug and name_slug in u_end and _num_match(u_end):
+                has_name = _name_match(u_end)
+                has_num = _num_match(u_end)
+                
+                if has_name and has_num:
                     matching_both.append(u)
                     _debug_log(f"  ✅ [PKM] 名稱+編號: {u}")
-                elif name_slug and name_slug in u_end:
+                elif has_name:
                     matching_name.append(u)
                     _debug_log(f"  🔶 [PKM] 只符合名稱: {u}")
-                elif _num_match(u_end):
+                elif has_num:
                     matching_number.append(u)
                     _debug_log(f"  🔷 [PKM] 只符合編號 '{number_clean}'/'{number_padded_pc}': {u}")
                 else:

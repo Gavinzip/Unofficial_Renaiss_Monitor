@@ -242,9 +242,13 @@ def calculate_true_average_with_window(pc_records, snkr_records, target_grade):
     snkr_avg, snkr_count = calculate_source_average(snkr_records, target_grade, window_days=WINDOW_DAYS)
     return (pc_avg, pc_count), (snkr_avg, snkr_count)
 def extract_set_code_from_name(full_name):
-    """從 full_name 提取 Set Code 短碼（如 S8b, sv2a, OP02, sv1s, SV5K）
+    """從 full_name 提取 Set Code 短碼（如 S8b, sv2a, OP02, sv1s, SV5K, SV-P）
     優先順序：最長/最精確的匹配優先
     """
+    # 寶可夢 Promo 系列 (優先匹配，因為包含 dash)：SV-P, S-P, SM-P, XY-P 等
+    m = re.search(r'\b(SV-P|S-P|SM-P|XY-P|BW-P|DP-P|L-P|ADV-P|SV-G|S8a-G)\b', full_name, re.IGNORECASE)
+    if m:
+        return m.group(1).upper()
     # 航海王格式：OP+數字, ST+數字, EB+數字 (必須在寶可夢之前，避免被 SV 吃掉)
     m = re.search(r'\b(OP\d+|ST\d+|EB\d+)\b', full_name, re.IGNORECASE)
     if m:
@@ -406,7 +410,9 @@ def fetch_and_analyze_realtime(item_id, full_name, grading_company, year, curren
         set_name = attr_set_name
         # 同時嘗試從 set_name 推斷 set_code（如果 regex 沒抓到的話）
         if not set_code:
-            set_code = extract_set_code_from_name(attr_set_name)
+            extracted = extract_set_code_from_name(attr_set_name)
+            if extracted:
+                set_code = extracted
         print(f"    📋 attributes.set 覆蓋 → set_name={set_name}, set_code={set_code or '(從名稱提取)'}")
     if attr_language:
         is_jp = "japanese" in attr_language.lower()

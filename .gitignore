@@ -9,6 +9,7 @@ __pycache__/
 # Debug output directories
 debug/
 debug_sniping_mode/
+scripts/debug_specific_cards/
 
 # Runtime state
 scripts/seen_ids.txt
