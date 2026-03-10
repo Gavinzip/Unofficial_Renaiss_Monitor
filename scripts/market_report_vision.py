@@ -394,8 +394,8 @@ def extract_price(price_str):
         return 0.0
 
 def search_pricecharting(name, number, set_code, target_grade, is_alt_art, category="Pokemon", is_flagship=False, return_candidates=False, set_name=""):
-    # Basic Name cleaning (strip parentheses like "Queen (Flagship Battle Top 8 Prize)")
-    name_query = re.sub(r'\(.*?\)', '', name).strip()
+    # Basic Name cleaning (strip parentheses and normalize hyphens to spaces)
+    name_query = re.sub(r'\(.*?\)', '', name).replace('-', ' ').strip()
     
     # Improve number extraction for One Piece (ST04-005 -> 005)
     # If the number contains a dash and follows OP format, take the part after the dash
@@ -629,8 +629,9 @@ def search_snkrdunk(en_name, jp_name, number, set_code, target_grade, is_alt_art
     if not number_clean: number_clean = '0'
     number_padded = number_clean.zfill(3)
 
-    en_name_query = re.sub(r'\(.*?\)', '', en_name).strip()
-    jp_name_query = re.sub(r'\(.*?\)', '', jp_name).strip() if jp_name else ""
+    # Normalize hyphens to spaces in names for better search matching (e.g. Ex-Holo -> Ex Holo)
+    en_name_query = re.sub(r'\(.*?\)', '', en_name).replace('-', ' ').strip()
+    jp_name_query = re.sub(r'\(.*?\)', '', jp_name).replace('-', ' ').strip() if jp_name else ""
 
     terms_to_try = []
     
