@@ -1,18 +1,75 @@
-🛠️ Debug 模式已開啟，詳細搜尋日誌將儲存至: debug/startup_test19
+🛠️ Debug 模式已開啟，詳細搜尋日誌將儲存至: debug/startup_test22
 啟動 Renaiss 極致「全實時」監控機器人 (現場抓取分析模式)...
 ⚙️  當前設定: 價差門檻=$-30.0 USD | 時間窗口=30 天
 🔔  Discord 通知: 未開啟 (請設定 DISCORD_WEBHOOK_URL)
 📡 正在初始化市場狀態...
-📂 已從檔案載入 0 筆 ID 記錄與 0 筆報警歷史
+📂 已從檔案載入 0 筆 ID 記錄與 6 筆報警歷史
 ✅ 已同步目前市場 25 筆掛單 (新增 25 筆至持久化)
 
-[09:03:32] 🧪 測試模式：僅檢查前 5 筆掛單...
+[09:46:08] 🧪 測試模式：僅檢查前 5 筆掛單...
+  🔍 正在對 PSA 10 Gem Mint 2022 Pokemon Japanese Sv Promo #001 Pikachu 進行實時市場分析... (匯率: 1 USD = 158.122124 JPY)
+    📋 attributes.card_number 覆蓋 → 001
+    📋 attributes.set 覆蓋 → set_name=Pokemon Japanese Sv Promo, set_code=SV-P
+    📋 attributes.language 覆蓋 → is_jp=True
+    🔑 搜尋參數 → name='Pikachu' | number='001' | set_code='SV-P' | grade=PSA 10 | lang=JP
+  💾 [DEBUG] 存檔: debug/startup_test22/01_PSA_10_Gem_Mint_2022_Pokemon_Japanese_Sv_Promo__00/step1_meta.json
+  📍 [DEBUG] PriceCharting: 類別=Pokemon (寶可夢模式)，共 3 種查詢方案: ['Pikachu+SV-P+1', 'Pikachu+Pokemon+Japanese+Sv+Promo+1', 'Pikachu+1']
+  📍 [DEBUG] PriceCharting Step 1: 查詢='Pikachu+SV-P+1'  URL=https://www.pricecharting.com/search-products?q=Pikachu+SV-P+1&type=prices
+Fetching: https://www.pricecharting.com/search-products?q=Pikachu+SV-P+1&type=prices...
+  ✅ [PriceCharting Step 1] query='Pikachu+SV-P+1'
+       URL  : https://www.pricecharting.com/search-products?q=Pikachu+SV-P+1&type=prices
+       狀態 : OK  —  搜尋頁面有多筆結果，繼續解析
+  📍 [DEBUG] PriceCharting: 從搜尋頁面提取到 3 個候選 URL
+  📍 [DEBUG]   ✅ [PKM] 名稱+編號: https://www.pricecharting.com/game/pokemon-japanese-promo/pikachu-1sv-p
+  📍 [DEBUG]   ✅ [PKM] 名稱+編號: https://www.pricecharting.com/game/pokemon-chinese-promo/pikachu-1sv-p
+  📍 [DEBUG]   ✅ [PKM] 名稱+編號: https://www.pricecharting.com/game/pokemon-chinese-promo/pikachu-gym-1sv-p
+  ✅ [PriceCharting Step 2] query="is_alt_art=False, name_slug='pikachu', number='1'"
+       URL  : https://www.pricecharting.com/search-products?q=Pikachu+SV-P+1&type=prices
+       狀態 : OK  —  Default (First match)
+       候選 URLs (3 筆):
+         • https://www.pricecharting.com/game/pokemon-japanese-promo/pikachu-1sv-p
+         • https://www.pricecharting.com/game/pokemon-chinese-promo/pikachu-1sv-p
+         • https://www.pricecharting.com/game/pokemon-chinese-promo/pikachu-gym-1sv-p
+       選定 URL : https://www.pricecharting.com/game/pokemon-japanese-promo/pikachu-1sv-p
+DEBUG: Selected PC product URL: https://www.pricecharting.com/game/pokemon-japanese-promo/pikachu-1sv-p (Default (First match))
+Fetching: https://www.pricecharting.com/game/pokemon-japanese-promo/pikachu-1sv-p...
+DEBUG: Parsing PriceCharting page: https://www.pricecharting.com/game/pokemon-japanese-promo/pikachu-1sv-p (length: 220031)
+  📍 [DEBUG] PriceCharting: 成功提取 283 筆價格紀錄 (包含全等級)
+  📍 [DEBUG] PriceCharting: 其中符合 'PSA 10' 的紀錄有 146 筆
+  📍 [DEBUG]   - [2026-03-09] PSA 10 : $80.0
+  📍 [DEBUG]   - [2026-03-08] PSA 10 : $84.0
+  📍 [DEBUG]   - [2026-03-08] PSA 10 : $84.0
+  📍 [DEBUG]   - [2026-03-08] PSA 10 : $84.0
+  📍 [DEBUG]   - [2026-03-08] PSA 10 : $84.0
+  📍 [DEBUG]   ... (還有 141 筆不顯示)
+  📍 [DEBUG] SNKRDUNK: 共 3 種查詢方案: ['Pikachu SV-P 001', 'Pikachu 001', 'Pikachu SV-P']
+  📍 [DEBUG] SNKRDUNK Step 1: 查詢='Pikachu SV-P 001'  URL=https://snkrdunk.com/en/v1/search?keyword=Pikachu+SV-P+001&perPage=40&page=1
+  📍 [DEBUG] SNKRDUNK Step 1: API 原始匹配 1 筆
+  📍 [DEBUG]   ✅ 符合編號 '001': [104784] Pikachu: PROMO [001/SV-P](SV-P Promotional cards)
+  📍 [DEBUG]   🌐 語言過濾選中日文版: [104784]
+  ✅ [SNKRDUNK Step 1] query='Pikachu SV-P 001'
+       URL  : https://snkrdunk.com/en/v1/search?keyword=Pikachu+SV-P+001&perPage=40&page=1
+       狀態 : OK  —  Default (First match) + Language(JP)
+       候選 URLs (1 筆):
+         • https://snkrdunk.com/apparels/104784 — Pikachu: PROMO [001/SV-P](SV-P Promotional cards)
+       選定 URL : https://snkrdunk.com/apparels/104784
+Found SNKRDUNK Product ID: 104784
+  📍 [DEBUG] SNKRDUNK: 成功提取 100 筆價格紀錄 (包含全等級)
+  📍 [DEBUG] SNKRDUNK: 其中符合 'PSA 10' 的紀錄有 84 筆
+  📍 [DEBUG]   - [2026/03/09] PSA 10 : ¥13599
+  📍 [DEBUG]   - [2026/03/09] PSA 10 : ¥13599
+  📍 [DEBUG]   - [2026/03/09] PSA 10 : ¥13757
+  📍 [DEBUG]   - [2026/03/09] PSA 10 : ¥13599
+  📍 [DEBUG]   - [2026/03/09] PSA 10 : ¥13599
+  📍 [DEBUG]   ... (還有 79 筆不顯示)
+  [掃描中] PSA 10 Gem Mint 2022 Pokemon Japanese Sv Promo #001 Pikachu | Ask: $95.88 | PC(30d): $81.99 / SNKR(30d): $86.69
+  [警報冷卻中] PSA 10 Gem Mint 2022 Pokemon Japanese Sv Promo #001 Pikachu 已滿足撿漏條件，但 1 小時內已發過通知且未顯著跌價，不重覆觸發。
   🔍 正在對 PSA 10 Gem Mint 2023 One Piece Japanese Promos #001 Monkey D. Luffy 進行實時市場分析... (匯率: 1 USD = 158.122124 JPY)
     📋 attributes.card_number 覆蓋 → 001
     📋 attributes.set 覆蓋 → set_name=One Piece Japanese Promos, set_code=(從名稱提取)
     📋 attributes.language 覆蓋 → is_jp=True
     🔑 搜尋參數 → name='Monkey D. Luffy' | number='001' | set_code='' | grade=PSA 10 | lang=JP
-  💾 [DEBUG] 存檔: debug/startup_test19/01_PSA_10_Gem_Mint_2023_One_Piece_Japanese_Promos__00/step1_meta.json
+  💾 [DEBUG] 存檔: debug/startup_test22/02_PSA_10_Gem_Mint_2023_One_Piece_Japanese_Promos__00/step1_meta.json
   📍 [DEBUG] PriceCharting: 類別=One Piece (航海王模式)，共 2 種查詢方案: ['Monkey+D.+Luffy+One+Piece+Japanese+Promos+1', 'Monkey+D.+Luffy+1']
   📍 [DEBUG] PriceCharting Step 1: 查詢='Monkey+D.+Luffy+One+Piece+Japanese+Promos+1'  URL=https://www.pricecharting.com/search-products?q=Monkey+D.+Luffy+One+Piece+Japanese+Promos+1&type=prices
 Fetching: https://www.pricecharting.com/search-products?q=Monkey+D.+Luffy+One+Piece+Japanese+Promos+1&type=prices...
@@ -321,7 +378,7 @@ Found SNKRDUNK Product ID: 760435
     📋 attributes.set 覆蓋 → set_name=Pokemon Japanese Sv1v-Violet Ex, set_code=Sv1v
     📋 attributes.language 覆蓋 → is_jp=True
     🔑 搜尋參數 → name='Miriam' | number='105' | set_code='Sv1v' | grade=PSA 9 | lang=JP
-  💾 [DEBUG] 存檔: debug/startup_test19/02_PSA_9_Mint_2023_Pokemon_Japanese_Sv1v_Violet_Ex__1/step1_meta.json
+  💾 [DEBUG] 存檔: debug/startup_test22/03_PSA_9_Mint_2023_Pokemon_Japanese_Sv1v_Violet_Ex__1/step1_meta.json
   📍 [DEBUG] PriceCharting: 類別=Pokemon (寶可夢模式)，共 3 種查詢方案: ['Miriam+Sv1v+105', 'Miriam+Pokemon+Japanese+Sv1v-Violet+Ex+105', 'Miriam+105']
   📍 [DEBUG] PriceCharting Step 1: 查詢='Miriam+Sv1v+105'  URL=https://www.pricecharting.com/search-products?q=Miriam+Sv1v+105&type=prices
 Fetching: https://www.pricecharting.com/search-products?q=Miriam+Sv1v+105&type=prices...
@@ -336,14 +393,14 @@ DEBUG: Parsing PriceCharting page: https://www.pricecharting.com/search-products
   📍 [DEBUG] PriceCharting: 成功提取 157 筆價格紀錄 (包含全等級)
   📍 [DEBUG] PriceCharting: 其中符合 'PSA 9' 的紀錄有 1 筆
   📍 [DEBUG]   - [2026-01-26] PSA 9 : $75.0
-  📍 [DEBUG] SNKRDUNK: 共 3 種查詢方案: ['Miriam 105', 'Miriam Sv1v 105', 'Miriam Sv1v']
-  📍 [DEBUG] SNKRDUNK Step 1: 查詢='Miriam 105'  URL=https://snkrdunk.com/en/v1/search?keyword=Miriam+105&perPage=40&page=1
+  📍 [DEBUG] SNKRDUNK: 共 3 種查詢方案: ['Miriam Sv1v 105', 'Miriam 105', 'Miriam Sv1v']
+  📍 [DEBUG] SNKRDUNK Step 1: 查詢='Miriam Sv1v 105'  URL=https://snkrdunk.com/en/v1/search?keyword=Miriam+Sv1v+105&perPage=40&page=1
   📍 [DEBUG] SNKRDUNK Step 1: API 原始匹配 2 筆
   📍 [DEBUG]   ✅ 符合編號 '105': [110938] Miriam SAR[SV1V 105/078](Scarlet & Violet Expansion Pack "Violet ex")
   📍 [DEBUG]   ❌ 不含編號 '105': [486446] Miriam SIR [SVI EN 251/198](Scarlet & Violet)
   📍 [DEBUG]   🌐 語言過濾選中日文版: [110938]
-  ✅ [SNKRDUNK Step 1] query='Miriam 105'
-       URL  : https://snkrdunk.com/en/v1/search?keyword=Miriam+105&perPage=40&page=1
+  ✅ [SNKRDUNK Step 1] query='Miriam Sv1v 105'
+       URL  : https://snkrdunk.com/en/v1/search?keyword=Miriam+Sv1v+105&perPage=40&page=1
        狀態 : OK  —  Default (First match) + Language(JP)
        候選 URLs (1 筆):
          • https://snkrdunk.com/apparels/110938 — Miriam SAR[SV1V 105/078](Scarlet & Violet Expansion Pack "Violet ex")
@@ -358,26 +415,13 @@ Found SNKRDUNK Product ID: 110938
   📍 [DEBUG]   - [2026/02/19] PSA 9 : ¥13282
   📍 [DEBUG]   ... (還有 3 筆不顯示)
   [掃描中] PSA 9 Mint 2023 Pokemon Japanese Sv1v-Violet Ex #105 Miriam | Ask: $91.80 | SNKR(30d): $80.72
-
-🚨 [真正撿漏警報] PSA 9 Mint 2023 Pokemon Japanese Sv1v-Violet Ex #105 Miriam
-   => 賣家開價: $91.80 USD
-   🔥 觸發來源: SNKR($-11.08)！(門檻: $-30.0, 窗口: 30天) 請立刻注意把這張卡買下來！
-
-
-============================================================
-🔔 [終端機警報模式]
-[發現套利機會！] PSA 9 Mint 2023 Pokemon Japanese Sv1v-Violet Ex #105 Miriam
-開價: $91.80 USD
-SNKR 30天均價: $80.72 USD (8筆)
-觸發來源: 價格判定 (門檻: $-30.0)
-============================================================
-
+  [警報冷卻中] PSA 9 Mint 2023 Pokemon Japanese Sv1v-Violet Ex #105 Miriam 已滿足撿漏條件，但 1 小時內已發過通知且未顯著跌價，不重覆觸發。
   🔍 正在對 PSA 10 Gem Mint 2021 Pokemon Japanese Promo Card Pack 25th Anniversary Edition #015 Gardevoir Ex-Holo 進行實時市場分析... (匯率: 1 USD = 158.122124 JPY)
     📋 attributes.card_number 覆蓋 → 015
     📋 attributes.set 覆蓋 → set_name=Pokemon Japanese Promo Card Pack 25th Anniversary Edition, set_code=(從名稱提取)
     📋 attributes.language 覆蓋 → is_jp=True
     🔑 搜尋參數 → name='Gardevoir Ex-Holo' | number='015' | set_code='' | grade=PSA 10 | lang=JP
-  💾 [DEBUG] 存檔: debug/startup_test19/03_PSA_10_Gem_Mint_2021_Pokemon_Japanese_Promo_Card_P/step1_meta.json
+  💾 [DEBUG] 存檔: debug/startup_test22/04_PSA_10_Gem_Mint_2021_Pokemon_Japanese_Promo_Card_P/step1_meta.json
   📍 [DEBUG] PriceCharting: 類別=Pokemon (寶可夢模式)，共 2 種查詢方案: ['Gardevoir+Ex-Holo+Pokemon+Japanese+Promo+Card+Pack+25th+Anniversary+Edition+15', 'Gardevoir+Ex-Holo+15']
   📍 [DEBUG] PriceCharting Step 1: 查詢='Gardevoir+Ex-Holo+Pokemon+Japanese+Promo+Card+Pack+25th+Anniversary+Edition+15'  URL=https://www.pricecharting.com/search-products?q=Gardevoir+Ex-Holo+Pokemon+Japanese+Promo+Card+Pack+25th+Anniversary+Edition+15&type=prices
 Fetching: https://www.pricecharting.com/search-products?q=Gardevoir+Ex-Holo+Pokemon+Japanese+Promo+Card+Pack+25th+Anniversary+Edition+15&type=prices...
@@ -608,26 +652,13 @@ DEBUG: Parsing PriceCharting page: https://www.pricecharting.com/game/pokemon-ja
        URL  : https://snkrdunk.com/en/v1/search?keyword=Gardevoir+Ex-Holo+015&perPage=40&page=1
        狀態 : NO_RESULTS  —  搜尋頁面找不到任何商品連結，嘗試下一個查詢
   [掃描中] PSA 10 Gem Mint 2021 Pokemon Japanese Promo Card Pack 25th Anniversary Edition #015 Gardevoir Ex-Holo | Ask: $66.30 | PC(30d): $54.33
-
-🚨 [真正撿漏警報] PSA 10 Gem Mint 2021 Pokemon Japanese Promo Card Pack 25th Anniversary Edition #015 Gardevoir Ex-Holo
-   => 賣家開價: $66.30 USD
-   🔥 觸發來源: PC($-11.97)！(門檻: $-30.0, 窗口: 30天) 請立刻注意把這張卡買下來！
-
-
-============================================================
-🔔 [終端機警報模式]
-[發現套利機會！] PSA 10 Gem Mint 2021 Pokemon Japanese Promo Card Pack 25th Anniversary Edition #015 Gardevoir Ex-Holo
-開價: $66.30 USD
-PC 30天均價: $54.33 USD (3筆)
-觸發來源: 價格判定 (門檻: $-30.0)
-============================================================
-
+  [警報冷卻中] PSA 10 Gem Mint 2021 Pokemon Japanese Promo Card Pack 25th Anniversary Edition #015 Gardevoir Ex-Holo 已滿足撿漏條件，但 1 小時內已發過通知且未顯著跌價，不重覆觸發。
   🔍 正在對 PSA 10 Gem Mint 2021 Pokemon Japanese Promo Card Pack 25th Anniversary Edition #023 Xerneas Ex 進行實時市場分析... (匯率: 1 USD = 158.122124 JPY)
     📋 attributes.card_number 覆蓋 → 023
     📋 attributes.set 覆蓋 → set_name=Pokemon Japanese Promo Card Pack 25th Anniversary Edition, set_code=(從名稱提取)
     📋 attributes.language 覆蓋 → is_jp=True
     🔑 搜尋參數 → name='Xerneas Ex' | number='023' | set_code='' | grade=PSA 10 | lang=JP
-  💾 [DEBUG] 存檔: debug/startup_test19/04_PSA_10_Gem_Mint_2021_Pokemon_Japanese_Promo_Card_P/step1_meta.json
+  💾 [DEBUG] 存檔: debug/startup_test22/05_PSA_10_Gem_Mint_2021_Pokemon_Japanese_Promo_Card_P/step1_meta.json
   📍 [DEBUG] PriceCharting: 類別=Pokemon (寶可夢模式)，共 2 種查詢方案: ['Xerneas+Ex+Pokemon+Japanese+Promo+Card+Pack+25th+Anniversary+Edition+23', 'Xerneas+Ex+23']
   📍 [DEBUG] PriceCharting Step 1: 查詢='Xerneas+Ex+Pokemon+Japanese+Promo+Card+Pack+25th+Anniversary+Edition+23'  URL=https://www.pricecharting.com/search-products?q=Xerneas+Ex+Pokemon+Japanese+Promo+Card+Pack+25th+Anniversary+Edition+23&type=prices
 Fetching: https://www.pricecharting.com/search-products?q=Xerneas+Ex+Pokemon+Japanese+Promo+Card+Pack+25th+Anniversary+Edition+23&type=prices...
@@ -768,708 +799,3 @@ Fetching: https://www.pricecharting.com/search-products?q=Xerneas+Ex+Pokemon+Jap
          • https://www.pricecharting.com/game/pokemon-japanese-25th-anniversary-promo/team-magma%27s-groudon-11
          • https://www.pricecharting.com/game/pokemon-japanese-25th-anniversary-promo/gardevoir-ex-15
          • https://www.pricecharting.com/game/pokemon-japanese-20th-anniversary/dragonite-ex-1st-edition-98
-         • https://www.pricecharting.com/game/one-piece-japanese-promo/premium-card-collection-25th-anniversary
-         • https://www.pricecharting.com/game/pokemon-japanese-25th-anniversary-promo/cleffa-9
-         • https://www.pricecharting.com/game/pokemon-promo/xerneas-ex-179
-         • https://www.pricecharting.com/game/pokemon-japanese-25th-anniversary-promo/booster-pack
-         • https://www.pricecharting.com/game/pokemon-xy/xerneas-ex-97
-         • https://www.pricecharting.com/game/pokemon-japanese-20th-anniversary/m-venusaur-ex-1st-edition-2
-         • https://www.pricecharting.com/game/pokemon-japanese-25th-anniversary-promo/luxray-lvx-17
-         • https://www.pricecharting.com/game/pokemon-japanese-collection-x/xerneas-ex-63
-         • https://www.pricecharting.com/game/pokemon-japanese-20th-anniversary/mewtwo-ex-1st-edition-95
-         • https://www.pricecharting.com/game/pokemon-japanese-25th-anniversary-collection/xerneas-12
-         • https://www.pricecharting.com/game/pokemon-japanese-20th-anniversary/m-venusaur-ex-1st-edition-89
-         • https://www.pricecharting.com/game/pokemon-japanese-25th-anniversary-promo/tapu-lele-gx-25
-         • https://www.pricecharting.com/game/pokemon-japanese-25th-anniversary-promo/imposter-professor-oak-4
-         • https://www.pricecharting.com/game/pokemon-japanese-20th-anniversary/charizard-ex-1st-edition-12
-         • https://www.pricecharting.com/game/pokemon-japanese-25th-anniversary-promo/xerneas-ex-23
-         • https://www.pricecharting.com/game/pokemon-japanese-20th-anniversary/blastoise-ex-1st-edition-21
-         • https://www.pricecharting.com/game/pokemon-promo/ampharos-ex-prize-pack-16
-         • https://www.pricecharting.com/game/pokemon-japanese-25th-anniversary-promo/donphan-19
-         • https://www.pricecharting.com/game/one-piece-japanese-extra-booster-anime-25th-collection/sanji-promotion-pack-ex-eb02-054
-         • https://www.pricecharting.com/game/pokemon-japanese-25th-anniversary-promo/rocket%27s-admin-13
-         • https://www.pricecharting.com/game/pokemon-japanese-25th-anniversary-collection/booster-pack
-         • https://www.pricecharting.com/game/pokemon-japanese-20th-anniversary/dragonite-ex-1st-edition-70
-         • https://www.pricecharting.com/game/pokemon-japanese-20th-anniversary/m-pidgeot-ex-1st-edition-97
-         • https://www.pricecharting.com/game/pokemon-japanese-ex-ruby-&-sapphire-expansion-pack/electabuzz-ex-23
-         • https://www.pricecharting.com/game/pokemon-japanese-dream-shine-collection/xerneas-ex-38
-         • https://www.pricecharting.com/game/pokemon-japanese-20th-anniversary/mewtwo-ex-1st-edition-50
-         • https://www.pricecharting.com/game/pokemon-promo/xerneas-xy05
-         • https://www.pricecharting.com/game/pokemon-japanese-25th-anniversary-promo/claydol-16
-         • https://www.pricecharting.com/game/pokemon-japanese-20th-anniversary/m-pidgeot-ex-1st-edition-63
-         • https://www.pricecharting.com/game/pokemon-promo/xerneas-xy31
-         • https://www.pricecharting.com/game/pokemon-25th-anniversary-creatures-deck/mew-ex-2005
-         • https://www.pricecharting.com/game/pokemon-25th-anniversary-creatures-deck/m-mewtwo-ex-2015
-         • https://www.pricecharting.com/game/pokemon-japanese-20th-anniversary/pidgeot-ex-1st-edition-96
-         • https://www.pricecharting.com/game/pokemon-japanese-miracle-of-the-desert/raichu-ex-1st-edition-23
-         • https://www.pricecharting.com/game/pokemon-japanese-20th-anniversary/venusaur-ex-1st-edition-1
-         • https://www.pricecharting.com/game/pokemon-japanese-promo/scovillain-ex-gym-pack-89sv-p
-         • https://www.pricecharting.com/game/pokemon-japanese-ex-ruby-&-sapphire-expansion-pack/mewtwo-ex-1st-edition-26
-         • https://www.pricecharting.com/game/pokemon-japanese-premium-champion-pack/xerneas-89
-         • https://www.pricecharting.com/game/pokemon-japanese-fever-burst-fighter/xerneas-break-1st-edition-42
-         • https://www.pricecharting.com/game/pokemon-japanese-world-champions-pack/claydol-ex-1st-edition-37
-         • https://www.pricecharting.com/game/pokemon-japanese-world-champions-pack/metagross-ex-1st-edition-68
-         • https://www.pricecharting.com/game/pokemon-xy/xerneas-ex-reverse-holo-97
-         • https://www.pricecharting.com/game/pokemon-japanese-world-champions-pack/absol-ex-1st-edition-60
-         • https://www.pricecharting.com/game/pokemon-japanese-ex-ruby-&-sapphire-expansion-pack/electabuzz-ex-1st-edition-23
-         • https://www.pricecharting.com/game/pokemon-japanese-world-champions-pack/skarmory-ex-1st-edition-61
-         • https://www.pricecharting.com/game/pokemon-japanese-promo/xerneas-movie-commemoration-51xy-p
-         • https://www.pricecharting.com/game/pokemon-japanese-world-champions-pack/shiftry-ex-1st-edition-56
-         • https://www.pricecharting.com/game/pokemon-japanese-fever-burst-fighter/xerneas-1st-edition-41
-         • https://www.pricecharting.com/game/pokemon-japanese-blue-shock/xerneas-1st-edition-44
-         • https://www.pricecharting.com/game/pokemon-japanese-collection-x/xerneas-ex-1st-edition-63
-         • https://www.pricecharting.com/game/pokemon-japanese-collection-x/xerneas-ex-44
-         • https://www.pricecharting.com/game/pokemon-japanese-starter-deck-generations/xerneas-ex-52
-         • https://www.pricecharting.com/game/pokemon-25th-anniversary-creatures-deck/mewtwo-ex-2011
-         • https://www.pricecharting.com/game/pokemon-japanese-miracle-crystal/swampert-ex-1st-edition-23
-         • https://www.pricecharting.com/game/pokemon-japanese-premium-champion-pack/xerneas-ex-90
-         • https://www.pricecharting.com/game/pokemon-promo/azure-legends-tin-xerneas-ex
-         • https://www.pricecharting.com/game/pokemon-japanese-world-champions-pack/walrein-ex-1st-edition-22
-         • https://www.pricecharting.com/game/pokemon-japanese-20th-anniversary/pidgeot-ex-1st-edition-62
-         • https://www.pricecharting.com/game/pokemon-promo/azure-legends-tin-xerneas-ex-international
-         • https://www.pricecharting.com/game/pokemon-japanese-ex-ruby-&-sapphire-expansion-pack/chansey-ex-1st-edition-36
-         • https://www.pricecharting.com/game/pokemon-japanese-world-champions-pack/flygon-ex-1st-edition-75
-         • https://www.pricecharting.com/game/pokemon-japanese-ex-ruby-&-sapphire-expansion-pack/hitmonchan-ex-1st-edition-30
-         • https://www.pricecharting.com/game/pokemon-japanese-offense-and-defense-of-the-furthest-ends/latios-ex-1st-edition-23
-         • https://www.pricecharting.com/game/pokemon-japanese-world-champions-pack/salamence-ex-1st-edition-81
-         • https://www.pricecharting.com/game/pokemon-japanese-ex-ruby-&-sapphire-expansion-pack/sneasel-ex-1st-edition-46
-         • https://www.pricecharting.com/game/pokemon-japanese-collection-x/xerneas-ex-1st-edition-44
-         • https://www.pricecharting.com/game/pokemon-promo/cyclizar-ex-prize-pack-18
-         • https://www.pricecharting.com/game/pokemon-japanese-m-master-deck-build-box/xerneas-ex-23
-         • https://www.pricecharting.com/game/pokemon-japanese-stellar-tera-starter-set-sylveon-ex/xerneas-6
-         • https://www.pricecharting.com/game/pokemon-xy/xerneas-ex-jumbo-97
-         • https://www.pricecharting.com/game/pokemon-promo/xerneas-jumbo-5
-       選定 URL : https://www.pricecharting.com/game/pokemon-japanese-25th-anniversary-promo/xerneas-ex-23
-DEBUG: Selected PC product URL: https://www.pricecharting.com/game/pokemon-japanese-25th-anniversary-promo/xerneas-ex-23 (Default (First match))
-Fetching: https://www.pricecharting.com/game/pokemon-japanese-25th-anniversary-promo/xerneas-ex-23...
-DEBUG: Parsing PriceCharting page: https://www.pricecharting.com/game/pokemon-japanese-25th-anniversary-promo/xerneas-ex-23 (length: 85446)
-  📍 [DEBUG] PriceCharting: 成功提取 80 筆價格紀錄 (包含全等級)
-  📍 [DEBUG] PriceCharting: 其中符合 'PSA 10' 的紀錄有 38 筆
-  📍 [DEBUG]   - [2026-03-05] PSA 10 : $46.0
-  📍 [DEBUG]   - [2026-02-28] PSA 10 : $46.0
-  📍 [DEBUG]   - [2026-02-27] PSA 10 : $46.0
-  📍 [DEBUG]   - [2026-02-15] PSA 10 : $55.0
-  📍 [DEBUG]   - [2026-01-17] PSA 10 : $85.0
-  📍 [DEBUG]   ... (還有 33 筆不顯示)
-  📍 [DEBUG] SNKRDUNK: 共 1 種查詢方案: ['Xerneas Ex 023']
-  📍 [DEBUG] SNKRDUNK Step 1: 查詢='Xerneas Ex 023'  URL=https://snkrdunk.com/en/v1/search?keyword=Xerneas+Ex+023&perPage=40&page=1
-  📍 [DEBUG] SNKRDUNK Step 1: API 原始匹配 24 筆
-  📍 [DEBUG]   ✅ 符合編號 '023': [286969] Xerneas ex P [S8a-P 023](Promo Card Pack 25th Anniversary Edition)
-  📍 [DEBUG]   ✅ 符合編號 '023': [108435] Xerneas EX[XYC 012/023](Super Legend Set 60 "Zeruneasu EX Iberutaru EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380917] Yveltal EX [XYC 005/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [381075] Xerneas EX [MMB 023/049](Mega Master Deck Build Box "Power Style")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380933] Double Colorless Energy [XYC 023/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380932] Fairy Garden [XYC 022/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380931] Shadow Circle [XYC 021/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380930] Professor Sycamore [XYC 020/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380929] Tierno [XYC 019/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380928] Shauna [XYC 018/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380927] Roller Skates [XYC 017/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380926] Red Card [XYC 016/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380925] Pokemon Catcher [XYC 015/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380924] Switch [XYC 014/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380923] Ultra Ball [XYC 013/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380922] Xerneas EX [XYC 011/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380921] Slurpuff [XYC 010/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380920] Swirlix [XYC 009/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380919] Aromatisse [XYC 008/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380918] Spritzee [XYC 007/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380916] Malamar [XYC 004/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380915] Inkay [XYC 003/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380914] Pangoro [XYC 002/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   ✅ 符合編號 '023': [380913] Pancham [XYC 001/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-  📍 [DEBUG]   🌐 語言過濾選中日文版: [286969]
-  ✅ [SNKRDUNK Step 1] query='Xerneas Ex 023'
-       URL  : https://snkrdunk.com/en/v1/search?keyword=Xerneas+Ex+023&perPage=40&page=1
-       狀態 : OK  —  Default (First match) + Language(JP)
-       候選 URLs (24 筆):
-         • https://snkrdunk.com/apparels/286969 — Xerneas ex P [S8a-P 023](Promo Card Pack 25th Anniversary Edition)
-         • https://snkrdunk.com/apparels/108435 — Xerneas EX[XYC 012/023](Super Legend Set 60 "Zeruneasu EX Iberutaru EX")
-         • https://snkrdunk.com/apparels/380917 — Yveltal EX [XYC 005/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/381075 — Xerneas EX [MMB 023/049](Mega Master Deck Build Box "Power Style")
-         • https://snkrdunk.com/apparels/380933 — Double Colorless Energy [XYC 023/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/380932 — Fairy Garden [XYC 022/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/380931 — Shadow Circle [XYC 021/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/380930 — Professor Sycamore [XYC 020/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/380929 — Tierno [XYC 019/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/380928 — Shauna [XYC 018/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/380927 — Roller Skates [XYC 017/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/380926 — Red Card [XYC 016/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/380925 — Pokemon Catcher [XYC 015/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/380924 — Switch [XYC 014/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/380923 — Ultra Ball [XYC 013/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/380922 — Xerneas EX [XYC 011/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/380921 — Slurpuff [XYC 010/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/380920 — Swirlix [XYC 009/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/380919 — Aromatisse [XYC 008/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/380918 — Spritzee [XYC 007/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/380916 — Malamar [XYC 004/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/380915 — Inkay [XYC 003/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/380914 — Pangoro [XYC 002/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-         • https://snkrdunk.com/apparels/380913 — Pancham [XYC 001/023](The Super Legend Set 60 "Xerneas EX Yveltal EX")
-       選定 URL : https://snkrdunk.com/apparels/286969
-Found SNKRDUNK Product ID: 286969
-  📍 [DEBUG] SNKRDUNK: 成功提取 100 筆價格紀錄 (包含全等級)
-  📍 [DEBUG] SNKRDUNK: 其中符合 'PSA 10' 的紀錄有 88 筆
-  📍 [DEBUG]   - [2026/03/10] PSA 10 : ¥11069
-  📍 [DEBUG]   - [2026/03/05] PSA 10 : ¥12175
-  📍 [DEBUG]   - [2026/03/03] PSA 10 : ¥12650
-  📍 [DEBUG]   - [2026/03/03] PSA 10 : ¥13599
-  📍 [DEBUG]   - [2026/03/03] PSA 10 : ¥13599
-  📍 [DEBUG]   ... (還有 83 筆不顯示)
-  [掃描中] PSA 10 Gem Mint 2021 Pokemon Japanese Promo Card Pack 25th Anniversary Edition #023 Xerneas Ex | Ask: $81.60 | PC(30d): $48.25 / SNKR(30d): $90.74
-
-🚨 [真正撿漏警報] PSA 10 Gem Mint 2021 Pokemon Japanese Promo Card Pack 25th Anniversary Edition #023 Xerneas Ex
-   => 賣家開價: $81.60 USD
-   🔥 觸發來源: SNKR($9.14)！(門檻: $-30.0, 窗口: 30天) 請立刻注意把這張卡買下來！
-
-
-============================================================
-🔔 [終端機警報模式]
-[發現套利機會！] PSA 10 Gem Mint 2021 Pokemon Japanese Promo Card Pack 25th Anniversary Edition #023 Xerneas Ex
-開價: $81.60 USD
-PC 30天均價: $48.25 USD (4筆)
-SNKR 30天均價: $90.74 USD (35筆)
-觸發來源: 價格判定 (門檻: $-30.0)
-============================================================
-
-  🔍 正在對 PSA 10 Gem Mint 2014 Pokemon Japanese Xy Tidal Storm #051 M Gardevoir Ex 進行實時市場分析... (匯率: 1 USD = 158.122124 JPY)
-    📋 attributes.card_number 覆蓋 → 051
-    📋 attributes.set 覆蓋 → set_name=Pokemon Japanese Xy Tidal Storm, set_code=Xy
-    📋 attributes.language 覆蓋 → is_jp=True
-    🔑 搜尋參數 → name='M Gardevoir Ex' | number='051' | set_code='Xy' | grade=PSA 10 | lang=JP
-  💾 [DEBUG] 存檔: debug/startup_test19/05_PSA_10_Gem_Mint_2014_Pokemon_Japanese_Xy_Tidal_Sto/step1_meta.json
-  📍 [DEBUG] PriceCharting: 類別=Pokemon (寶可夢模式)，共 3 種查詢方案: ['M+Gardevoir+Ex+Xy+51', 'M+Gardevoir+Ex+Pokemon+Japanese+Xy+Tidal+Storm+51', 'M+Gardevoir+Ex+51']
-  📍 [DEBUG] PriceCharting Step 1: 查詢='M+Gardevoir+Ex+Xy+51'  URL=https://www.pricecharting.com/search-products?q=M+Gardevoir+Ex+Xy+51&type=prices
-Fetching: https://www.pricecharting.com/search-products?q=M+Gardevoir+Ex+Xy+51&type=prices...
-  ✅ [PriceCharting Step 1] query='M+Gardevoir+Ex+Xy+51'
-       URL  : https://www.pricecharting.com/search-products?q=M+Gardevoir+Ex+Xy+51&type=prices
-       狀態 : OK  —  搜尋頁面有多筆結果，繼續解析
-  📍 [DEBUG] PriceCharting: 從搜尋頁面提取到 100 個候選 URL
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-mega-evolution/mega-gardevoir-ex-178
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-mega-evolution/mega-gardevoir-ex-187
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-scarlet-&-violet/gardevoir-ex-245
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-paldean-fates/gardevoir-ex-233
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-japanese-mega-symphonia/mega-gardevoir-ex-87
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-generations/m-gardevoir-ex-rc31
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-mega-evolution/mega-gardevoir-ex-159
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-mega-evolution/mega-gardevoir-ex-60
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-japanese-mega-dream-ex/mega-gardevoir-ex-226
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-generations/gardevoir-ex-rc30
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-steam-siege/gardevoir-ex-116
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-japanese-mega-symphonia/mega-gardevoir-ex-92
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-steam-siege/m-gardevoir-ex-112
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-shiny-treasure-ex/gardevoir-ex-348
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-steam-siege/m-gardevoir-ex-79
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-paldean-fates/gardevoir-ex-217
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-celebrations/gardevoir-ex-93
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-scarlet-ex/gardevoir-ex-101
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-scarlet-&-violet/gardevoir-ex-228
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-japanese-mega-symphonia/mega-gardevoir-ex-78
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-scarlet-&-violet/gardevoir-ex-86
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-promo/m-gengar-ex-79xy-p
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-steam-siege/gardevoir-ex-111
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-xy/xerneas-ex-146
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-japanese-mega-symphonia/mega-gardevoir-ex-42
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-japanese-mega-dream-ex/mega-gardevoir-ex-71
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-primal-clash/m-gardevoir-ex-106
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-sandstorm/gardevoir-ex-96
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-primal-clash/m-gardevoir-ex-156
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-dragon-frontiers/gardevoir-ex-93
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-shiny-treasure-ex/gardevoir-ex-328
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-primal-clash/gardevoir-ex-155
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-steam-siege/gardevoir-ex-78
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-japanese-pokekyun-collection/m-gardevoir-ex-20
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-ascended-heroes/mega-gardevoir-ex-89
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-paldean-fates/gardevoir-ex-29
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-xy/emolga-ex-143
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-primal-clash/gardevoir-ex-105
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-xy/m-blastoise-ex-reverse-holo-30
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-25th-anniversary-promo/gardevoir-ex-15
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-pokekyun-collection/gardevoir-ex-19
-  📍 [DEBUG]   ✅ [PKM] 名稱+編號: https://www.pricecharting.com/game/pokemon-japanese-tidal-storm/mega-gardevoir-ex-51
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-xy/emolga-ex-46
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-chinese-gem-pack-3/gardevoir-ex-607
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-promo/league-battle-deck-gardevoir-ex
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-rayquaza-ex-105
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-shiny-treasure-ex/gardevoir-ex-82
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-xy/xerneas-ex-97
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-gardevoir-ex-92
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-scarlet-&-violet/gardevoir-ex-prize-pack-86
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-mewtwo-ex-43
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-promo/m-sachiko-ex-298xy-p
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/gardevoir-ex-59
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-world-championships-2023/gardevoir-ex-86
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-promo/m-rayquaza-ex-pokemon-center-272xy-p
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-scarlet-ex/gardevoir-ex-28
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-scarlet-ex/gardevoir-ex-92
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-japanese-extra-regulation-box/m-gardevoir-ex-16
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-lucario-ex-63
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-promo/m-garchomp-ex-xy-p
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-promo/m-diancie-ex-93xy-p
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-gardevoir-deck/gardevoir-ex-5
-  📍 [DEBUG]   🔷 [PKM] 只符合編號 '51'/'051': https://www.pricecharting.com/game/pokemon-japanese-premium-champion-pack/m-mewtwo-ex-51
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-promo/m-swampert-ex-xy-p
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-promo/m-slowbro-ex-263xy-p
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-alakazam-ex-41
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-sceptile-ex-7
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-miracle-of-the-desert/gardevoir-ex-28
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-sharpedo-ex-178
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/m-gardevoir-ex-39
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-camerupt-ex-172
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/gardevoir-ex-56
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/m-gardevoir-ex-57
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-manectric-ex-174
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-world-championships-2004/gardevoir-ex-kevin-nguyen-96
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-camerupt-ex-13
-  📍 [DEBUG]   🔷 [PKM] 只符合編號 '51'/'051': https://www.pricecharting.com/game/pokemon-xy/venipede-51
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/gardevoir-ex-91
-  📍 [DEBUG]   ✅ [PKM] 名稱+編號: https://www.pricecharting.com/game/pokemon-japanese-tidal-storm/mega-gardevoir-ex-1st-edition-51
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-japanese-tidal-storm/mega-gardevoir-ex-1st-edition-76
-  📍 [DEBUG]   🔷 [PKM] 只符合編號 '51'/'051': https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/litwick-51
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-miracle-of-the-desert/gardevoir-ex-1st-edition-28
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-tidal-storm/gardevoir-ex-75
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/gardevoir-ex-1st-edition-38
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-manectric-ex-35
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/gardevoir-ex-1st-edition-56
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/gardevoir-ex-38
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/m-gardevoir-ex-1st-edition-39
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-tidal-storm/gardevoir-ex-1st-edition-50
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/gardevoir-ex-1st-edition-59
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-tidal-storm/gardevoir-ex-1st-edition-75
-  📍 [DEBUG]   🔷 [PKM] 只符合編號 '51'/'051': https://www.pricecharting.com/game/funko-pop-mlb/ichiro-suzuki-1000-51
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-tidal-storm/gardevoir-ex-50
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/gardevoir-spirit-link-128
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/m-gardevoir-ex-1st-edition-57
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pc-games/tandy-1000-ex
-  📍 [DEBUG]   🔷 [PKM] 只符合編號 '51'/'051': https://www.pricecharting.com/game/comic-books-1000-jokes/1000-jokes-51-1949
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-korean-scarlet-ex/gardevoir-ex-101
-  📍 [DEBUG]   ❌ [PKM] URL 不符合: https://www.pricecharting.com/game/pokemon-korean-shiny-treasure/gardevoir-ex-82
-  📍 [DEBUG]   🔶 [PKM] 只符合名稱: https://www.pricecharting.com/game/pokemon-mega-evolution/mega-gardevoir-ex-prize-pack-60
-  ✅ [PriceCharting Step 2] query="is_alt_art=False, name_slug='m-gardevoir-ex', number='51'"
-       URL  : https://www.pricecharting.com/search-products?q=M+Gardevoir+Ex+Xy+51&type=prices
-       狀態 : OK  —  Default (First match)
-       候選 URLs (100 筆):
-         • https://www.pricecharting.com/game/pokemon-mega-evolution/mega-gardevoir-ex-178
-         • https://www.pricecharting.com/game/pokemon-mega-evolution/mega-gardevoir-ex-187
-         • https://www.pricecharting.com/game/pokemon-scarlet-&-violet/gardevoir-ex-245
-         • https://www.pricecharting.com/game/pokemon-paldean-fates/gardevoir-ex-233
-         • https://www.pricecharting.com/game/pokemon-japanese-mega-symphonia/mega-gardevoir-ex-87
-         • https://www.pricecharting.com/game/pokemon-generations/m-gardevoir-ex-rc31
-         • https://www.pricecharting.com/game/pokemon-mega-evolution/mega-gardevoir-ex-159
-         • https://www.pricecharting.com/game/pokemon-mega-evolution/mega-gardevoir-ex-60
-         • https://www.pricecharting.com/game/pokemon-japanese-mega-dream-ex/mega-gardevoir-ex-226
-         • https://www.pricecharting.com/game/pokemon-generations/gardevoir-ex-rc30
-         • https://www.pricecharting.com/game/pokemon-steam-siege/gardevoir-ex-116
-         • https://www.pricecharting.com/game/pokemon-japanese-mega-symphonia/mega-gardevoir-ex-92
-         • https://www.pricecharting.com/game/pokemon-steam-siege/m-gardevoir-ex-112
-         • https://www.pricecharting.com/game/pokemon-japanese-shiny-treasure-ex/gardevoir-ex-348
-         • https://www.pricecharting.com/game/pokemon-steam-siege/m-gardevoir-ex-79
-         • https://www.pricecharting.com/game/pokemon-paldean-fates/gardevoir-ex-217
-         • https://www.pricecharting.com/game/pokemon-celebrations/gardevoir-ex-93
-         • https://www.pricecharting.com/game/pokemon-japanese-scarlet-ex/gardevoir-ex-101
-         • https://www.pricecharting.com/game/pokemon-scarlet-&-violet/gardevoir-ex-228
-         • https://www.pricecharting.com/game/pokemon-japanese-mega-symphonia/mega-gardevoir-ex-78
-         • https://www.pricecharting.com/game/pokemon-scarlet-&-violet/gardevoir-ex-86
-         • https://www.pricecharting.com/game/pokemon-japanese-promo/m-gengar-ex-79xy-p
-         • https://www.pricecharting.com/game/pokemon-steam-siege/gardevoir-ex-111
-         • https://www.pricecharting.com/game/pokemon-xy/xerneas-ex-146
-         • https://www.pricecharting.com/game/pokemon-japanese-mega-symphonia/mega-gardevoir-ex-42
-         • https://www.pricecharting.com/game/pokemon-japanese-mega-dream-ex/mega-gardevoir-ex-71
-         • https://www.pricecharting.com/game/pokemon-primal-clash/m-gardevoir-ex-106
-         • https://www.pricecharting.com/game/pokemon-sandstorm/gardevoir-ex-96
-         • https://www.pricecharting.com/game/pokemon-primal-clash/m-gardevoir-ex-156
-         • https://www.pricecharting.com/game/pokemon-dragon-frontiers/gardevoir-ex-93
-         • https://www.pricecharting.com/game/pokemon-japanese-shiny-treasure-ex/gardevoir-ex-328
-         • https://www.pricecharting.com/game/pokemon-primal-clash/gardevoir-ex-155
-         • https://www.pricecharting.com/game/pokemon-steam-siege/gardevoir-ex-78
-         • https://www.pricecharting.com/game/pokemon-japanese-pokekyun-collection/m-gardevoir-ex-20
-         • https://www.pricecharting.com/game/pokemon-ascended-heroes/mega-gardevoir-ex-89
-         • https://www.pricecharting.com/game/pokemon-paldean-fates/gardevoir-ex-29
-         • https://www.pricecharting.com/game/pokemon-xy/emolga-ex-143
-         • https://www.pricecharting.com/game/pokemon-primal-clash/gardevoir-ex-105
-         • https://www.pricecharting.com/game/pokemon-xy/m-blastoise-ex-reverse-holo-30
-         • https://www.pricecharting.com/game/pokemon-japanese-25th-anniversary-promo/gardevoir-ex-15
-         • https://www.pricecharting.com/game/pokemon-japanese-pokekyun-collection/gardevoir-ex-19
-         • https://www.pricecharting.com/game/pokemon-japanese-tidal-storm/mega-gardevoir-ex-51
-         • https://www.pricecharting.com/game/pokemon-xy/emolga-ex-46
-         • https://www.pricecharting.com/game/pokemon-chinese-gem-pack-3/gardevoir-ex-607
-         • https://www.pricecharting.com/game/pokemon-promo/league-battle-deck-gardevoir-ex
-         • https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-rayquaza-ex-105
-         • https://www.pricecharting.com/game/pokemon-japanese-shiny-treasure-ex/gardevoir-ex-82
-         • https://www.pricecharting.com/game/pokemon-xy/xerneas-ex-97
-         • https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-gardevoir-ex-92
-         • https://www.pricecharting.com/game/pokemon-scarlet-&-violet/gardevoir-ex-prize-pack-86
-         • https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-mewtwo-ex-43
-         • https://www.pricecharting.com/game/pokemon-japanese-promo/m-sachiko-ex-298xy-p
-         • https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/gardevoir-ex-59
-         • https://www.pricecharting.com/game/pokemon-world-championships-2023/gardevoir-ex-86
-         • https://www.pricecharting.com/game/pokemon-japanese-promo/m-rayquaza-ex-pokemon-center-272xy-p
-         • https://www.pricecharting.com/game/pokemon-japanese-scarlet-ex/gardevoir-ex-28
-         • https://www.pricecharting.com/game/pokemon-japanese-scarlet-ex/gardevoir-ex-92
-         • https://www.pricecharting.com/game/pokemon-japanese-extra-regulation-box/m-gardevoir-ex-16
-         • https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-lucario-ex-63
-         • https://www.pricecharting.com/game/pokemon-japanese-promo/m-garchomp-ex-xy-p
-         • https://www.pricecharting.com/game/pokemon-japanese-promo/m-diancie-ex-93xy-p
-         • https://www.pricecharting.com/game/pokemon-japanese-gardevoir-deck/gardevoir-ex-5
-         • https://www.pricecharting.com/game/pokemon-japanese-premium-champion-pack/m-mewtwo-ex-51
-         • https://www.pricecharting.com/game/pokemon-japanese-promo/m-swampert-ex-xy-p
-         • https://www.pricecharting.com/game/pokemon-japanese-promo/m-slowbro-ex-263xy-p
-         • https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-alakazam-ex-41
-         • https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-sceptile-ex-7
-         • https://www.pricecharting.com/game/pokemon-japanese-miracle-of-the-desert/gardevoir-ex-28
-         • https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-sharpedo-ex-178
-         • https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/m-gardevoir-ex-39
-         • https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-camerupt-ex-172
-         • https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/gardevoir-ex-56
-         • https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/m-gardevoir-ex-57
-         • https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-manectric-ex-174
-         • https://www.pricecharting.com/game/pokemon-world-championships-2004/gardevoir-ex-kevin-nguyen-96
-         • https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-camerupt-ex-13
-         • https://www.pricecharting.com/game/pokemon-xy/venipede-51
-         • https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/gardevoir-ex-91
-         • https://www.pricecharting.com/game/pokemon-japanese-tidal-storm/mega-gardevoir-ex-1st-edition-51
-         • https://www.pricecharting.com/game/pokemon-japanese-tidal-storm/mega-gardevoir-ex-1st-edition-76
-         • https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/litwick-51
-         • https://www.pricecharting.com/game/pokemon-japanese-miracle-of-the-desert/gardevoir-ex-1st-edition-28
-         • https://www.pricecharting.com/game/pokemon-japanese-tidal-storm/gardevoir-ex-75
-         • https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/gardevoir-ex-1st-edition-38
-         • https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/m-manectric-ex-35
-         • https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/gardevoir-ex-1st-edition-56
-         • https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/gardevoir-ex-38
-         • https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/m-gardevoir-ex-1st-edition-39
-         • https://www.pricecharting.com/game/pokemon-japanese-tidal-storm/gardevoir-ex-1st-edition-50
-         • https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/gardevoir-ex-1st-edition-59
-         • https://www.pricecharting.com/game/pokemon-japanese-tidal-storm/gardevoir-ex-1st-edition-75
-         • https://www.pricecharting.com/game/funko-pop-mlb/ichiro-suzuki-1000-51
-         • https://www.pricecharting.com/game/pokemon-japanese-tidal-storm/gardevoir-ex-50
-         • https://www.pricecharting.com/game/pokemon-japanese-best-of-xy/gardevoir-spirit-link-128
-         • https://www.pricecharting.com/game/pokemon-japanese-cruel-traitor/m-gardevoir-ex-1st-edition-57
-         • https://www.pricecharting.com/game/pc-games/tandy-1000-ex
-         • https://www.pricecharting.com/game/comic-books-1000-jokes/1000-jokes-51-1949
-         • https://www.pricecharting.com/game/pokemon-korean-scarlet-ex/gardevoir-ex-101
-         • https://www.pricecharting.com/game/pokemon-korean-shiny-treasure/gardevoir-ex-82
-         • https://www.pricecharting.com/game/pokemon-mega-evolution/mega-gardevoir-ex-prize-pack-60
-       選定 URL : https://www.pricecharting.com/game/pokemon-japanese-tidal-storm/mega-gardevoir-ex-51
-DEBUG: Selected PC product URL: https://www.pricecharting.com/game/pokemon-japanese-tidal-storm/mega-gardevoir-ex-51 (Default (First match))
-Fetching: https://www.pricecharting.com/game/pokemon-japanese-tidal-storm/mega-gardevoir-ex-51...
-DEBUG: Parsing PriceCharting page: https://www.pricecharting.com/game/pokemon-japanese-tidal-storm/mega-gardevoir-ex-51 (length: 48017)
-  📍 [DEBUG] PriceCharting: 成功提取 2 筆價格紀錄 (包含全等級)
-  📍 [DEBUG] PriceCharting: 其中符合 'PSA 10' 的紀錄有 1 筆
-  📍 [DEBUG]   - [2023-06-22] PSA 10 : $80.0
-  📍 [DEBUG] SNKRDUNK: 共 3 種查詢方案: ['M Gardevoir Ex 051', 'M Gardevoir Ex Xy 051', 'M Gardevoir Ex Xy']
-  📍 [DEBUG] SNKRDUNK Step 1: 查詢='M Gardevoir Ex 051'  URL=https://snkrdunk.com/en/v1/search?keyword=M+Gardevoir+Ex+051&perPage=40&page=1
-  📍 [DEBUG] SNKRDUNK Step 1: API 原始匹配 5 筆
-  📍 [DEBUG]   ✅ 符合編號 '051': [91345] Gardevoir GX HR[SM3N 061/051](Expansion Pack "Darkness that Consumes Light")
-  📍 [DEBUG]   ✅ 符合編號 '051': [381834] M Gardevoir EX RR [XY5 051/070](Expansion Pack "Tidal Storm")
-  📍 [DEBUG]   ✅ 符合編號 '051': [107432] M Gardevoir EX RR :1ED [XY5-T 051/070](Expansion Pack "Tidal Storm")
-  📍 [DEBUG]   ✅ 符合編號 '051': [105488] Gardevoir GX SR[SM3N 055/051](Expansion Pack "Darkness that Consumes Light")
-  📍 [DEBUG]   ✅ 符合編號 '051': [334735] Gardevoir GX RR [SM3N 038/051](Expansion Pack "Darkness that Consumes Light")
-  📍 [DEBUG]   🌐 語言過濾選中日文版: [91345]
-  ✅ [SNKRDUNK Step 1] query='M Gardevoir Ex 051'
-       URL  : https://snkrdunk.com/en/v1/search?keyword=M+Gardevoir+Ex+051&perPage=40&page=1
-       狀態 : OK  —  Default (First match) + Language(JP)
-       候選 URLs (5 筆):
-         • https://snkrdunk.com/apparels/91345 — Gardevoir GX HR[SM3N 061/051](Expansion Pack "Darkness that Consumes Light")
-         • https://snkrdunk.com/apparels/381834 — M Gardevoir EX RR [XY5 051/070](Expansion Pack "Tidal Storm")
-         • https://snkrdunk.com/apparels/107432 — M Gardevoir EX RR :1ED [XY5-T 051/070](Expansion Pack "Tidal Storm")
-         • https://snkrdunk.com/apparels/105488 — Gardevoir GX SR[SM3N 055/051](Expansion Pack "Darkness that Consumes Light")
-         • https://snkrdunk.com/apparels/334735 — Gardevoir GX RR [SM3N 038/051](Expansion Pack "Darkness that Consumes Light")
-       選定 URL : https://snkrdunk.com/apparels/91345
-Found SNKRDUNK Product ID: 91345
-  📍 [DEBUG] SNKRDUNK: 成功提取 7 筆價格紀錄 (包含全等級)
-  📍 [DEBUG] SNKRDUNK: 其中符合 'PSA 10' 的紀錄有 7 筆
-  📍 [DEBUG]   - [2026/02/27] PSA 10 : ¥30518
-  📍 [DEBUG]   - [2025/09/10] PSA 10 : ¥43009
-  📍 [DEBUG]   - [2025/02/13] PSA 10 : ¥51548
-  📍 [DEBUG]   - [2025/02/13] PSA 10 : ¥51548
-  📍 [DEBUG]   - [2025/02/06] PSA 10 : ¥67518
-  📍 [DEBUG]   ... (還有 2 筆不顯示)
-  [掃描中] PSA 10 Gem Mint 2014 Pokemon Japanese Xy Tidal Storm #051 M Gardevoir Ex | Ask: $122.40 | SNKR(30d): $193.00
-
-🚨 [真正撿漏警報] PSA 10 Gem Mint 2014 Pokemon Japanese Xy Tidal Storm #051 M Gardevoir Ex
-   => 賣家開價: $122.40 USD
-   🔥 觸發來源: SNKR($70.60)！(門檻: $-30.0, 窗口: 30天) 請立刻注意把這張卡買下來！
-
-
-============================================================
-🔔 [終端機警報模式]
-[發現套利機會！] PSA 10 Gem Mint 2014 Pokemon Japanese Xy Tidal Storm #051 M Gardevoir Ex
-開價: $122.40 USD
-SNKR 30天均價: $193.00 USD (1筆)
-觸發來源: 價格判定 (門檻: $-30.0)
-============================================================
-
-
-[09:04:01] 🏁 啟動測試完成，5 秒後進入 1 分鐘循環監控...
-[09:04:06] 🔃 正在掃描市場新掛單...
-
-[09:04:06] ✨ 發現 1 筆新品或價格異動上架，開始檢查...
-  🔍 正在對 PSA 10 Gem Mint 2025 Pokemon Simplified Chinese Sv-P Promo #004 Pikachu 進行實時市場分析... (匯率: 1 USD = 158.122124 JPY)
-    📋 attributes.card_number 覆蓋 → 004
-    📋 attributes.set 覆蓋 → set_name=Pokemon Simplified Chinese Sv-P Promo, set_code=SV-P
-    📋 attributes.language 覆蓋 → is_jp=False
-    🔑 搜尋參數 → name='Pikachu' | number='004' | set_code='SV-P' | grade=PSA 10 | lang=EN
-  💾 [DEBUG] 存檔: debug/startup_test19/01_PSA_10_Gem_Mint_2025_Pokemon_Simplified_Chinese_Sv/step1_meta.json
-  📍 [DEBUG] PriceCharting: 類別=Pokemon (寶可夢模式)，共 3 種查詢方案: ['Pikachu+SV-P+4', 'Pikachu+Pokemon+Simplified+Chinese+Sv-P+Promo+4', 'Pikachu+4']
-  📍 [DEBUG] PriceCharting Step 1: 查詢='Pikachu+SV-P+4'  URL=https://www.pricecharting.com/search-products?q=Pikachu+SV-P+4&type=prices
-Fetching: https://www.pricecharting.com/search-products?q=Pikachu+SV-P+4&type=prices...
-  ✅ [PriceCharting Step 1] query='Pikachu+SV-P+4'
-       URL  : https://www.pricecharting.com/search-products?q=Pikachu+SV-P+4&type=prices
-       狀態 : OK  —  直接落在商品頁面
-DEBUG: Landed directly on PC product page
-  ✅ [PriceCharting Step 2] query=''
-       URL  : https://www.pricecharting.com/search-products?q=Pikachu+SV-P+4&type=prices
-       狀態 : OK  —  直接落在商品頁面，跳過 URL 篩選
-DEBUG: Parsing PriceCharting page: https://www.pricecharting.com/search-products?q=Pikachu+SV-P+4&type=prices (length: 94492)
-  📍 [DEBUG] PriceCharting: 成功提取 84 筆價格紀錄 (包含全等級)
-  📍 [DEBUG] PriceCharting: 其中符合 'PSA 10' 的紀錄有 54 筆
-  📍 [DEBUG]   - [2026-03-05] PSA 10 : $26.0
-  📍 [DEBUG]   - [2026-03-03] PSA 10 : $27.0
-  📍 [DEBUG]   - [2026-02-22] PSA 10 : $27.0
-  📍 [DEBUG]   - [2026-02-21] PSA 10 : $26.0
-  📍 [DEBUG]   - [2026-02-17] PSA 10 : $21.5
-  📍 [DEBUG]   ... (還有 49 筆不顯示)
-  📍 [DEBUG] SNKRDUNK: 共 3 種查詢方案: ['Pikachu 004', 'Pikachu SV-P 004', 'Pikachu SV-P']
-  📍 [DEBUG] SNKRDUNK Step 1: 查詢='Pikachu 004'  URL=https://snkrdunk.com/en/v1/search?keyword=Pikachu+004&perPage=40&page=1
-  📍 [DEBUG] SNKRDUNK Step 1: API 原始匹配 21 筆
-  📍 [DEBUG]   ✅ 符合編號 '004': [451090] Pikachu [Pt 004/015](Gift Box "Pikachu Deck")
-  📍 [DEBUG]   ✅ 符合編號 '004': [106193] Pikachu[SM0 004/004](Pikachu and New Friends)
-  📍 [DEBUG]   ✅ 符合編號 '004': [452541] Pikachu P [e-P 004](Promotional Cards "Ana's Pika Summer Campaign")
-  📍 [DEBUG]   ✅ 符合編號 '004': [433869] Pikachu at Pokepark [PCG 004/009](PokePark Premium File "Forest Seat")
-  📍 [DEBUG]   ✅ 符合編號 '004': [451091] Pikachu :Holo [Pt 004/015](Gift Box "Pikachu Deck")
-  📍 [DEBUG]   ✅ 符合編號 '004': [434603] Pikachu :1ED [PCG 004/015](Master Kit "Bulbasaur Deck")
-  📍 [DEBUG]   ✅ 符合編號 '004': [386616] Popplio [SM0 003/004](Sun & Moon "Pikachu and New friends")
-  📍 [DEBUG]   ✅ 符合編號 '004': [386615] Litten [SM0 002/004](Sun & Moon "Pikachu and New friends")
-  📍 [DEBUG]   ✅ 符合編號 '004': [386614] Rowlet [SM0 001/004](Sun & Moon "Pikachu and New friends")
-  📍 [DEBUG]   ✅ 符合編號 '004': [528643] Pikachu P [SV-P 004] [CN] (Gem Pack Purchase Bonus Event Card)
-  📍 [DEBUG]   ✅ 符合編號 '004': [434604] Pikachu [PCG 004/015](Master Kit "Bulbasaur Deck")
-  📍 [DEBUG]   ❌ 不含編號 '004': [415503] Pikachu P [BW-P 151/BW-P](Promotional Cards "Pokemon Card Game Workshop Participation Prize")
-  📍 [DEBUG]   ✅ 符合編號 '004': [409114] Pansage [HSP 004/034](The Beginning Set DX "Pikachu Ver")
-  📍 [DEBUG]   ✅ 符合編號 '004': [396623] Morelull C [SMP2 004/024](Movie Special Pack "Detective Pikachu")
-  📍 [DEBUG]   ✅ 符合編號 '004': [132117] Pawmo [WCS23 004/030](Pokemon World Championships 2023 Yokohama anniversary Deck "Pikachu")
-  📍 [DEBUG]   ✅ 符合編號 '004': [91853] Pikachu: PROMO[eP 004/P](e-P Promotional cards)
-  ✅ [SNKRDUNK Step 1] query='Pikachu 004'
-       URL  : https://snkrdunk.com/en/v1/search?keyword=Pikachu+004&perPage=40&page=1
-       狀態 : OK  —  Default (First match)
-       候選 URLs (15 筆):
-         • https://snkrdunk.com/apparels/451090 — Pikachu [Pt 004/015](Gift Box "Pikachu Deck")
-         • https://snkrdunk.com/apparels/106193 — Pikachu[SM0 004/004](Pikachu and New Friends)
-         • https://snkrdunk.com/apparels/452541 — Pikachu P [e-P 004](Promotional Cards "Ana's Pika Summer Campaign")
-         • https://snkrdunk.com/apparels/433869 — Pikachu at Pokepark [PCG 004/009](PokePark Premium File "Forest Seat")
-         • https://snkrdunk.com/apparels/451091 — Pikachu :Holo [Pt 004/015](Gift Box "Pikachu Deck")
-         • https://snkrdunk.com/apparels/434603 — Pikachu :1ED [PCG 004/015](Master Kit "Bulbasaur Deck")
-         • https://snkrdunk.com/apparels/386616 — Popplio [SM0 003/004](Sun & Moon "Pikachu and New friends")
-         • https://snkrdunk.com/apparels/386615 — Litten [SM0 002/004](Sun & Moon "Pikachu and New friends")
-         • https://snkrdunk.com/apparels/386614 — Rowlet [SM0 001/004](Sun & Moon "Pikachu and New friends")
-         • https://snkrdunk.com/apparels/528643 — Pikachu P [SV-P 004] [CN] (Gem Pack Purchase Bonus Event Card)
-         • https://snkrdunk.com/apparels/434604 — Pikachu [PCG 004/015](Master Kit "Bulbasaur Deck")
-         • https://snkrdunk.com/apparels/409114 — Pansage [HSP 004/034](The Beginning Set DX "Pikachu Ver")
-         • https://snkrdunk.com/apparels/396623 — Morelull C [SMP2 004/024](Movie Special Pack "Detective Pikachu")
-         • https://snkrdunk.com/apparels/132117 — Pawmo [WCS23 004/030](Pokemon World Championships 2023 Yokohama anniversary Deck "Pikachu")
-         • https://snkrdunk.com/apparels/91853 — Pikachu: PROMO[eP 004/P](e-P Promotional cards)
-       選定 URL : https://snkrdunk.com/apparels/451090
-Found SNKRDUNK Product ID: 451090
-  📍 [DEBUG] SNKRDUNK: 成功提取 1 筆價格紀錄 (包含全等級)
-  📍 [DEBUG] SNKRDUNK: 其中符合 'PSA 10' 的紀錄有 1 筆
-  📍 [DEBUG]   - [2026/03/09] PSA 10 : ¥501247
-  [掃描中] PSA 10 Gem Mint 2025 Pokemon Simplified Chinese Sv-P Promo #004 Pikachu | Ask: $55.08 | PC(30d): $26.50 / SNKR(30d): $3170.00
-
-🚨 [真正撿漏警報] PSA 10 Gem Mint 2025 Pokemon Simplified Chinese Sv-P Promo #004 Pikachu
-   => 賣家開價: $55.08 USD
-   🔥 觸發來源: PC($-28.58) & SNKR($3114.92)！(門檻: $-30.0, 窗口: 30天) 請立刻注意把這張卡買下來！
-
-
-============================================================
-🔔 [終端機警報模式]
-[發現套利機會！] PSA 10 Gem Mint 2025 Pokemon Simplified Chinese Sv-P Promo #004 Pikachu
-開價: $55.08 USD
-PC 30天均價: $26.50 USD (6筆)
-SNKR 30天均價: $3170.00 USD (1筆)
-觸發來源: 價格判定 (門檻: $-30.0)
-============================================================
-
-[09:05:10] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:06:10] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:07:11] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:08:11] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:09:12] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:18:54] 🔃 正在掃描市場新掛單...
-[09:18:54] 網路請求失敗: HTTPSConnectionPool(host='www.renaiss.xyz', port=443): Max retries exceeded with url: /marketplace?_t=1773105534 (Caused by NameResolutionError("HTTPSConnection(host='www.renaiss.xyz', port=443): Failed to resolve 'www.renaiss.xyz' ([Errno 8] nodename nor servname provided, or not known)"))
-[09:19:54] 🔃 正在掃描市場新掛單...
-[09:20:25] 網路請求失敗: HTTPSConnectionPool(host='www.renaiss.xyz', port=443): Max retries exceeded with url: /marketplace?_t=1773105594 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.renaiss.xyz', port=443) at 0x105816e90>, 'Connection to www.renaiss.xyz timed out. (connect timeout=15)'))
-[09:21:25] 🔃 正在掃描市場新掛單...
-[09:21:25] 網路請求失敗: HTTPSConnectionPool(host='www.renaiss.xyz', port=443): Max retries exceeded with url: /marketplace?_t=1773105685 (Caused by NameResolutionError("HTTPSConnection(host='www.renaiss.xyz', port=443): Failed to resolve 'www.renaiss.xyz' ([Errno 8] nodename nor servname provided, or not known)"))
-[09:22:25] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:23:26] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:24:28] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:25:28] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:26:30] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:27:31] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:28:32] 🔃 正在掃描市場新掛單...
-[09:28:50] 網路請求失敗: HTTPSConnectionPool(host='www.renaiss.xyz', port=443): Read timed out.
-[09:29:50] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:30:52] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:31:53] 🔃 正在掃描市場新掛單...
-
-[09:31:55] ✨ 發現 1 筆新品或價格異動上架，開始檢查...
-  🔍 正在對 PSA 10 Gem Mint 2022 Pokemon Japanese Sv Promo #001 Pikachu 進行實時市場分析... (匯率: 1 USD = 158.122124 JPY)
-    📋 attributes.card_number 覆蓋 → 001
-    📋 attributes.set 覆蓋 → set_name=Pokemon Japanese Sv Promo, set_code=(從名稱提取)
-    📋 attributes.language 覆蓋 → is_jp=True
-    🔑 搜尋參數 → name='Pikachu' | number='001' | set_code='' | grade=PSA 10 | lang=JP
-  💾 [DEBUG] 存檔: debug/startup_test19/01_PSA_10_Gem_Mint_2022_Pokemon_Japanese_Sv_Promo__00/step1_meta.json
-  📍 [DEBUG] PriceCharting: 類別=Pokemon (寶可夢模式)，共 2 種查詢方案: ['Pikachu+Pokemon+Japanese+Sv+Promo+1', 'Pikachu+1']
-  📍 [DEBUG] PriceCharting Step 1: 查詢='Pikachu+Pokemon+Japanese+Sv+Promo+1'  URL=https://www.pricecharting.com/search-products?q=Pikachu+Pokemon+Japanese+Sv+Promo+1&type=prices
-Fetching: https://www.pricecharting.com/search-products?q=Pikachu+Pokemon+Japanese+Sv+Promo+1&type=prices...
-  ✅ [PriceCharting Step 1] query='Pikachu+Pokemon+Japanese+Sv+Promo+1'
-       URL  : https://www.pricecharting.com/search-products?q=Pikachu+Pokemon+Japanese+Sv+Promo+1&type=prices
-       狀態 : OK  —  搜尋頁面有多筆結果，繼續解析
-  📍 [DEBUG] PriceCharting: 從搜尋頁面提取到 2 個候選 URL
-  📍 [DEBUG]   ✅ [PKM] 名稱+編號: https://www.pricecharting.com/game/pokemon-japanese-promo/pikachu-1sv-p
-  📍 [DEBUG]   ✅ [PKM] 名稱+編號: https://www.pricecharting.com/game/pokemon-japanese-meiji-promo/houndoom-vs-pikachu-1
-  ✅ [PriceCharting Step 2] query="is_alt_art=False, name_slug='pikachu', number='1'"
-       URL  : https://www.pricecharting.com/search-products?q=Pikachu+Pokemon+Japanese+Sv+Promo+1&type=prices
-       狀態 : OK  —  Default (First match)
-       候選 URLs (2 筆):
-         • https://www.pricecharting.com/game/pokemon-japanese-promo/pikachu-1sv-p
-         • https://www.pricecharting.com/game/pokemon-japanese-meiji-promo/houndoom-vs-pikachu-1
-       選定 URL : https://www.pricecharting.com/game/pokemon-japanese-promo/pikachu-1sv-p
-DEBUG: Selected PC product URL: https://www.pricecharting.com/game/pokemon-japanese-promo/pikachu-1sv-p (Default (First match))
-Fetching: https://www.pricecharting.com/game/pokemon-japanese-promo/pikachu-1sv-p...
-DEBUG: Parsing PriceCharting page: https://www.pricecharting.com/game/pokemon-japanese-promo/pikachu-1sv-p (length: 220031)
-  📍 [DEBUG] PriceCharting: 成功提取 283 筆價格紀錄 (包含全等級)
-  📍 [DEBUG] PriceCharting: 其中符合 'PSA 10' 的紀錄有 146 筆
-  📍 [DEBUG]   - [2026-03-09] PSA 10 : $80.0
-  📍 [DEBUG]   - [2026-03-08] PSA 10 : $84.0
-  📍 [DEBUG]   - [2026-03-08] PSA 10 : $84.0
-  📍 [DEBUG]   - [2026-03-08] PSA 10 : $84.0
-  📍 [DEBUG]   - [2026-03-08] PSA 10 : $84.0
-  📍 [DEBUG]   ... (還有 141 筆不顯示)
-  📍 [DEBUG] SNKRDUNK: 共 1 種查詢方案: ['Pikachu 001']
-  📍 [DEBUG] SNKRDUNK Step 1: 查詢='Pikachu 001'  URL=https://snkrdunk.com/en/v1/search?keyword=Pikachu+001&perPage=40&page=1
-  📍 [DEBUG] SNKRDUNK Step 1: API 原始匹配 40 筆
-  📍 [DEBUG]   ✅ 符合編號 '001': [141410] Pikachu [s8a 001/028](Expansion Pack "25th Anniversary Collection")
-  📍 [DEBUG]   ✅ 符合編號 '001': [104784] Pikachu: PROMO [001/SV-P](SV-P Promotional cards)
-  📍 [DEBUG]   ✅ 符合編號 '001': [131236] Pikachu ex [WCS23 001/030](Pokemon World Championships 2023 Yokohama anniversary Deck "Pikachu")
-  📍 [DEBUG]   ✅ 符合編號 '001': [93381] Pikachu Seven-Eleven: PROMO[S-P 001](S-P Promotional cards)
-  📍 [DEBUG]   ✅ 符合編號 '001': [91155] Pikachu V[S8a-G 001/015](25th Anniversary Golden Box)
-  📍 [DEBUG]   ✅ 符合編號 '001': [141411] Pikachu: Mirror [s8a 001/028](Expansion Pack "25th Anniversary Collection")
-  📍 [DEBUG]   ✅ 符合編號 '001': [100081] Pikachu V[SN 001/024](Start Deck 100 CoroCoro Comic ver.)
-  📍 [DEBUG]   ✅ 符合編號 '001': [91754] Pikachu[PCG-MR 001/002](Gift Box MewLucario ver.)
-  📍 [DEBUG]   ✅ 符合編號 '001': [452789] Pikachu P [PCG-P 001](Promotional Cards "21st Next Generation World Hobby Fair")
-  📍 [DEBUG]   ✅ 符合編號 '001': [377598] Pikachu [SA 001/024](Starter Set V "Lightning")
-  📍 [DEBUG]   ✅ 符合編號 '001': [95803] Pikachu V In A Sleeve[S8a-G 001/015](25th Anniversary Golden Box)
-  📍 [DEBUG]   ❌ 不含編號 '001': [457741] Lt. Surge's Pikachu LV.15 : Old Back [PMCG-GYM2 No.025](Pokemon Gym Volume 2 "Vermilion City Gym Lt. Surge	")
-  📍 [DEBUG]   ✅ 符合編號 '001': [91428] Pikachu: PROMO[XY-P 001/XY-P](XY-P Promotional cards)
-  📍 [DEBUG]   ✅ 符合編號 '001': [562742] Pikachu [B 001/011](Battle Start Deck "Raichu")
-  📍 [DEBUG]   ❌ 不含編號 '001': [467415] Pikachu P : Old Back [PMCG-P No.025](Promotional Cards "CoroCoro Comic September 1997 Issue")
-  📍 [DEBUG]   ✅ 符合編號 '001': [503315] Pikachu Seven-Eleven: PROMO[S-P 001](S-P Promotional cards) Unopened Pack
-  📍 [DEBUG]   ✅ 符合編號 '001': [107355] Pikachu[SNP-R 001/010](BREAK Evolution Pack "Raichu BREAK")
-  📍 [DEBUG]   ❌ 不含編號 '001': [454922] Pikachu : Old Back [PMCG-Blue No.025](Expansion Sheet "Blue Edition")
-  📍 [DEBUG]   ✅ 符合編號 '001': [452538] Kecleon P [e-P 001](Promotional Cards "PIKACHU THE MOVIE 2001 Officially Certified Special Card")
-  📍 [DEBUG]   ✅ 符合編號 '001': [746154] Pikachu on the Ball [001/005](Promotional Card)
-  📍 [DEBUG]   ✅ 符合編號 '001': [433401] Pikachu :1ED [PCG 001/015](Quick Construction Pack "Type Unit: Lightning")
-  📍 [DEBUG]   ✅ 符合編號 '001': [386614] Rowlet [SM0 001/004](Sun & Moon "Pikachu and New friends")
-  📍 [DEBUG]   ✅ 符合編號 '001': [102309] Pikachu: Mirror[SA-L 001/024](Starter Set V "Lightning")
-  📍 [DEBUG]   ✅ 符合編號 '001': [451087] Cherubi [Pt 001/015](Gift Box "Pikachu Deck")
-  📍 [DEBUG]   ✅ 符合編號 '001': [433402] Pikachu [PCG 001/015](Quick Construction Pack "Type Unit: Lightning")
-  📍 [DEBUG]   ✅ 符合編號 '001': [409110] Snivy [HSP 001/034](The Beginning Set DX "Pikachu Ver")
-  📍 [DEBUG]   ✅ 符合編號 '001': [409109] Snivy [HSP 001/034](The Beginning Set DX "Pikachu Ver")
-  📍 [DEBUG]   ✅ 符合編號 '001': [396620] Bulbasaur C [SMP2 001/024](Movie Special Pack "Detective Pikachu")
-  📍 [DEBUG]   🌐 語言過濾選中日文版: [141410]
-  ✅ [SNKRDUNK Step 1] query='Pikachu 001'
-       URL  : https://snkrdunk.com/en/v1/search?keyword=Pikachu+001&perPage=40&page=1
-       狀態 : OK  —  Default (First match) + Language(JP)
-       候選 URLs (25 筆):
-         • https://snkrdunk.com/apparels/141410 — Pikachu [s8a 001/028](Expansion Pack "25th Anniversary Collection")
-         • https://snkrdunk.com/apparels/104784 — Pikachu: PROMO [001/SV-P](SV-P Promotional cards)
-         • https://snkrdunk.com/apparels/131236 — Pikachu ex [WCS23 001/030](Pokemon World Championships 2023 Yokohama anniversary Deck "Pikachu")
-         • https://snkrdunk.com/apparels/93381 — Pikachu Seven-Eleven: PROMO[S-P 001](S-P Promotional cards)
-         • https://snkrdunk.com/apparels/91155 — Pikachu V[S8a-G 001/015](25th Anniversary Golden Box)
-         • https://snkrdunk.com/apparels/141411 — Pikachu: Mirror [s8a 001/028](Expansion Pack "25th Anniversary Collection")
-         • https://snkrdunk.com/apparels/100081 — Pikachu V[SN 001/024](Start Deck 100 CoroCoro Comic ver.)
-         • https://snkrdunk.com/apparels/91754 — Pikachu[PCG-MR 001/002](Gift Box MewLucario ver.)
-         • https://snkrdunk.com/apparels/452789 — Pikachu P [PCG-P 001](Promotional Cards "21st Next Generation World Hobby Fair")
-         • https://snkrdunk.com/apparels/377598 — Pikachu [SA 001/024](Starter Set V "Lightning")
-         • https://snkrdunk.com/apparels/95803 — Pikachu V In A Sleeve[S8a-G 001/015](25th Anniversary Golden Box)
-         • https://snkrdunk.com/apparels/91428 — Pikachu: PROMO[XY-P 001/XY-P](XY-P Promotional cards)
-         • https://snkrdunk.com/apparels/562742 — Pikachu [B 001/011](Battle Start Deck "Raichu")
-         • https://snkrdunk.com/apparels/503315 — Pikachu Seven-Eleven: PROMO[S-P 001](S-P Promotional cards) Unopened Pack
-         • https://snkrdunk.com/apparels/107355 — Pikachu[SNP-R 001/010](BREAK Evolution Pack "Raichu BREAK")
-         • https://snkrdunk.com/apparels/452538 — Kecleon P [e-P 001](Promotional Cards "PIKACHU THE MOVIE 2001 Officially Certified Special Card")
-         • https://snkrdunk.com/apparels/746154 — Pikachu on the Ball [001/005](Promotional Card)
-         • https://snkrdunk.com/apparels/433401 — Pikachu :1ED [PCG 001/015](Quick Construction Pack "Type Unit: Lightning")
-         • https://snkrdunk.com/apparels/386614 — Rowlet [SM0 001/004](Sun & Moon "Pikachu and New friends")
-         • https://snkrdunk.com/apparels/102309 — Pikachu: Mirror[SA-L 001/024](Starter Set V "Lightning")
-         • https://snkrdunk.com/apparels/451087 — Cherubi [Pt 001/015](Gift Box "Pikachu Deck")
-         • https://snkrdunk.com/apparels/433402 — Pikachu [PCG 001/015](Quick Construction Pack "Type Unit: Lightning")
-         • https://snkrdunk.com/apparels/409110 — Snivy [HSP 001/034](The Beginning Set DX "Pikachu Ver")
-         • https://snkrdunk.com/apparels/409109 — Snivy [HSP 001/034](The Beginning Set DX "Pikachu Ver")
-         • https://snkrdunk.com/apparels/396620 — Bulbasaur C [SMP2 001/024](Movie Special Pack "Detective Pikachu")
-       選定 URL : https://snkrdunk.com/apparels/141410
-Found SNKRDUNK Product ID: 141410
-  📍 [DEBUG] SNKRDUNK: 成功提取 100 筆價格紀錄 (包含全等級)
-  📍 [DEBUG] SNKRDUNK: 其中符合 'PSA 10' 的紀錄有 89 筆
-  📍 [DEBUG]   - [2026/03/09] PSA 10 : ¥8064
-  📍 [DEBUG]   - [2026/03/09] PSA 10 : ¥8064
-  📍 [DEBUG]   - [2026/03/09] PSA 10 : ¥7748
-  📍 [DEBUG]   - [2026/03/09] PSA 10 : ¥8064
-  📍 [DEBUG]   - [2026/03/09] PSA 10 : ¥8064
-  📍 [DEBUG]   ... (還有 84 筆不顯示)
-  [掃描中] PSA 10 Gem Mint 2022 Pokemon Japanese Sv Promo #001 Pikachu | Ask: $95.88 | PC(30d): $81.99 / SNKR(30d): $48.57
-
-🚨 [真正撿漏警報] PSA 10 Gem Mint 2022 Pokemon Japanese Sv Promo #001 Pikachu
-   => 賣家開價: $95.88 USD
-   🔥 觸發來源: PC($-13.89)！(門檻: $-30.0, 窗口: 30天) 請立刻注意把這張卡買下來！
-
-
-============================================================
-🔔 [終端機警報模式]
-[發現套利機會！] PSA 10 Gem Mint 2022 Pokemon Japanese Sv Promo #001 Pikachu
-開價: $95.88 USD
-PC 30天均價: $81.99 USD (38筆)
-SNKR 30天均價: $48.57 USD (89筆)
-觸發來源: 價格判定 (門檻: $-30.0)
-============================================================
-
-[09:33:25] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:34:26] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:35:29] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:36:30] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:37:35] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:38:37] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:39:41] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:40:42] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:41:43] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:42:52] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:43:54] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:44:54] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:45:55] 🔃 正在掃描市場新掛單...
-  └ 目前沒有發現新掛單或賣家改價，將繼續監控...
-[09:46:56] 🔃 正在掃描市場新掛單...

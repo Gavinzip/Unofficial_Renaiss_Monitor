@@ -624,16 +624,16 @@ def search_snkrdunk(en_name, jp_name, number, set_code, target_grade, is_alt_art
 
     terms_to_try = []
     
-    # [NEW] 優化搜尋順序：越短越精確的優先，避免過長的系列名稱干擾
-    if number_padded != "000":
-        if jp_name_query:
-            terms_to_try.append(f"{jp_name_query} {number_padded}")
-        terms_to_try.append(f"{en_name_query} {number_padded}")
-
+    # [NEW] 優化搜尋順序：如果有 Set Code，優先使用精確組合，否則才用廣泛搜尋
     if set_code and number_padded != "000":
         if jp_name_query:
             terms_to_try.append(f"{jp_name_query} {set_code} {number_padded}")
         terms_to_try.append(f"{en_name_query} {set_code} {number_padded}")
+
+    if number_padded != "000":
+        if jp_name_query:
+            terms_to_try.append(f"{jp_name_query} {number_padded}")
+        terms_to_try.append(f"{en_name_query} {number_padded}")
 
     # SNKRDUNK search is highly accurate with Set Code (e.g. "ピカチュウ S8a-G", "ピカチュウ SV-P")
     if set_code:

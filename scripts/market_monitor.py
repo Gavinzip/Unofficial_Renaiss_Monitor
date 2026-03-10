@@ -245,10 +245,15 @@ def extract_set_code_from_name(full_name):
     """從 full_name 提取 Set Code 短碼（如 S8b, sv2a, OP02, sv1s, SV5K, SV-P）
     優先順序：最長/最精確的匹配優先
     """
-    # 寶可夢 Promo 系列 (優先匹配，因為包含 dash)：SV-P, S-P, SM-P, XY-P 等
+    # 寶可夢 Promo 系列 (優先匹配，因包含 dash)：SV-P, S-P, SM-P, XY-P 等
     m = re.search(r'\b(SV-P|S-P|SM-P|XY-P|BW-P|DP-P|L-P|ADV-P|SV-G|S8a-G)\b', full_name, re.IGNORECASE)
     if m:
         return m.group(1).upper()
+        
+    # [FIX] 處理 "SV Promo" 或 "Sv Promo" 這種空格寫法，統一轉為 "SV-P"
+    m = re.search(r'\b(SV|S|SM|XY|BW|DP|L|ADV)\s+Promo\b', full_name, re.IGNORECASE)
+    if m:
+        return f"{m.group(1).upper()}-P"
     # 航海王格式：OP+數字, ST+數字, EB+數字 (必須在寶可夢之前，避免被 SV 吃掉)
     m = re.search(r'\b(OP\d+|ST\d+|EB\d+)\b', full_name, re.IGNORECASE)
     if m:
