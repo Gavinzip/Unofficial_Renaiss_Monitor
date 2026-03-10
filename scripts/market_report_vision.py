@@ -624,6 +624,12 @@ def search_snkrdunk(en_name, jp_name, number, set_code, target_grade, is_alt_art
 
     terms_to_try = []
     
+    # [NEW] 優化搜尋順序：越短越精確的優先，避免過長的系列名稱干擾
+    if number_padded != "000":
+        if jp_name_query:
+            terms_to_try.append(f"{jp_name_query} {number_padded}")
+        terms_to_try.append(f"{en_name_query} {number_padded}")
+
     if set_code and number_padded != "000":
         if jp_name_query:
             terms_to_try.append(f"{jp_name_query} {set_code} {number_padded}")
@@ -634,21 +640,8 @@ def search_snkrdunk(en_name, jp_name, number, set_code, target_grade, is_alt_art
         if jp_name_query:
             terms_to_try.append(f"{jp_name_query} {set_code}")
         terms_to_try.append(f"{en_name_query} {set_code}")
-        
-    if jp_name_query:
-        if number_padded != "000":
-            terms_to_try.append(f"{jp_name_query} {number_padded}")
             
-    if not terms_to_try and number_padded != "000":
-        if jp_name_query:
-            terms_to_try.append(f"{jp_name_query} {number_padded}")
-        
-        # SNKRDUNK fallback with full textual Set Name instead of Set Code
-        if set_name:
-            terms_to_try.append(f"{en_name_query} {set_name} {number_padded}")
-            
-        terms_to_try.append(f"{en_name_query} {number_padded}")
-        
+    # Fallback to just name if no number or set_code combinations yielded results
     if not terms_to_try:
         if jp_name_query:
             terms_to_try.append(jp_name_query)

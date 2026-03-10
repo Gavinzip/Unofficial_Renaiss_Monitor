@@ -315,6 +315,15 @@ def parse_renaiss_name(full_name):
     # 5. 清洗 card_name (去除雜訊字眼與版本字眼)
     if grade_m:
         card_name_candidate = card_name_candidate.replace(grade_m.group(0), "")
+    
+    # [FIX] 移除 redundant set_name 避免搜尋字串爆炸
+    if set_name:
+        # 嘗試移除 set_name 中已知的字眼，避免重複
+        _sn_clean = set_name.lower().strip()
+        _cn_clean = card_name_candidate.lower()
+        if _sn_clean in _cn_clean:
+             card_name_candidate = re.sub(re.escape(set_name), '', card_name_candidate, flags=re.IGNORECASE).strip()
+
     if set_code:
         card_name_candidate = re.sub(re.escape(set_code) + r'[^\s]*', '', card_name_candidate, flags=re.IGNORECASE).strip()
     card_name_candidate = re.sub(r'\b20\d{2}\b', '', card_name_candidate).strip()
@@ -636,15 +645,15 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
                     whitelist_triggered_rule = rule
                     break
         
-        if is_whitelisted:
+        if is_whitelisted and not debug_dir:
             is_cool, old_p = check_cooldown(name_grade_key, ask)
             if is_cool:
                 print(f"  [冷卻中] {full_name} | 現價: ${ask:.2f} | 上次報警: ${old_p:.2f} (1小時內且無過 5% 降幅，跳過通知)")
             else:
-                print(f"\n🌟 [白名單命中] {full_name}")
+                print(f"\\n🌟 [白名單命中] {full_name}")
                 print(f"   => 賣家開價: ${ask:.2f} USD")
-                cond_str = f" (價格 <= ${whitelist_triggered_rule['max_price']})" if whitelist_triggered_rule['max_price'] is not None else " (無條件)"
-                print(f"   🔥 你的追蹤清單命中這張卡{cond_str}，發送通知！\n")
+                cond_str = f" (價格 \u003c= ${whitelist_triggered_rule['max_price']})" if whitelist_triggered_rule['max_price'] is not None else " (無條件)"
+                print(f"   🔥 你的追蹤清單命中這張卡{cond_str}，發送通知！\\n")
                 
                 trigger_reason = f"WHITELIST 白名單命中{cond_str}"
                 send_discord_alert(full_name, ask, None, None, custom_trigger=trigger_reason, debug_mode=bool(debug_dir))
@@ -658,6 +667,10 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
                 SEEN_IDS[item_id] = ask
                 save_seen_id(item_id, ask)
             continue
+        
+        # [NEW] 如果在 Debug 且是白名單，我們繼續往下跑以產生 meta.json 和完整日誌
+        if is_whitelisted and debug_dir:
+             print(f"  [DEBUG] 白名單命中但繼續分析流程以產生 Log: {full_name}")
             
         # 1. 直接發動實時爬蟲 (市價查詢)
         company = full_name.split()[0] if "PSA" in full_name or "BGS" in full_name else "Unknown"
