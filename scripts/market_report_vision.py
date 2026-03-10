@@ -421,13 +421,23 @@ def search_pricecharting(name, number, set_code, target_grade, is_alt_art, categ
     queries_to_try = []
     final_set_code = set_code if set_code else suffix
     
-    if final_set_code:
+    # 1. 精確搜尋 (優先)：[卡名] [Set Code] [編號]
+    if final_set_code and number_clean != '0':
         queries_to_try.append(f"{name_query} {final_set_code} {number_clean}".replace(" ", "+"))
+
+    # 2. 廣泛搜尋：[卡名] [編號]
+    if number_clean != '0':
+        queries_to_try.append(f"{name_query} {number_clean}".replace(" ", "+"))
     
-    if set_name:
-        queries_to_try.append(f"{name_query} {set_name} {number_clean}".replace(" ", "+"))
-        
-    queries_to_try.append(f"{name_query} {number_clean}".replace(" ", "+"))
+    # 3. 系列備援：[卡名] [系列全名] [編號] (僅在沒找到時，且名稱不包含系列名時嘗試)
+    if set_name and number_clean != '0':
+        _sn_clean = set_name.lower().strip()
+        if _sn_clean not in name_query.lower():
+            queries_to_try.append(f"{name_query} {set_name} {number_clean}".replace(" ", "+"))
+
+    # 4. 基本搜尋：[卡名] [Set Code]
+    if final_set_code:
+        queries_to_try.append(f"{name_query} {final_set_code}".replace(" ", "+"))
 
     is_one_piece = category.lower() == "one piece"
     _debug_log(f"PriceCharting: 類別={category} ({'航海王模式' if is_one_piece else '寶可夢模式'})，共 {len(queries_to_try)} 種查詢方案: {queries_to_try}")
