@@ -377,7 +377,8 @@ def fetch_market_data():
                     "ask_price": clean_price(data.get("askPriceInUSDT")),
                     "fmv": clean_price(data.get("fmvPriceInUSD")),
                     "grade": f"{data.get('gradingCompany')} {data.get('grade')}",
-                    "attributes": data.get("attributes", [])
+                    "attributes": data.get("attributes", []),
+                    "image_url": data.get("frontImageUrl", "")
                 })
             except: pass
         return parsed_items
@@ -496,7 +497,7 @@ def fetch_and_analyze_realtime(item_id, full_name, grading_company, year, curren
     return (pc_avg, pc_count, pc_url), (snkr_avg_usd, snkr_count, snkr_url)
 
 
-def send_discord_alert(full_name, ask, pc_info, snkr_info, custom_trigger=None, debug_mode=False):
+def send_discord_alert(full_name, ask, pc_info, snkr_info, custom_trigger=None, debug_mode=False, image_url=None):
     """發送 Discord Webhook 通知 (含雙來源詳細數據)。未設定 Webhook 或開啟 debug_mode 時將輸出至終端機。"""
     
     pc_avg, pc_count, pc_url = pc_info if pc_info else (None, 0, None)
@@ -537,16 +538,19 @@ def send_discord_alert(full_name, ask, pc_info, snkr_info, custom_trigger=None, 
     if not DISCORD_WEBHOOK_URL:
         return
 
+    embed = {
+        "title": title_text,
+        "color": color_code,
+        "fields": fields,
+        "description": f"**{trigger_text}**\n\n{desc_str}"
+    }
+    if image_url and isinstance(image_url, str) and image_url.startswith("http"):
+        # Use thumbnail only to keep alert compact.
+        embed["thumbnail"] = {"url": image_url}
+
     payload = {
         "content": f"🚨 **[{'白名單秒殺警告' if is_whitelist else '真正撿漏警報'}]** {full_name}",
-        "embeds": [
-            {
-                "title": title_text,
-                "color": color_code,
-                "fields": fields,
-                "description": f"**{trigger_text}**\n\n{desc_str}"
-            }
-        ]
+        "embeds": [embed]
     }
     
     try:
@@ -661,7 +665,12 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
                 print(f"   🔥 你的追蹤清單命中這張卡{cond_str}，發送通知！\\n")
                 
                 trigger_reason = f"WHITELIST 白名單命中{cond_str}"
-                send_discord_alert(full_name, ask, None, None, custom_trigger=trigger_reason, debug_mode=bool(debug_dir))
+                send_discord_alert(
+                    full_name, ask, None, None,
+                    custom_trigger=trigger_reason,
+                    debug_mode=bool(debug_dir),
+                    image_url=item.get("image_url")
+                )
                 
                 # 更新報警歷史
                 SEEN_NAMES[name_grade_key] = {"last_time": now_ts, "last_price": ask}
@@ -711,7 +720,11 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
                 print(f"   🔥 觸發來源: {' & '.join(triggered_by)}！(門檻: ${PRICE_THRESHOLD}, 窗口: {WINDOW_DAYS}天) 請立刻注意把這張卡買下來！\n")
                 
                 # 發送 Discord Webhook
-                send_discord_alert(full_name, ask, pc_res, snkr_res, debug_mode=bool(debug_dir))
+                send_discord_alert(
+                    full_name, ask, pc_res, snkr_res,
+                    debug_mode=bool(debug_dir),
+                    image_url=item.get("image_url")
+                )
                 
                 # 更新報警歷史
                 SEEN_NAMES[name_grade_key] = {"last_time": now_ts, "last_price": ask}
