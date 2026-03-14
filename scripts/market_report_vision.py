@@ -247,6 +247,35 @@ def get_exchange_rate():
     except:
         return 150.0
 
+def _normalize_card_language(raw_value):
+    value = str(raw_value or "").strip().lower()
+    if not value:
+        return "UNKNOWN"
+    if value in ("en", "eng", "english", "英文", "英語", "英語版", "usa", "us"):
+        return "EN"
+    if value in ("jp", "ja", "jpn", "japanese", "日文", "日語", "日本語", "日版"):
+        return "JP"
+    return "UNKNOWN"
+
+def _has_pokemon_mega_feature(features_text):
+    text = str(features_text or "").lower()
+    mega_markers = [
+        "mega 進化卡面",
+        "mega進化卡面",
+        "mega evolution",
+        "mega-evolution",
+        "mega 進化",
+        "メガ進化",
+    ]
+    return any(marker in text for marker in mega_markers)
+
+def _title_has_en_marker(title):
+    title_l = str(title).lower()
+    en_markers = [
+        "[en]", "【en】", " english", "english version", "英語版", "英文版"
+    ]
+    return any(m in title_l for m in en_markers)
+
 def _fetch_pc_prices_from_url(product_url, md_content=None, skip_hi_res=False, target_grade="PSA 10"):
     """
     Given a PriceCharting product URL, fetch (if md_content is None) and parse it.
@@ -448,6 +477,7 @@ def _score_pricecharting_candidate(
     number_padded,
     number_denominator,
     set_code_slug,
+    mega_name_hint=False,
 ):
     slug = url.split('/')[-1].lower()
     slug_norm = _normalize_alnum_dash(slug)
@@ -499,6 +529,15 @@ def _score_pricecharting_candidate(
             score += 28
             reasons.append("denominator_trim")
 
+    # Pokemon-only hint: if features says this is a Mega evolution card,
+    # candidates explicitly containing mega/m naming get a ranking boost.
+    if mega_name_hint and (
+        _contains_token_boundary(slug_norm, "mega")
+        or re.search(r'(^|-)m-(?=[a-z0-9])', slug_norm)
+    ):
+        score += 60
+        reasons.append("mega_name_hint")
+
     return score, reasons
 
 
@@ -518,7 +557,7 @@ def filter_pricecharting_candidates(candidates):
         filtered.append(c)
     return filtered
 
-def search_pricecharting(name, number, set_code, target_grade, is_alt_art, category="Pokemon", is_flagship=False, return_candidates=False, set_name="", jp_name=""):
+def search_pricecharting(name, number, set_code, target_grade, is_alt_art, category="Pokemon", is_flagship=False, return_candidates=False, set_name="", jp_name="", mega_name_hint=False):
     # Basic Name cleaning (strip parentheses and normalize hyphens to spaces)
     name_query = re.sub(r'\(.*?\)', '', name).replace('-', ' ').strip()
     
@@ -704,6 +743,7 @@ def search_pricecharting(name, number, set_code, target_grade, is_alt_art, categ
                 number_padded=number_padded_pc,
                 number_denominator=number_denominator,
                 set_code_slug=set_code_slug,
+                mega_name_hint=mega_name_hint,
             )
             scored_urls.append((u, sc, why))
         scored_urls.sort(key=lambda x: x[1], reverse=True)
@@ -762,7 +802,7 @@ def search_pricecharting(name, number, set_code, target_grade, is_alt_art, categ
     
     return records, resolved_url, pc_img_url
 
-def search_snkrdunk(en_name, jp_name, number, set_code, target_grade, is_alt_art=False, card_language="JP", snkr_variant_kws=None, return_candidates=False, set_name=""):
+def search_snkrdunk(en_name, jp_name, number, set_code, target_grade, is_alt_art=False, card_language="UNKNOWN", snkr_variant_kws=None, return_candidates=False, set_name=""):
     # Strip prefix like "No." (e.g. "No.025" -> "25"), then apply lstrip('0')
     if '-' in number and re.search(r'[A-Z]+\d+-\d+', number):
         number_clean = number.split('-')[-1].lstrip('0')
@@ -947,6 +987,7 @@ def search_snkrdunk(en_name, jp_name, number, set_code, target_grade, is_alt_art
 
             ranked_matches.sort(key=lambda x: x[3], reverse=True)
             unique_matches = [(t, p, i) for t, p, i, _, _ in ranked_matches]
+            score_by_pid = {p: s for _, p, _, s, _ in ranked_matches}
             _debug_log(f"SNKRDUNK ranking top3: {[(t, p, s) for t, p, _, s, _ in ranked_matches[:3]]}")
 
             if return_candidates:
@@ -961,8 +1002,6 @@ def search_snkrdunk(en_name, jp_name, number, set_code, target_grade, is_alt_art
             # 三階段串聯過濾：Variant → Alt-Art/Normal → Language
             # 每一階段在上一階段的結果裡繼續篩選，不覆蓋
             # ─────────────────────────────────────────────────────────────────
-            en_markers = ["英語版", "[en]", "【en】"]
-            
             # ── Stage 1: Variant-specific filter (features-based, 最高優先) ──
             # snkr_variant_kws 由 process_single_image 從 features 解析並傳入
             # 例: ["l-p"] for Leader Parallel, ["sr-p"] for SR Parallel, ["コミパラ"] for Manga, ["フラッグシップ","フラシ"] for Flagship
@@ -981,30 +1020,28 @@ def search_snkrdunk(en_name, jp_name, number, set_code, target_grade, is_alt_art
                 selection_reason = f"Variant Filter ({_variant_kws})"
             working_set2 = working_set
             
-            # ── Stage 3: Language filter ───────────────────────────────────
-            if card_language == "EN":
-                stage3 = [(t, p, i) for t, p, i in working_set2
-                          if any(m in t.lower() for m in en_markers)]
-                if stage3:
-                    product_id = stage3[0][1]
-                    img_url = stage3[0][2]
-                    selection_reason += " + Language(EN)"
-                    _debug_log(f"  🌐 語言過濾選中英文版: [{product_id}]")
+            # ── Stage 3: Language tie-break ONLY ───────────────────────────
+            # 語言只在「同分平手」時介入，不做硬過濾，避免誤刪真正候選。
+            if working_set2:
+                product_id = working_set2[0][1]
+                img_url = working_set2[0][2]
+
+            top_score = max((score_by_pid.get(p, -10**9) for _, p, _ in working_set2), default=-10**9)
+            top_tied = [(t, p, i) for t, p, i in working_set2 if score_by_pid.get(p, -10**9) == top_score]
+            norm_lang = _normalize_card_language(card_language)
+            if len(top_tied) > 1 and norm_lang in ("EN", "JP"):
+                if norm_lang == "EN":
+                    lang_tied = [(t, p, i) for t, p, i in top_tied if _title_has_en_marker(t)]
                 else:
-                    product_id = working_set2[0][1]
-                    img_url = working_set2[0][2]
-            else:  # JP (default)
-                stage3 = [(t, p, i) for t, p, i in working_set2
-                          if not any(m in t.lower() for m in en_markers)]
-                if stage3:
-                    product_id = stage3[0][1]
-                    img_url = stage3[0][2]
-                    selection_reason += " + Language(JP)"
-                    _debug_log(f"  🌐 語言過濾選中日文版: [{product_id}]")
+                    lang_tied = [(t, p, i) for t, p, i in top_tied if not _title_has_en_marker(t)]
+
+                if lang_tied:
+                    product_id = lang_tied[0][1]
+                    img_url = lang_tied[0][2]
+                    selection_reason += f" + LanguageTieBreak({norm_lang})"
+                    _debug_log(f"  🌐 語言平手裁決 ({norm_lang}) 選中: [{product_id}]")
                 else:
-                    product_id = working_set2[0][1]
-                    img_url = working_set2[0][2]
-                    _debug_log(f"  🌐 語言過濾: 未找到日文版，使用 working_set2 首筆")
+                    _debug_log(f"  🌐 語言平手裁決: top tied {len(top_tied)} 筆，但無 {norm_lang} 標記，維持原排序首筆")
 
             _debug_step("SNKRDUNK", snkr_step, term, search_url,
             "OK",
@@ -1016,6 +1053,7 @@ def search_snkrdunk(en_name, jp_name, number, set_code, target_grade, is_alt_art
                 "number_denominator": number_denominator,
                 "set_code_slug": set_code_slug,
                 "is_alt_art": is_alt_art,
+                "card_language": _normalize_card_language(card_language),
                 "scored_top3": [(t, p, s) for t, p, _, s, _ in ranked_matches[:3]],
             })
             break
@@ -1106,7 +1144,8 @@ async def analyze_image_with_openai(image_path, api_key, lang="zh"):
   "features": "卡片特點 (必填。⚠️ 極度重要：請仔細觀察卡面是否有微小的罕貴度標示或異圖版本文字，如 'L-P', 'SR-P', 'SEC-P', 'Parallel', 'Alternate Art', 'Flagship' 等。如果有，【必須】寫入此欄位！並包含全圖、特殊工藝等，每一行請用 \\n 換行區隔，請務必使用『繁體中文』撰寫)",
   "collection_value": "收藏價值評估 (必填，開頭填寫 High / Medium / Low，後面白話文評論請務必使用『繁體中文』撰寫)",
   "competitive_freq": "競技頻率評估 (必填，開頭填寫 High / Medium / Low，後面白話文評論請務必使用『繁體中文』撰寫)",
-  "is_alt_art": "是否為漫畫背景(Manga/Comic)或異圖(Parallel)？布林值 true/false。請極度仔細觀察卡片的『背景』：如果背景是一格一格的【黑白漫畫分鏡】，請填 true；如果背景只有閃電、特效、或單純場景，就算它是 SEC 也是普通版，『必須』填 false！"
+  "is_alt_art": "是否為漫畫背景(Manga/Comic)或異圖(Parallel)？布林值 true/false。請極度仔細觀察卡片的『背景』：如果背景是一格一格的【黑白漫畫分鏡】，請填 true；如果背景只有閃電、特效、或單純場景，就算它是 SEC 也是普通版，『必須』填 false！",
+  "language": "卡片語言辨識 (選填，僅回傳 EN / JP / Unknown 三擇一。此欄位只作為 SNKRDUNK 最後平手時的 tie-break，不影響其他邏輯)"
 }"""
 
     payload = {
@@ -1187,7 +1226,8 @@ async def analyze_image_with_minimax(image_path, api_key, lang="zh"):
   "features": "卡片特點 (必填。⚠️ 極度重要：請仔細觀察卡面是否有微小的罕貴度標示或異圖版本文字，如 'L-P', 'SR-P', 'SEC-P', 'Parallel', 'Alternate Art', 'Flagship' 等。如果有，【必須】寫入此欄位！並包含全圖、特殊工藝等，每一行請用 \\n 換行區隔，請務必使用『繁體中文』撰寫)",
   "collection_value": "收藏價值評估 (必填，開頭填寫 High / Medium / Low，後面白話文評論請務必使用『繁體中文』撰寫)",
   "competitive_freq": "競技頻率評估 (必填，開頭填寫 High / Medium / Low，後面白話文評論請務必使用『繁體中文』撰寫)",
-  "is_alt_art": "是否為漫畫背景(Manga/Comic)或異圖(Parallel)？布林值 true/false。請極度仔細觀察卡片的『背景』：如果背景是一格一格的【黑白漫畫分鏡】，請填 true；如果背景只有閃電、特效、或單純場景，就算它是 SEC 也是普通版，『必須』填 false！"
+  "is_alt_art": "是否為漫畫背景(Manga/Comic)或異圖(Parallel)？布林值 true/false。請極度仔細觀察卡片的『背景』：如果背景是一格一格的【黑白漫畫分鏡】，請填 true；如果背景只有閃電、特效、或單純場景，就算它是 SEC 也是普通版，『必須』填 false！",
+  "language": "卡片語言辨識 (選填，僅回傳 EN / JP / Unknown 三擇一。此欄位只作為 SNKRDUNK 最後平手時的 tie-break，不影響其他邏輯)"
 }"""
 
     payload = {
@@ -1352,6 +1392,7 @@ async def process_single_image(image_path, api_key, out_dir=None, debug_session_
     # 若 features 明確提及旗艦賽或異圖關鍵字，以此為準覆蓋 is_alt_art。
     features_lower = features.lower() if features else ""
     is_flagship = any(kw in features_lower for kw in ["flagship", "旗艦賽", "flagship battle"])
+    mega_name_hint = (category.lower() == "pokemon") and _has_pokemon_mega_feature(features)
     if any(kw in features_lower for kw in [
         "leader parallel", "sr parallel", "sr-p", "l-p",
         "リーダーパラレル", "コミパラ", "パラレル",
@@ -1362,16 +1403,24 @@ async def process_single_image(image_path, api_key, out_dir=None, debug_session_
     if is_flagship:
         is_alt_art = True  # Flagship 也是一種特殊版本
         _debug_log(f"✨ features-based override: is_flagship=True (從 features 偵測到旗艦賽關鍵字)")
+    if mega_name_hint:
+        _debug_log("✨ features-based override: mega_name_hint=True (從 features 偵測到 Mega 進化卡面)")
     # ────────────────────────────────────────────────────────────
-    # ── Detect card language from features (航海王語言判定) ──
+    # ── Detect card language and variant hints for SNKRDUNK ──
     is_one_piece_cat = (category.lower() == "one piece")
-    card_language = "JP"  # Default for One Piece: Japanese
+    raw_language = card_info.get("language", card_info.get("card_language", card_info.get("lang", "")))
+    card_language = _normalize_card_language(raw_language)
     if is_one_piece_cat:
-        if any(kw in features_lower for kw in ["英文版", "english version", "[en]"]):
+        if card_language in ("EN", "JP"):
+            _debug_log(f"🌐 Language detected: {card_language} (從 AI language 欄位)")
+        elif any(kw in features_lower for kw in ["英文版", "english version", "[en]"]):
             card_language = "EN"
-            _debug_log(f"🌐 Language detected: EN (從 features 偵測到英文版)")
+            _debug_log("🌐 Language detected: EN (從 features 偵測到英文版)")
         else:
-            _debug_log(f"🌐 Language detected: JP (預設日文版)")
+            card_language = "UNKNOWN"
+            _debug_log("🌐 Language detected: UNKNOWN (無明確語言欄位，不啟用語言偏好)")
+    else:
+        card_language = "UNKNOWN"
     # ── Detect specific card variant for SNKRDUNK precision filter ──
     # 優先順序：Flagship > SR-P > L-P > Manga/コミパラ > 通用 Alt-Art
     snkr_variant_kws = []
@@ -1404,7 +1453,7 @@ async def process_single_image(image_path, api_key, out_dir=None, debug_session_
     loop = asyncio.get_running_loop()
     # Using independent copy_context().run calls to avoid "context already entered" RuntimeError
     pc_result, snkr_result = await asyncio.gather(
-        loop.run_in_executor(None, contextvars.copy_context().run, search_pricecharting, name, number, set_code, grade, is_alt_art, category, is_flagship),
+        loop.run_in_executor(None, contextvars.copy_context().run, search_pricecharting, name, number, set_code, grade, is_alt_art, category, is_flagship, False, "", jp_name, mega_name_hint),
         loop.run_in_executor(None, contextvars.copy_context().run, search_snkrdunk, name, jp_name, number, set_code, grade, is_alt_art, card_language, snkr_variant_kws),
     )
         
@@ -1626,6 +1675,7 @@ async def process_image_for_candidates(image_path, api_key, lang="zh"):
     
     features_lower = features.lower() if features else ""
     is_flagship = any(kw in features_lower for kw in ["flagship", "旗艦賽", "flagship battle"])
+    mega_name_hint = (category.lower() == "pokemon") and _has_pokemon_mega_feature(features)
     if any(kw in features_lower for kw in [
         "leader parallel", "sr parallel", "sr-p", "l-p",
         "リーダーパラレル", "コミパラ", "パラレル",
@@ -1636,9 +1686,11 @@ async def process_image_for_candidates(image_path, api_key, lang="zh"):
         is_alt_art = True
         
     is_one_piece_cat = (category.lower() == "one piece")
-    card_language = "JP"
-    if is_one_piece_cat and any(kw in features_lower for kw in ["英文版", "english version", "[en]"]):
-        card_language = "EN"
+    raw_language = card_info.get("language", card_info.get("card_language", card_info.get("lang", "")))
+    card_language = _normalize_card_language(raw_language)
+    if is_one_piece_cat and card_language == "UNKNOWN":
+        if any(kw in features_lower for kw in ["英文版", "english version", "[en]"]):
+            card_language = "EN"
         
     snkr_variant_kws = []
     if is_one_piece_cat and is_alt_art:
@@ -1655,7 +1707,7 @@ async def process_image_for_candidates(image_path, api_key, lang="zh"):
 
     loop = asyncio.get_running_loop()
     pc_result, snkr_result = await asyncio.gather(
-        loop.run_in_executor(None, contextvars.copy_context().run, search_pricecharting, name, number, set_code, grade, is_alt_art, category, is_flagship, True),
+        loop.run_in_executor(None, contextvars.copy_context().run, search_pricecharting, name, number, set_code, grade, is_alt_art, category, is_flagship, True, "", jp_name, mega_name_hint),
         loop.run_in_executor(None, contextvars.copy_context().run, search_snkrdunk, name, jp_name, number, set_code, grade, is_alt_art, card_language, snkr_variant_kws, True),
     )
     
