@@ -100,13 +100,13 @@ def load_seen_ids():
     result = {}
     if os.path.exists(SEEN_IDS_FILE):
         try:
-            with open(SEEN_IDS_FILE, "r") as f:
+            with open(SEEN_IDS_FILE, "r", encoding="utf-8") as f:
                 for line in f:
                     line = line.strip()
                     if not line: continue
                     parts = line.split(":")
                     if len(parts) == 2:
-                        iid, price = parts[0], float(parts[1])
+                        iid, price = parts[0], round(float(parts[1]), 2)
                         result[iid] = price
                     else:
                         # 相容舊有的純 ID 格式
@@ -136,8 +136,8 @@ def save_seen_names():
 def save_seen_id(item_id, price=0.0):
     """將單一 ID 與價格追加到檔案中（覆蓋或新增交給檔案追加，讀檔時會以最新為準）"""
     try:
-        with open(SEEN_IDS_FILE, "a") as f:
-            f.write(f"{item_id}:{price}\n")
+        with open(SEEN_IDS_FILE, "a", encoding="utf-8") as f:
+            f.write(f"{item_id}:{float(price):.2f}\n")
     except Exception as e:
         print(f"⚠️ 儲存 seen_ids 失敗: {e}")
 
@@ -366,8 +366,11 @@ def clean_price(v):
     if not v or v == "NO-OFFER-PRICE": return None
     v = v.replace("$n", "")
     if len(v) > 10:
-        return float(v) / (10**18)
-    return float(v) / 100
+        return round(float(v) / (10**18), 2)
+    return round(float(v) / 100, 2)
+
+def _price_to_cents(price):
+    return int(round(float(price) * 100))
 
 def fetch_market_data():
     url = f"https://www.renaiss.xyz/marketplace?_t={int(time.time())}"
@@ -616,11 +619,23 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
         for it in items:
             iid = it['item_id']
             ask = float(it['ask_price'])
-            if iid not in SEEN_IDS or SEEN_IDS[iid] != ask:
+            prev_ask = SEEN_IDS.get(iid)
+            if prev_ask is None:
                 new_items.append(it)
+                continue
+
+            ask_cents = _price_to_cents(ask)
+            prev_cents = _price_to_cents(prev_ask)
+            if ask_cents < prev_cents:
+                new_items.append(it)
+            elif ask_cents > prev_cents:
+                # 漲價只更新追蹤狀態，不觸發重新分析
+                SEEN_IDS[iid] = ask
+                save_seen_id(iid, ask)
+                print(f"  [價格上調] {it['name']} | ${float(prev_ask):.2f} -> ${ask:.2f} (不重報)")
                 
         if not new_items:
-            print(f"  └ 目前沒有發現新掛單或賣家改價，將繼續監控...")
+            print(f"  └ 目前沒有發現新掛單或降價，將繼續監控...")
             return 
         items = new_items
         print(f"\n[{datetime.now().strftime('%H:%M:%S')}] ✨ 發現 {len(items)} 筆新品或價格異動上架，開始檢查...")
@@ -643,8 +658,8 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
         item_id = item['item_id']
         ask = float(item['ask_price'])
         prev_ask = SEEN_IDS.get(item_id)
-        is_price_changed_item = (
-            prev_ask is not None and abs(float(prev_ask) - ask) > 1e-9
+        is_price_drop_item = (
+            prev_ask is not None and _price_to_cents(ask) < _price_to_cents(prev_ask)
         )
         full_name = item['name']
         grade = item['grade']
@@ -679,10 +694,10 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
         if is_whitelisted and not debug_dir:
             is_cool = False
             old_p = None
-            if is_price_changed_item:
+            if is_price_drop_item:
                 print(
-                    f"  [改價重報] {full_name} | ${float(prev_ask):.2f} -> ${ask:.2f} "
-                    f"(同 item_id 改價，略過冷卻)"
+                    f"  [降價重報] {full_name} | ${float(prev_ask):.2f} -> ${ask:.2f} "
+                    f"(同 item_id 降價，略過冷卻)"
                 )
             else:
                 is_cool, old_p = check_cooldown(name_grade_key, ask)
@@ -696,8 +711,8 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
                 print(f"   🔥 你的追蹤清單命中這張卡{cond_str}，發送通知！\\n")
                 
                 trigger_reason = f"WHITELIST 白名單命中{cond_str}"
-                if is_price_changed_item:
-                    trigger_reason += f" | 改價 ${float(prev_ask):.2f} -> ${ask:.2f}"
+                if is_price_drop_item:
+                    trigger_reason += f" | 降價 ${float(prev_ask):.2f} -> ${ask:.2f}"
                 send_discord_alert(
                     full_name, ask, None, None,
                     custom_trigger=trigger_reason,
@@ -742,10 +757,10 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
         if alert_pc or alert_snkr:
             is_cool = False
             old_p = None
-            if is_price_changed_item:
+            if is_price_drop_item:
                  print(
-                     f"  [改價重報] {full_name} | ${float(prev_ask):.2f} -> ${ask:.2f} "
-                     f"(同 item_id 改價，略過冷卻)"
+                     f"  [降價重報] {full_name} | ${float(prev_ask):.2f} -> ${ask:.2f} "
+                     f"(同 item_id 降價，略過冷卻)"
                  )
             else:
                 is_cool, old_p = check_cooldown(name_grade_key, ask)
@@ -773,7 +788,7 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
                 save_seen_names()
         
         # 標記為已見過並持久化 (含最新價格)
-        if item_id not in SEEN_IDS or SEEN_IDS[item_id] != float(ask):
+        if item_id not in SEEN_IDS or _price_to_cents(SEEN_IDS[item_id]) != _price_to_cents(ask):
             SEEN_IDS[item_id] = float(ask)
             save_seen_id(item_id, float(ask))
 
@@ -815,7 +830,7 @@ if __name__ == "__main__":
         for it in initial_items:
             iid = it['item_id']
             ask = float(it['ask_price'])
-            if iid not in SEEN_IDS or SEEN_IDS[iid] != ask:
+            if iid not in SEEN_IDS or _price_to_cents(SEEN_IDS[iid]) != _price_to_cents(ask):
                 SEEN_IDS[iid] = ask
                 save_seen_id(iid, ask)
                 new_count += 1
