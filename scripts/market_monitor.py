@@ -642,6 +642,10 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
 
         item_id = item['item_id']
         ask = float(item['ask_price'])
+        prev_ask = SEEN_IDS.get(item_id)
+        is_price_changed_item = (
+            prev_ask is not None and abs(float(prev_ask) - ask) > 1e-9
+        )
         full_name = item['name']
         grade = item['grade']
         name_grade_key = f"{full_name}_{grade}".lower()
@@ -673,7 +677,16 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
                     break
         
         if is_whitelisted and not debug_dir:
-            is_cool, old_p = check_cooldown(name_grade_key, ask)
+            is_cool = False
+            old_p = None
+            if is_price_changed_item:
+                print(
+                    f"  [改價重報] {full_name} | ${float(prev_ask):.2f} -> ${ask:.2f} "
+                    f"(同 item_id 改價，略過冷卻)"
+                )
+            else:
+                is_cool, old_p = check_cooldown(name_grade_key, ask)
+
             if is_cool:
                 print(f"  [冷卻中] {full_name} | 現價: ${ask:.2f} | 上次報警: ${old_p:.2f} (1小時內且無過 5% 降幅，跳過通知)")
             else:
@@ -683,6 +696,8 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
                 print(f"   🔥 你的追蹤清單命中這張卡{cond_str}，發送通知！\\n")
                 
                 trigger_reason = f"WHITELIST 白名單命中{cond_str}"
+                if is_price_changed_item:
+                    trigger_reason += f" | 改價 ${float(prev_ask):.2f} -> ${ask:.2f}"
                 send_discord_alert(
                     full_name, ask, None, None,
                     custom_trigger=trigger_reason,
@@ -725,7 +740,16 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
         print(f"  [掃描中] {full_name} | Ask: ${ask:.2f} | {' / '.join(log_parts) if log_parts else f'無{WINDOW_DAYS}天內數據'}")
 
         if alert_pc or alert_snkr:
-            is_cool, old_p = check_cooldown(name_grade_key, ask)
+            is_cool = False
+            old_p = None
+            if is_price_changed_item:
+                 print(
+                     f"  [改價重報] {full_name} | ${float(prev_ask):.2f} -> ${ask:.2f} "
+                     f"(同 item_id 改價，略過冷卻)"
+                 )
+            else:
+                is_cool, old_p = check_cooldown(name_grade_key, ask)
+
             if is_cool:
                  print(f"  [警報冷卻中] {full_name} 已滿足撿漏條件，但 1 小時內已發過通知且未顯著跌價，不重覆觸發。")
             else:

@@ -28,6 +28,7 @@ A high-performance, real-time monitoring tool designed to detect price gaps betw
 ### 1. Incremental Scanning (Efficiency)
 - The monitor fetches all listings from Renaiss but only performs expensive price crawls for **newly discovered IDs**.
 - **Persistence**: It maintains a `seen_ids.txt` file in the `scripts/` directory. Even after a restart, it will skip previously analyzed items to prevent alert spam.
+- **Price Change Re-alert**: If the same `item_id` changes price and still meets alert conditions, notification is re-triggered immediately (bypasses name-level cooldown).
 
 ### 2. Startup Test Mode
 - At launch, the monitor ignores the "seen" status for the **first 5 items** and forces a real-time crawl. This serves as an immediate functional test.
