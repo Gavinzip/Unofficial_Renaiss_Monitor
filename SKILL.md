@@ -12,7 +12,7 @@ A high-performance, real-time monitoring tool designed to detect price gaps betw
 ## 🚀 Quick Start for Agents
 
 1. **Environment Setup**:
-   Ensure `.env` is configured in the project root with `DISCORD_WEBHOOK_URL`.
+   Ensure `.env` is configured in the project root with Discord webhook settings.
    ```bash
    pip install -r requirements.txt
    ```
@@ -37,8 +37,11 @@ A high-performance, real-time monitoring tool designed to detect price gaps betw
 - **SNKRDUNK (SNKR)**: Uses native API for Japanese market prices, matching specific variants (Manga/Parallel/Special Card).
 
 ### 4. Alert Trigger
-- **Threshold**: Default is **$20 USD** profit potential.
-- **Logic**: `Alert = (PC_AVG - Ask >= $20) OR (SNKR_AVG - Ask >= $20)`.
+- **Threshold**: Controlled by `PRICE_THRESHOLD` (default: `-30.0`).
+- **Logic**: `Alert = (PC_AVG - Ask >= PRICE_THRESHOLD) OR (SNKR_AVG - Ask >= PRICE_THRESHOLD)`.
+- Example:
+  - `PRICE_THRESHOLD=20` means only alert when ask is at least `$20` below average.
+  - `PRICE_THRESHOLD=-30` means also allow "near-average" opportunities (up to `$30` above average).
 
 ### 5. Instant Whitelist Alerts
 - Automatically loads `scripts/whitelist.txt` on every cycle.
@@ -54,10 +57,12 @@ A high-performance, real-time monitoring tool designed to detect price gaps betw
 
 ### Troubleshooting
 - **Jina 429 Errors**: If the logs show 429 errors, the crawlers are being rate-limited. The script will automatically skip the item and retry in the next cycle.
-- **Missing Alerts**: Check if `DISCORD_WEBHOOK_URL` is set in the `.env` file. Verify `scripts/seen_ids.txt` to see if the item was already "seen".
+- **Missing Alerts**: Check if Discord webhook env vars are set in `.env` (`DISCORD_WEBHOOK_URL`, optional `DISCORD_WEBHOOK_URL_2`, or `DISCORD_WEBHOOK_URLS`). Verify `scripts/seen_ids.txt` to see if the item was already "seen".
 - **Clearing History**: Run `python3 scripts/market_monitor.py --clear-history` to empty `seen_ids.txt` and force the script to re-evaluate all listings.
 
 ## ⚙️ Configuration (.env)
-- `DISCORD_WEBHOOK_URL`: Target channel for alerts.
-- `PRICE_THRESHOLD`: Minimum profit to trigger an alert (default: 20.0).
+- `DISCORD_WEBHOOK_URL`: Primary target channel.
+- `DISCORD_WEBHOOK_URL_2`: Optional second Discord channel.
+- `DISCORD_WEBHOOK_URLS`: Optional multi-webhook list (comma/space/newline separated). All configured webhooks will be notified.
+- `PRICE_THRESHOLD`: Price-gap alert threshold (default: `-30.0`).
 - `WINDOW_DAYS`: Rolling average window in days (default: 30).

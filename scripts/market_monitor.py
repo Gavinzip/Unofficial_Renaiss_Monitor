@@ -22,7 +22,24 @@ DEFAULT_WINDOW_DAYS = 30                        # 價格計算窗口 (天)
 DEFAULT_PRICE_THRESHOLD = -30.0                  # 報警價差門檻 (USD) (預設 -30 代表接受高於均價 30 元以內的提示)
 # ---------------------------------------------------------
 
-DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL") or DEFAULT_DISCORD_WEBHOOK
+def _collect_webhook_urls(*raw_values):
+    """Collect webhook URLs from multiple env vars, dedupe, and keep order."""
+    urls = []
+    for raw in raw_values:
+        if not raw:
+            continue
+        for token in re.split(r"[\s,]+", str(raw).strip()):
+            t = token.strip()
+            if t and t not in urls:
+                urls.append(t)
+    return urls
+
+DISCORD_WEBHOOK_URL_LEGACY = os.getenv("DISCORD_WEBHOOK_URL") or DEFAULT_DISCORD_WEBHOOK
+DISCORD_WEBHOOK_URLS = _collect_webhook_urls(
+    DISCORD_WEBHOOK_URL_LEGACY,
+    os.getenv("DISCORD_WEBHOOK_URL_2"),
+    os.getenv("DISCORD_WEBHOOK_URLS"),
+)
 WINDOW_DAYS = int(os.getenv("WINDOW_DAYS") or DEFAULT_WINDOW_DAYS)
 PRICE_THRESHOLD = float(os.getenv("PRICE_THRESHOLD") or DEFAULT_PRICE_THRESHOLD)
 
@@ -525,7 +542,7 @@ def send_discord_alert(full_name, ask, pc_info, snkr_info, custom_trigger=None, 
     desc_str = "\n".join(desc_links) if desc_links else "無可用的參考連結"
 
     # 如果沒有配置 Webhook 或開啟了 debug_mode，改版輸出至終端機
-    if not DISCORD_WEBHOOK_URL or debug_mode:
+    if not DISCORD_WEBHOOK_URLS or debug_mode:
         print("\n" + "="*60)
         print("🔔 [終端機警報模式]")
         print(f"[{title_text}] {full_name}")
@@ -535,7 +552,7 @@ def send_discord_alert(full_name, ask, pc_info, snkr_info, custom_trigger=None, 
         print(f"{trigger_text}")
         print("="*60 + "\n")
         
-    if not DISCORD_WEBHOOK_URL:
+    if not DISCORD_WEBHOOK_URLS:
         return
 
     embed = {
@@ -553,10 +570,11 @@ def send_discord_alert(full_name, ask, pc_info, snkr_info, custom_trigger=None, 
         "embeds": [embed]
     }
     
-    try:
-        requests.post(DISCORD_WEBHOOK_URL, json=payload, timeout=10)
-    except Exception as e:
-        print(f"  ⚠️ Discord Webhook failed: {e}")
+    for webhook_url in DISCORD_WEBHOOK_URLS:
+        try:
+            requests.post(webhook_url, json=payload, timeout=10)
+        except Exception as e:
+            print(f"  ⚠️ Discord Webhook failed ({webhook_url[:40]}...): {e}")
 
 # LEGACY: background_idle_update removed for real-time focus
 
@@ -756,7 +774,10 @@ if __name__ == "__main__":
 
     print("啟動 Renaiss 極致「全實時」監控機器人 (現場抓取分析模式)...")
     print(f"⚙️  當前設定: 價差門檻=${PRICE_THRESHOLD} USD | 時間窗口={WINDOW_DAYS} 天")
-    print(f"🔔  Discord 通知: {'已開啟' if DISCORD_WEBHOOK_URL else '未開啟 (請設定 DISCORD_WEBHOOK_URL)'}")
+    if DISCORD_WEBHOOK_URLS:
+        print(f"🔔  Discord 通知: 已開啟 ({len(DISCORD_WEBHOOK_URLS)} 個 webhook)")
+    else:
+        print("🔔  Discord 通知: 未開啟 (請設定 DISCORD_WEBHOOK_URL 或 DISCORD_WEBHOOK_URLS)")
     
     # 💥 初始狀態初始化：載入持久化數據 + 同步目前市場掛單
     print("📡 正在初始化市場狀態...")
