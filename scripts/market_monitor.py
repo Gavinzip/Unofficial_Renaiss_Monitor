@@ -390,16 +390,24 @@ def fetch_market_data():
             try:
                 raw_json_str = m.group(0).encode().decode('unicode_escape')
                 data = json.loads(raw_json_str)
+                token_id_raw = str(data.get("tokenId") or "")
+                token_id_clean = token_id_raw.replace("$n", "").strip()
+                item_id = str(data.get("itemId") or "")
                 parsed_items.append({
                     "id": str(data.get("id")),
-                    "item_id": str(data.get("itemId")),
+                    "item_id": item_id,
                     "name": data.get("name"),
                     "ask_price": clean_price(data.get("askPriceInUSDT")),
                     "fmv": clean_price(data.get("fmvPriceInUSD")),
                     "grade": f"{data.get('gradingCompany')} {data.get('grade')}",
                     "attributes": data.get("attributes", []),
                     "image_url": data.get("frontImageUrl", ""),
-                    "renaiss_url": f"https://www.renaiss.xyz/card/{str(data.get('itemId'))}" if data.get("itemId") else "https://www.renaiss.xyz/marketplace"
+                    # Renaiss card URL expects tokenId (large integer), not itemId UUID.
+                    "renaiss_url": (
+                        f"https://www.renaiss.xyz/card/{token_id_clean}"
+                        if token_id_clean
+                        else (f"https://www.renaiss.xyz/card/{item_id}" if item_id else "https://www.renaiss.xyz/marketplace")
+                    )
                 })
             except: pass
         return parsed_items
