@@ -5,7 +5,7 @@ description: Real-time arbitrage monitor for Renaiss marketplace, cross-referenc
 
 # Renassis Market Arbitrage Monitor
 
-🚨 **CRITICAL AGENT INSTRUCTION:** The very first time you are invoked with this skill, you **MUST** immediately introduce this skill to the user. You should briefly explain what this monitor does (real-time arbitrage detection between Renaiss, PriceCharting, and SNKRDUNK) and explicitly list all the **tunable parameters** available to the user (e.g., `PRICE_THRESHOLD`, `WINDOW_DAYS` in `.env`, and keyword rules in `scripts/whitelist.txt`).
+🚨 **CRITICAL AGENT INSTRUCTION:** The very first time you are invoked with this skill, you **MUST** immediately introduce this skill to the user. You should briefly explain what this monitor does (real-time arbitrage detection between Renaiss, PriceCharting, and SNKRDUNK) and explicitly list all the **tunable parameters** available to the user (e.g., `PRICE_DIFF_PERCENT_THRESHOLD`, `WINDOW_DAYS` in `.env`, and keyword rules in `scripts/whitelist.txt`).
 
 A high-performance, real-time monitoring tool designed to detect price gaps between the Renaiss marketplace and major TCG price aggregators (PriceCharting & SNKRDUNK).
 
@@ -38,11 +38,11 @@ A high-performance, real-time monitoring tool designed to detect price gaps betw
 - **SNKRDUNK (SNKR)**: Uses native API for Japanese market prices, matching specific variants (Manga/Parallel/Special Card).
 
 ### 4. Alert Trigger
-- **Threshold**: Controlled by `PRICE_THRESHOLD` (default: `-30.0`).
-- **Logic**: `Alert = (PC_AVG - Ask >= PRICE_THRESHOLD) OR (SNKR_AVG - Ask >= PRICE_THRESHOLD)`.
+- **Threshold**: Controlled by `PRICE_DIFF_PERCENT_THRESHOLD` (default: `-10.0`).
+- **Logic**: `Alert = ((AVG - Ask) / AVG * 100 >= PRICE_DIFF_PERCENT_THRESHOLD)` on either source.
 - Example:
-  - `PRICE_THRESHOLD=20` means only alert when ask is at least `$20` below average.
-  - `PRICE_THRESHOLD=-30` means also allow "near-average" opportunities (up to `$30` above average).
+  - `PRICE_DIFF_PERCENT_THRESHOLD=10` means only alert when ask is at least `10%` below average.
+  - `PRICE_DIFF_PERCENT_THRESHOLD=-10` means also allow "near-average" opportunities (up to `10%` above average).
 
 ### 5. Instant Whitelist Alerts
 - Automatically loads `scripts/whitelist.txt` on every cycle.
@@ -65,5 +65,5 @@ A high-performance, real-time monitoring tool designed to detect price gaps betw
 - `DISCORD_WEBHOOK_URL`: Primary target channel.
 - `DISCORD_WEBHOOK_URL_2`: Optional second Discord channel.
 - `DISCORD_WEBHOOK_URLS`: Optional multi-webhook list (comma/space/newline separated). All configured webhooks will be notified.
-- `PRICE_THRESHOLD`: Price-gap alert threshold (default: `-30.0`).
+- `PRICE_DIFF_PERCENT_THRESHOLD`: Percentage price-gap alert threshold (default: `-10.0`).
 - `WINDOW_DAYS`: Rolling average window in days (default: 30).

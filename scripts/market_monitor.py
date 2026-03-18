@@ -19,7 +19,7 @@ load_dotenv(dotenv_path)
 # ---------------------------------------------------------
 DEFAULT_DISCORD_WEBHOOK = ""  # 在此填入 Webhook 網址
 DEFAULT_WINDOW_DAYS = 30                        # 價格計算窗口 (天)
-DEFAULT_PRICE_THRESHOLD = -30.0                  # 報警價差門檻 (USD) (預設 -30 代表接受高於均價 30 元以內的提示)
+DEFAULT_PRICE_DIFF_PERCENT_THRESHOLD = -10.0      # 報警價差門檻 (%)；+10=至少便宜10%才報，-10=高於均價10%內也可提示
 # ---------------------------------------------------------
 
 def _collect_webhook_urls(*raw_values):
@@ -41,7 +41,9 @@ DISCORD_WEBHOOK_URLS = _collect_webhook_urls(
     os.getenv("DISCORD_WEBHOOK_URLS"),
 )
 WINDOW_DAYS = int(os.getenv("WINDOW_DAYS") or DEFAULT_WINDOW_DAYS)
-PRICE_THRESHOLD = float(os.getenv("PRICE_THRESHOLD") or DEFAULT_PRICE_THRESHOLD)
+PRICE_DIFF_PERCENT_THRESHOLD = float(
+    os.getenv("PRICE_DIFF_PERCENT_THRESHOLD") or DEFAULT_PRICE_DIFF_PERCENT_THRESHOLD
+)
 
 # 📦 狀態管理：追蹤已處理過的掛單 ID
 SEEN_IDS_FILE = os.path.join(os.path.dirname(__file__), "seen_ids.txt")
@@ -544,7 +546,7 @@ def send_discord_alert(full_name, ask, pc_info, snkr_info, custom_trigger=None, 
 
     is_whitelist = "WHITELIST" in (custom_trigger or "")
     
-    trigger_text = custom_trigger if custom_trigger else f"觸發來源: 價格判定 (門檻: ${PRICE_THRESHOLD})"
+    trigger_text = custom_trigger if custom_trigger else f"觸發來源: 價格判定 (門檻: {PRICE_DIFF_PERCENT_THRESHOLD:+.1f}%)"
     title_text = "✨ 白名單指定卡片上架！" if is_whitelist else "發現套利機會！"
     color_code = 16766720 if is_whitelist else 16711680 # Gold for whitelist, red for arbitrage
 
@@ -756,8 +758,10 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
         snkr_avg, snkr_count, snkr_url = snkr_res
         
         # 2. 獨立判斷折扣 (只要其中一個來源符合就報警)
-        alert_pc = (pc_avg and (pc_avg - ask) >= PRICE_THRESHOLD)
-        alert_snkr = (snkr_avg and (snkr_avg - ask) >= PRICE_THRESHOLD)
+        pc_diff_pct = (((pc_avg - ask) / pc_avg) * 100.0) if pc_avg and pc_avg > 0 else None
+        snkr_diff_pct = (((snkr_avg - ask) / snkr_avg) * 100.0) if snkr_avg and snkr_avg > 0 else None
+        alert_pc = (pc_diff_pct is not None and pc_diff_pct >= PRICE_DIFF_PERCENT_THRESHOLD)
+        alert_snkr = (snkr_diff_pct is not None and snkr_diff_pct >= PRICE_DIFF_PERCENT_THRESHOLD)
         
         # 日誌輸出
         log_parts = []
@@ -780,12 +784,12 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
                  print(f"  [警報冷卻中] {full_name} 已滿足撿漏條件，但 1 小時內已發過通知且未顯著跌價，不重覆觸發。")
             else:
                 triggered_by = []
-                if alert_pc: triggered_by.append(f"PC(${(pc_avg-ask):.2f})")
-                if alert_snkr: triggered_by.append(f"SNKR(${(snkr_avg-ask):.2f})")
+                if alert_pc: triggered_by.append(f"PC({pc_diff_pct:+.1f}%, ${(pc_avg-ask):.2f})")
+                if alert_snkr: triggered_by.append(f"SNKR({snkr_diff_pct:+.1f}%, ${(snkr_avg-ask):.2f})")
                 
                 print(f"\n🚨 [真正撿漏警報] {full_name}")
                 print(f"   => 賣家開價: ${ask:.2f} USD")
-                print(f"   🔥 觸發來源: {' & '.join(triggered_by)}！(門檻: ${PRICE_THRESHOLD}, 窗口: {WINDOW_DAYS}天) 請立刻注意把這張卡買下來！\n")
+                print(f"   🔥 觸發來源: {' & '.join(triggered_by)}！(門檻: {PRICE_DIFF_PERCENT_THRESHOLD:+.1f}%, 窗口: {WINDOW_DAYS}天) 請立刻注意把這張卡買下來！\n")
                 
                 # 發送 Discord Webhook
                 send_discord_alert(
@@ -824,7 +828,7 @@ if __name__ == "__main__":
         print(f"🛠️ Debug 模式已開啟，詳細搜尋日誌將儲存至: {args.debug}")
 
     print("啟動 Renaiss 極致「全實時」監控機器人 (現場抓取分析模式)...")
-    print(f"⚙️  當前設定: 價差門檻=${PRICE_THRESHOLD} USD | 時間窗口={WINDOW_DAYS} 天")
+    print(f"⚙️  當前設定: 價差門檻={PRICE_DIFF_PERCENT_THRESHOLD:+.1f}% | 時間窗口={WINDOW_DAYS} 天")
     if DISCORD_WEBHOOK_URLS:
         print(f"🔔  Discord 通知: 已開啟 ({len(DISCORD_WEBHOOK_URLS)} 個 webhook)")
     else:
