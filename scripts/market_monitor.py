@@ -528,7 +528,19 @@ def fetch_and_analyze_realtime(item_id, full_name, grading_company, year, curren
     return (pc_avg, pc_count, pc_url), (snkr_avg_usd, snkr_count, snkr_url)
 
 
-def send_discord_alert(full_name, ask, pc_info, snkr_info, custom_trigger=None, debug_mode=False, image_url=None, renaiss_url=None):
+def send_discord_alert(
+    full_name,
+    ask,
+    pc_info,
+    snkr_info,
+    custom_trigger=None,
+    debug_mode=False,
+    image_url=None,
+    renaiss_url=None,
+    trigger_market=None,
+    trigger_profit_usd=None,
+    trigger_diff_pct=None,
+):
     """發送 Discord Webhook 通知 (含雙來源詳細數據)。未設定 Webhook 或開啟 debug_mode 時將輸出至終端機。"""
     
     pc_avg, pc_count, pc_url = pc_info if pc_info else (None, 0, None)
@@ -543,6 +555,12 @@ def send_discord_alert(full_name, ask, pc_info, snkr_info, custom_trigger=None, 
         fields.append({"name": "PC 30天均價", "value": f"${pc_avg:.2f} USD ({pc_count}筆)", "inline": True})
     if snkr_avg:
         fields.append({"name": "SNKR 30天均價", "value": f"${snkr_avg:.2f} USD ({snkr_count}筆)", "inline": True})
+    if trigger_market:
+        fields.append({"name": "觸發賣場", "value": trigger_market, "inline": True})
+    if trigger_diff_pct is not None:
+        fields.append({"name": "來源價差", "value": f"{float(trigger_diff_pct):+.1f}%", "inline": True})
+    if trigger_profit_usd is not None:
+        fields.append({"name": "預估可賺", "value": f"${max(float(trigger_profit_usd), 0.0):.2f} USD", "inline": True})
 
     is_whitelist = "WHITELIST" in (custom_trigger or "")
     
@@ -786,6 +804,10 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
                 triggered_by = []
                 if alert_pc: triggered_by.append(f"PC({pc_diff_pct:+.1f}%, ${(pc_avg-ask):.2f})")
                 if alert_snkr: triggered_by.append(f"SNKR({snkr_diff_pct:+.1f}%, ${(snkr_avg-ask):.2f})")
+                trigger_candidates = []
+                if alert_pc: trigger_candidates.append(("PriceCharting", pc_avg - ask, pc_diff_pct))
+                if alert_snkr: trigger_candidates.append(("SNKRDUNK", snkr_avg - ask, snkr_diff_pct))
+                best_market, best_diff_usd, best_diff_pct = max(trigger_candidates, key=lambda x: x[1]) if trigger_candidates else (None, None, None)
                 
                 print(f"\n🚨 [真正撿漏警報] {full_name}")
                 print(f"   => 賣家開價: ${ask:.2f} USD")
@@ -796,7 +818,10 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
                     full_name, ask, pc_res, snkr_res,
                     debug_mode=bool(debug_dir),
                     image_url=item.get("image_url"),
-                    renaiss_url=item.get("renaiss_url")
+                    renaiss_url=item.get("renaiss_url"),
+                    trigger_market=best_market,
+                    trigger_profit_usd=best_diff_usd,
+                    trigger_diff_pct=best_diff_pct
                 )
                 
                 # 更新報警歷史
