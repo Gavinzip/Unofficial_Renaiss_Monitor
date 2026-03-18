@@ -22,6 +22,7 @@ A high-performance, real-time monitoring tool designed to detect price gaps betw
    ```bash
    python3 scripts/market_monitor.py
    ```
+   Canonical entrypoint is only `scripts/market_monitor.py` (do not use a root-level `market_monitor.py`).
 
 ## 🧠 Core Logic & Capabilities
 
