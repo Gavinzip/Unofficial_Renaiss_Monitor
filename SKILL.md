@@ -59,7 +59,10 @@ A high-performance, real-time monitoring tool designed to detect price gaps betw
 ### Troubleshooting
 - **Jina 429 Errors**: If the logs show 429 errors, the crawlers are being rate-limited. The script will automatically skip the item and retry in the next cycle.
 - **Missing Alerts**: Check if Discord webhook env vars are set in `.env` (`DISCORD_WEBHOOK_URL`, optional `DISCORD_WEBHOOK_URL_2`, or `DISCORD_WEBHOOK_URLS`). Verify `scripts/seen_ids.txt` to see if the item was already "seen".
-- **Clearing History**: Run `python3 scripts/market_monitor.py --clear-history` to empty `seen_ids.txt` and force the script to re-evaluate all listings.
+- **Clearing History**:
+  - Run `python3 scripts/market_monitor.py --clear-history` to clear `seen_ids.txt` (ID/price seen-state) and then exit immediately.
+  - On the next normal launch (`python3 scripts/market_monitor.py`), the monitor performs startup test mode and force-scans the first 5 marketplace listings again.
+  - Note: `--clear-history` only clears `seen_ids.txt`; name-level cooldown history (`scripts/seen_names.json`) is kept.
 
 ## ⚙️ Configuration (.env)
 - `DISCORD_WEBHOOK_URL`: Primary target channel.
