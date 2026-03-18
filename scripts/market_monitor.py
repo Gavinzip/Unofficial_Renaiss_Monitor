@@ -398,7 +398,8 @@ def fetch_market_data():
                     "fmv": clean_price(data.get("fmvPriceInUSD")),
                     "grade": f"{data.get('gradingCompany')} {data.get('grade')}",
                     "attributes": data.get("attributes", []),
-                    "image_url": data.get("frontImageUrl", "")
+                    "image_url": data.get("frontImageUrl", ""),
+                    "renaiss_url": f"https://www.renaiss.xyz/card/{str(data.get('itemId'))}" if data.get("itemId") else "https://www.renaiss.xyz/marketplace"
                 })
             except: pass
         return parsed_items
@@ -517,7 +518,7 @@ def fetch_and_analyze_realtime(item_id, full_name, grading_company, year, curren
     return (pc_avg, pc_count, pc_url), (snkr_avg_usd, snkr_count, snkr_url)
 
 
-def send_discord_alert(full_name, ask, pc_info, snkr_info, custom_trigger=None, debug_mode=False, image_url=None):
+def send_discord_alert(full_name, ask, pc_info, snkr_info, custom_trigger=None, debug_mode=False, image_url=None, renaiss_url=None):
     """發送 Discord Webhook 通知 (含雙來源詳細數據)。未設定 Webhook 或開啟 debug_mode 時將輸出至終端機。"""
     
     pc_avg, pc_count, pc_url = pc_info if pc_info else (None, 0, None)
@@ -540,6 +541,7 @@ def send_discord_alert(full_name, ask, pc_info, snkr_info, custom_trigger=None, 
     color_code = 16766720 if is_whitelist else 16711680 # Gold for whitelist, red for arbitrage
 
     desc_links = []
+    if renaiss_url: desc_links.append(f"[🛒 Renaiss]({renaiss_url})")
     if pc_url: desc_links.append(f"[🔗 PriceCharting]({pc_url})")
     if snkr_url: desc_links.append(f"[🔗 SNKRDUNK]({snkr_url})")
     desc_str = "\n".join(desc_links) if desc_links else "無可用的參考連結"
@@ -717,7 +719,8 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
                     full_name, ask, None, None,
                     custom_trigger=trigger_reason,
                     debug_mode=bool(debug_dir),
-                    image_url=item.get("image_url")
+                    image_url=item.get("image_url"),
+                    renaiss_url=item.get("renaiss_url")
                 )
                 
                 # 更新報警歷史
@@ -780,7 +783,8 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
                 send_discord_alert(
                     full_name, ask, pc_res, snkr_res,
                     debug_mode=bool(debug_dir),
-                    image_url=item.get("image_url")
+                    image_url=item.get("image_url"),
+                    renaiss_url=item.get("renaiss_url")
                 )
                 
                 # 更新報警歷史
