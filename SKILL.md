@@ -73,8 +73,24 @@ A high-performance, real-time monitoring tool designed to detect price gaps betw
 - `DISCORD_WEBHOOK_URL`: Primary target channel.
 - `DISCORD_WEBHOOK_URL_2`: Optional second Discord channel.
 - `DISCORD_WEBHOOK_URLS`: Optional multi-webhook list (comma/space/newline separated). All configured webhooks will be notified.
+- `DISCORD_WEBHOOK_URL_NOMARKET_ERROR`: Discord webhook for "no market data found" alerts (sent when both PriceCharting and SNKRDUNK return no data).
 - `PRICE_DIFF_PERCENT_THRESHOLD`: Percentage price-gap alert threshold (default: `-10.0`).
 - `WINDOW_DAYS`: Rolling average window in days (default: 30).
+
+### 🔄 Card Suffix Fallback Search
+When searching for cards with type suffixes (e.g., `-Holo`, `-Full Art`, `-Reverse Holo`, `-1st Edition`, `-PSA 10`), the system automatically:
+1. First attempts search with the full name including suffix
+2. If no exact name+number match found, strips the suffix and retries
+3. Validates that results strictly match both name AND number
+4. If validation fails, no result is included
+
+This handles cases like "Shedinja-Holo #6" where PriceCharting lists the card as just "shedinja-6".
+
+### 📊 No Market Data Notification
+When both PriceCharting AND SNKRDUNK return no data for a card, a special notification is sent to `DISCORD_WEBHOOK_URL_NOMARKET_ERROR` containing:
+- Card name, number, series, grade, language
+- Renaiss listing link
+- Image link (if available)
 
 ---
 
