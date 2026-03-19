@@ -40,6 +40,7 @@ DISCORD_WEBHOOK_URLS = _collect_webhook_urls(
     os.getenv("DISCORD_WEBHOOK_URL_2"),
     os.getenv("DISCORD_WEBHOOK_URLS"),
 )
+DISCORD_WEBHOOK_URL_NOMARKET = os.getenv("DISCORD_WEBHOOK_URL_NOMARKET_ERROR", "")
 WINDOW_DAYS = int(os.getenv("WINDOW_DAYS") or DEFAULT_WINDOW_DAYS)
 PRICE_DIFF_PERCENT_THRESHOLD = float(
     os.getenv("PRICE_DIFF_PERCENT_THRESHOLD") or DEFAULT_PRICE_DIFF_PERCENT_THRESHOLD
@@ -609,6 +610,61 @@ def send_discord_alert(
         except Exception as e:
             print(f"  ⚠️ Discord Webhook failed ({webhook_url[:40]}...): {e}")
 
+def send_no_market_data_notification(full_name, item_url=None, image_url=None, attributes=None):
+    """當無法取得市場資料時，發送通知到專用 Webhook。"""
+    if not DISCORD_WEBHOOK_URL_NOMARKET:
+        return
+
+    fields = [
+        {"name": "卡片名稱", "value": full_name, "inline": False},
+    ]
+    
+    if attributes:
+        if attributes.get("card_number"):
+            fields.append({"name": "編號", "value": str(attributes.get("card_number")), "inline": True})
+        if attributes.get("set_name"):
+            fields.append({"name": "系列", "value": attributes.get("set_name"), "inline": True})
+        if attributes.get("grade"):
+            fields.append({"name": "等級", "value": attributes.get("grade"), "inline": True})
+        if attributes.get("language"):
+            lang_map = {"EN": "🇺🇸 英文", "JP": "🇯🇵 日文", "UNKNOWN": "❓未知"}
+            fields.append({"name": "語言", "value": lang_map.get(attributes.get("language"), attributes.get("language")), "inline": True})
+        
+        search_name = attributes.get("search_name", full_name)
+        search_number = attributes.get("card_number", "")
+        if search_name != full_name:
+            fields.append({"name": "搜尋名稱", "value": search_name, "inline": False})
+    
+    desc_parts = []
+    if item_url:
+        desc_parts.append(f"[🛒 Renaiss]({item_url})")
+    if image_url:
+        desc_parts.append(f"[🖼️ 圖片]({image_url})")
+    desc_parts.append(f"⚠️ **PriceCharting** 和 **SNKRDUNK** 都找不到市場資料")
+    desc_str = "\n".join(desc_parts) if desc_parts else "無連結"
+
+    embed = {
+        "title": "⚠️ 未找到市場資料",
+        "color": 16728359,
+        "fields": fields,
+        "description": f"**{full_name}** 的市場行情無法取得，請人工確認。\n\n{desc_str}"
+    }
+    
+    payload = {
+        "content": f"⚠️ **[未找到市場資料]** {full_name}",
+        "embeds": [embed]
+    }
+    
+    print(f"  ⚠️ 發送「未找到市場資料」通知到 Discord...")
+    try:
+        response = requests.post(DISCORD_WEBHOOK_URL_NOMARKET, json=payload, timeout=10)
+        if response.status_code == 204:
+            print(f"  ✅ Discord 通知已發送")
+        else:
+            print(f"  ⚠️ Discord 回應: {response.status_code} - {response.text[:100]}")
+    except Exception as e:
+        print(f"  ⚠️ NoMarket Discord Webhook failed: {e}")
+
 # LEGACY: background_idle_update removed for real-time focus
 
 
@@ -786,6 +842,15 @@ def run_monitor_cycle(limit=None, force_process=False, debug_dir=None):
         if pc_avg: log_parts.append(f"PC({WINDOW_DAYS}d): ${pc_avg:.2f}")
         if snkr_avg: log_parts.append(f"SNKR({WINDOW_DAYS}d): ${snkr_avg:.2f}")
         print(f"  [掃描中] {full_name} | Ask: ${ask:.2f} | {' / '.join(log_parts) if log_parts else f'無{WINDOW_DAYS}天內數據'}")
+
+        # 如果兩個來源都沒有市場資料，發送通知
+        if not pc_avg and not snkr_avg:
+            send_no_market_data_notification(
+                full_name,
+                item_url=item.get("renaiss_url"),
+                image_url=item.get("image_url"),
+                attributes=item.get("attributes")
+            )
 
         if alert_pc or alert_snkr:
             is_cool = False

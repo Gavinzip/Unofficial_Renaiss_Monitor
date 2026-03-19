@@ -557,6 +557,24 @@ def filter_pricecharting_candidates(candidates):
         filtered.append(c)
     return filtered
 
+def _strip_card_type_suffix(name):
+    """移除卡面類型後綴，如 -Holo, -Reverse Holo, -Full Art, -1st Edition, -SP, -Premium, -Mega, -EX, -V, -VMAX, -VSTAR, -G X, -Premium Collection 等"""
+    suffixes = [
+        r'[- ]holo', r'[- ]reverse\s*holo', r'[- ]full\s*art', r'[- ]1st\s*edition',
+        r'[- ]premium', r'[- ]sp', r'[- ]mega', r'[- ]ex(?:\s*f?oil)?', r'[- ]v(?:\s*max|\s*star)?',
+        r'[- ]gx(?:\s*ult?ra)?', r'[- ]gx\s*ult?r?a', r'[- ]ultra', r'[- ]rainbow',
+        r'[- ]secret\s*rare', r'[- ]shiny\s*holo', r'[- ]shiny', r'[- ]trainer\s*gallery',
+        r'[- ]amazing', r'[- ]prime', r'[- ]legend', r'[- ]special', r'[- ]promo',
+        r'[- ]alternate\s*art', r'[- ]alternate', r'[- ]illustration\s*rare',
+        r'[- ]hyper\s*rare', r'[- ]super\s*rare', r'[- ]ace\s*rare', r'[- ]double\s*rare',
+        r'[- ]perfect', r'[- ]gem\s*mint', r'[- ]psa\s*\d+', r'[- ]bgs\s*\d+',
+        r'[- ]cgc\s*\d+', r'[- ]sgc\s*\d+', r'[- ]jewel', r'[- ]case',
+    ]
+    result = name
+    for suffix in suffixes:
+        result = re.sub(rf'\s*{suffix}\s*$', '', result, flags=re.IGNORECASE).strip()
+    return result
+
 def search_pricecharting(name, number, set_code, target_grade, is_alt_art, category="Pokemon", is_flagship=False, return_candidates=False, set_name="", jp_name="", mega_name_hint=False):
     # Basic Name cleaning (strip parentheses and normalize hyphens to spaces)
     name_query = re.sub(r'\(.*?\)', '', name).replace('-', ' ').strip()
@@ -599,10 +617,6 @@ def search_pricecharting(name, number, set_code, target_grade, is_alt_art, categ
         _sn_clean = set_name.lower().strip()
         if _sn_clean not in name_query.lower():
             queries_to_try.append(f"{name_query} {set_name} {number_clean}".replace(" ", "+"))
-
-    # 4. 基本搜尋：[卡名] [Set Code]
-    if final_set_code:
-        queries_to_try.append(f"{name_query} {final_set_code}".replace(" ", "+"))
 
     is_one_piece = category.lower() == "one piece"
     _debug_log(f"PriceCharting: 類別={category} ({'航海王模式' if is_one_piece else '寶可夢模式'})，共 {len(queries_to_try)} 種查詢方案: {queries_to_try}")
@@ -722,13 +736,123 @@ def search_pricecharting(name, number, set_code, target_grade, is_alt_art, categ
 
         # 合併：先確保至少匹配，再進入分數排序
         valid_urls = matching_both + matching_name + matching_number
-                
-        if not valid_urls:
-            _debug_step("PriceCharting", pc_step + 1,
+        
+        stripped_name_query = _strip_card_type_suffix(name_query)
+        has_suffix_to_strip = stripped_name_query != name_query
+        
+        _debug_log(f"  📊 [PC] 匹配結果：matching_both={len(matching_both)}, matching_name={len(matching_name)}, matching_number={len(matching_number)}, has_suffix={has_suffix_to_strip}")
+        
+        if not matching_both and has_suffix_to_strip:
+            _debug_log(f"  ⚡ [PC] 沒有符合名稱+編號的 URL，且偵測到後綴，嘗試移除後綴：'{name_query}' → '{stripped_name_query}'")
+            
+            stripped_slug = re.sub(r'[^a-zA-Z0-9]', '-', stripped_name_query.lower()).strip('-')
+            
+            def _strict_name_match(slug):
+                if not stripped_slug:
+                    return False
+                return stripped_slug in slug
+
+            retry_queries = []
+            if final_set_code and number_clean != '0':
+                retry_queries.append(f"{stripped_name_query} {final_set_code} {number_clean}".replace(" ", "+"))
+            if number_clean != '0':
+                retry_queries.append(f"{stripped_name_query} {number_clean}".replace(" ", "+"))
+            if set_name and number_clean != '0':
+                _sn_clean = set_name.lower().strip()
+                if _sn_clean not in stripped_name_query.lower():
+                    retry_queries.append(f"{stripped_name_query} {set_name} {number_clean}".replace(" ", "+"))
+
+            retry_md_content = ""
+            retry_search_url = ""
+            retry_step = 0
+            
+            for rq in retry_queries:
+                retry_step += 1
+                retry_search_url = f"https://www.pricecharting.com/search-products?q={rq}&type=prices"
+                _debug_log(f"  🔄 [PC Retry {retry_step}]: 查詢='{rq}' URL={retry_search_url}")
+                retry_md_content = fetch_jina_markdown(retry_search_url)
+                if retry_md_content and ("Search Results" in retry_md_content or "Your search for" in retry_md_content or "PriceCharting" in retry_md_content):
+                    _debug_step("PriceCharting", f"{pc_step}+Retry{retry_step}", rq, retry_search_url,
+                                "OK", reason="備援搜尋成功，繼續解析")
+                    break
+                else:
+                    _debug_step("PriceCharting", f"{pc_step}+Retry{retry_step}", rq, retry_search_url,
+                                "NO_RESULTS", reason="備援搜尋無結果，嘗試下一個")
+
+            if not retry_md_content:
+                _debug_step("PriceCharting", f"{pc_step}+1",
+                            f"name_slug={name_slug!r}, number={number_clean!r}",
+                            search_url, "NO_MATCH",
+                            candidate_urls=urls,
+                            reason=f"所有 URL 不符合，且備援搜尋 ('{stripped_name_query}') 也無結果")
+                print(f"DEBUG: No PC product URL matched, retry with stripped name '{stripped_name_query}' also failed.")
+                return None, None, None
+
+            retry_urls = re.findall(r'(https://www\.pricecharting\.com/game/[^/]+/[^" )\]]+)', retry_md_content)
+            retry_urls = list(dict.fromkeys(retry_urls))
+            _debug_log(f"  🔍 [PC Retry]: 提取到 {len(retry_urls)} 個候選 URL")
+
+            retry_matching_both = []
+            retry_matching_name = []
+            retry_matching_number = []
+
+            for u in retry_urls:
+                u_end = u.split('/')[-1].lower()
+                has_name = _strict_name_match(u_end)
+                has_num = _num_match(u_end)
+
+                if is_one_piece:
+                    has_set = _set_match(u_end)
+                    if has_name and has_num and has_set:
+                        retry_matching_both.append(u)
+                        _debug_log(f"  ✅ [PC Retry OP] 名稱+編號+Set: {u}")
+                    elif has_name:
+                        retry_matching_name.append(u)
+                        _debug_log(f"  🔶 [PC Retry OP] 只符合名稱: {u}")
+                    else:
+                        _debug_log(f"  ❌ [PC Retry OP] URL 不符合: {u}")
+                else:
+                    if has_name and has_num:
+                        retry_matching_both.append(u)
+                        _debug_log(f"  ✅ [PC Retry PKM] 名稱+編號: {u}")
+                    elif has_name:
+                        retry_matching_name.append(u)
+                        _debug_log(f"  🔶 [PC Retry PKM] 只符合名稱: {u}")
+                    elif has_num:
+                        retry_matching_number.append(u)
+                        _debug_log(f"  🔷 [PC Retry PKM] 只符合編號: {u}")
+                    else:
+                        _debug_log(f"  ❌ [PC Retry PKM] URL 不符合: {u}")
+
+            retry_valid = retry_matching_both + retry_matching_name + retry_matching_number
+            
+            if not retry_valid:
+                _debug_step("PriceCharting", f"{pc_step}+Retry",
+                            f"stripped_name={stripped_name_query!r}",
+                            retry_search_url, "NO_MATCH",
+                            candidate_urls=retry_urls,
+                            reason=f"備援搜尋的所有 URL 均不符合嚴格名稱匹配 '{stripped_slug}' 或編號 '{number_clean}'")
+                print(f"DEBUG: Retry found URLs but none matched stripped name '{stripped_slug}' or number '{number_clean}'.")
+                return None, None, None
+
+            urls = retry_urls
+            md_content = retry_md_content
+            search_url = retry_search_url
+            pc_step = f"{pc_step}+Retry"
+            matching_both = retry_matching_both
+            matching_name = retry_matching_name
+            matching_number = retry_matching_number
+            name_slug = stripped_slug
+            name_slug_alt = ""
+            name_query = stripped_name_query
+            valid_urls = matching_both + matching_name + matching_number
+            _debug_log(f"  📋 [PC] 備援成功，使用嚴格匹配：stripped_slug={stripped_slug!r}, 有效URLs={len(retry_valid)}")
+        elif not valid_urls:
+            _debug_step("PriceCharting", f"{pc_step}+1",
                         f"name_slug={name_slug!r}, number={number_clean!r}",
                         search_url, "NO_MATCH",
                         candidate_urls=urls,
-                        reason=f"所有 {len(urls)} 個候選 URL 均不符合卡片名稱或編號，放棄")
+                        reason=f"所有 {len(urls)} 個候選 URL 均不符合卡片名稱或編號，且無後綴可移除，放棄")
             print(f"DEBUG: No PC product URL matched the card name '{name}' or number '{number_clean}'.")
             return None, None, None
 
@@ -776,7 +900,7 @@ def search_pricecharting(name, number, set_code, target_grade, is_alt_art, categ
                     selection_reason = "Alt-Art Filter (偵測到 Manga/Alternate-Art/SP 關鍵字)"
                     break
         
-        _debug_step("PriceCharting", pc_step + 1,
+        _debug_step("PriceCharting", f"{pc_step}+1",
                     f"is_alt_art={is_alt_art}, name_slug={name_slug!r}, number={number_clean!r}",
                     search_url, "OK",
                     candidate_urls=urls,
@@ -787,11 +911,17 @@ def search_pricecharting(name, number, set_code, target_grade, is_alt_art, categ
                            "matching_number": matching_number,
                            "scored_top3": [(u, s) for u, s, _ in scored_urls[:3]]})
         print(f"DEBUG: Selected PC product URL: {product_url} ({selection_reason})")
-        records, resolved_url, pc_img_url = _fetch_pc_prices_from_url(product_url, target_grade=target_grade)
+        print(f"DEBUG: About to call _fetch_pc_prices_from_url...")
+        try:
+            records, resolved_url, pc_img_url = _fetch_pc_prices_from_url(product_url, target_grade=target_grade)
+            print(f"DEBUG: _fetch_pc_prices_from_url returned records={len(records)}")
+        except Exception as e:
+            print(f"DEBUG: _fetch_pc_prices_from_url failed: {e}")
+            raise
     else:
         print(f"DEBUG: Landed directly on PC product page")
         product_url = search_url
-        _debug_step("PriceCharting", pc_step + 1, "", product_url,
+        _debug_step("PriceCharting", f"{pc_step}+1", "", product_url,
                     "OK", reason="直接落在商品頁面，跳過 URL 篩選")
                     
         if return_candidates:
@@ -832,18 +962,6 @@ def search_snkrdunk(en_name, jp_name, number, set_code, target_grade, is_alt_art
         if jp_name_query:
             terms_to_try.append(f"{jp_name_query} {number_padded}")
         terms_to_try.append(f"{en_name_query} {number_padded}")
-
-    # SNKRDUNK search is highly accurate with Set Code (e.g. "ピカチュウ S8a-G", "ピカチュウ SV-P")
-    if set_code:
-        if jp_name_query:
-            terms_to_try.append(f"{jp_name_query} {set_code}")
-        terms_to_try.append(f"{en_name_query} {set_code}")
-            
-    # Fallback to just name if no number or set_code combinations yielded results
-    if not terms_to_try:
-        if jp_name_query:
-            terms_to_try.append(jp_name_query)
-        terms_to_try.append(en_name_query)
     
     _debug_log(f"SNKRDUNK: 共 {len(terms_to_try)} 種查詢方案: {terms_to_try}")
 
