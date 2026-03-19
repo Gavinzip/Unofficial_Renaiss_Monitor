@@ -1,11 +1,15 @@
 ---
 name: renassis-market-arbitrage-monitor
-description: Real-time arbitrage monitor for Renaiss marketplace, cross-referencing PriceCharting and SNKRDUNK.
+description: Real-time arbitrage monitor for Renaiss marketplace + Twitter/X news aggregator. Cross-references PriceCharting and SNKRDUNK for market data, monitors Twitter accounts for Pokemon TCG news and sends AI-summarized alerts to Discord.
 ---
 
 # Renassis Market Arbitrage Monitor
 
-🚨 **CRITICAL AGENT INSTRUCTION:** The very first time you are invoked with this skill, you **MUST** immediately introduce this skill to the user. You should briefly explain what this monitor does (real-time arbitrage detection between Renaiss, PriceCharting, and SNKRDUNK) and explicitly list all the **tunable parameters** available to the user (e.g., `PRICE_DIFF_PERCENT_THRESHOLD`, `WINDOW_DAYS` in `.env`, and keyword rules in `scripts/whitelist.txt`).
+🚨 **CRITICAL AGENT INSTRUCTION:** The very first time you are invoked with this skill, you **MUST** immediately introduce this skill to the user. You should briefly explain what this monitor does:
+1. **Real-time arbitrage detection** between Renaiss, PriceCharting, and SNKRDUNK
+2. **Twitter/X news monitoring** - monitors Pokemon TCG Twitter accounts and sends AI-summarized Discord alerts
+
+Also explicitly list all the **tunable parameters** available to the user (e.g., `PRICE_DIFF_PERCENT_THRESHOLD`, `WINDOW_DAYS`, `TWITTER_ACCOUNTS`, `TWITTER_CHECK_INTERVAL` in `.env`, and keyword rules in `scripts/whitelist.txt`).
 
 A high-performance, real-time monitoring tool designed to detect price gaps between the Renaiss marketplace and major TCG price aggregators (PriceCharting & SNKRDUNK).
 
@@ -71,3 +75,84 @@ A high-performance, real-time monitoring tool designed to detect price gaps betw
 - `DISCORD_WEBHOOK_URLS`: Optional multi-webhook list (comma/space/newline separated). All configured webhooks will be notified.
 - `PRICE_DIFF_PERCENT_THRESHOLD`: Percentage price-gap alert threshold (default: `-10.0`).
 - `WINDOW_DAYS`: Rolling average window in days (default: 30).
+
+---
+
+# 🐦 Twitter/X News Monitor
+
+Separate monitoring module for tracking Pokemon TCG news from Twitter/X accounts. Uses Jina AI to bypass anti-scraping and MiniMax to generate Chinese summaries.
+
+## 🚀 Quick Start for Twitter Monitor
+
+```bash
+# Single run
+python3 scripts/twitter_monitor.py
+
+# Background mode (runs every 30 minutes by default)
+nohup python3 -u scripts/twitter_monitor.py > twitter_monitor.log 2>&1 &
+```
+
+## 🧠 Core Logic & Capabilities
+
+### 1. Jina AI Content Fetching
+- Uses `https://r.jina.ai/https://x.com/{username}` to fetch Twitter content
+- Bypasses most anti-scraping protections
+- Fetches latest 5-6 tweets per account per cycle
+
+### 2. Tweet Deduplication
+- Maintains `scripts/seen_tweets.json` to track processed tweet IDs
+- Only alerts on NEW tweets since last check
+- Stores last 100 tweet IDs per account
+
+### 3. MiniMax AI Summarization
+- Generates Chinese (Traditional) summaries of new tweets
+- Extracts key Pokemon TCG news points
+- Falls back to raw content if API key not set
+
+### 4. Discord Notification
+- Sends formatted Embed messages to `DISCORD_WEBHOOK_URL_TWITTER`
+- Includes: summary, source link, timestamp, tweet count
+
+## ⚙️ Twitter Monitor Configuration (.env)
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `DISCORD_WEBHOOK_URL_TWITTER` | Discord channel for Twitter alerts | (required) |
+| `TWITTER_ACCOUNTS` | Comma-separated usernames (without @) | `pokegetinfomain` |
+| `TWITTER_CHECK_INTERVAL` | Minutes between checks | `30` |
+| `MINIMAX_API_KEY` | For AI summarization | (optional) |
+
+**Example `.env` additions:**
+```bash
+DISCORD_WEBHOOK_URL_TWITTER="https://discord.com/api/webhooks/xxx/yyy"
+TWITTER_ACCOUNTS="pokegetinfomain,PokeGetInfoMain"
+TWITTER_CHECK_INTERVAL=30
+MINIMAX_API_KEY="your_key_here"
+```
+
+## 🛠 Agent Operational Guidance
+
+### Logs Interpretation
+- `🔍 Checking @username...`: Currently fetching tweets
+- `✨ Found N new tweet(s)!`: New content detected
+- `✅ Sent to Discord!`: Successfully notified
+- `⚠️ Failed to send to Discord`: Webhook error (check URL)
+
+### Troubleshooting
+- **No tweets detected**: Check if `seen_tweets.json` exists, delete to reset
+- **MiniMax errors**: Verify `MINIMAX_API_KEY` is set correctly
+- **Discord not working**: Confirm `DISCORD_WEBHOOK_URL_TWITTER` is valid
+
+### Adding New Accounts
+Edit `TWITTER_ACCOUNTS` in `.env`:
+```bash
+TWITTER_ACCOUNTS="pokegetinfomain,other_account,third_account"
+```
+
+## 📋 Available Scripts Summary
+
+| Script | Purpose | Run Frequency |
+|--------|---------|---------------|
+| `scripts/market_monitor.py` | Renaiss arbitrage detection | Continuous (5min loop) |
+| `scripts/twitter_monitor.py` | Twitter news monitoring | Continuous (30min loop) |
+| `scripts/market_report_vision.py` | Image analysis engine | On-demand |
