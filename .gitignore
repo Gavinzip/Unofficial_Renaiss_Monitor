@@ -1,5 +1,6 @@
 # Environment
 .env
+SERVER_ENV_BACKUP.md
 
 # Python cache
 __pycache__/
