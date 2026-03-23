@@ -442,6 +442,12 @@ def _extract_number_denominator(number_text):
     return m.group(0) if m else ""
 
 
+def _extract_pc_set_slug(url):
+    """Extract PriceCharting set slug from /game/<set-slug>/<card-slug> URL."""
+    m = re.search(r'/game/([^/]+)/', str(url or "").lower())
+    return m.group(1) if m else ""
+
+
 def _title_number_match(title_text, number_clean, number_padded):
     """
     Match card number by numerator-first logic.
@@ -603,20 +609,38 @@ def search_pricecharting(name, number, set_code, target_grade, is_alt_art, categ
     # Try with set code or suffix first
     queries_to_try = []
     final_set_code = set_code if set_code else suffix
+    set_name_norm = _normalize_alnum_dash(set_name)
+    name_query_norm = _normalize_alnum_dash(name_query)
+    is_pokemon_celebrations = (
+        category.lower() == "pokemon"
+        and (
+            "pokemon-celebrations" in set_name_norm
+            or ("pokemon" in set_name_norm and "celebrations" in set_name_norm)
+            or "celebrations" in set_name_norm
+            or "pokemon-celebrations" in name_query_norm
+        )
+    )
+    if is_pokemon_celebrations:
+        _debug_log("PriceCharting: 啟用 Pokemon Celebrations 特判（避免誤選 Pokemon Promo）")
     
     # 1. 精確搜尋 (優先)：[卡名] [Set Code] [編號]
     if final_set_code and number_clean != '0':
         queries_to_try.append(f"{name_query} {final_set_code} {number_clean}".replace(" ", "+"))
 
-    # 2. 廣泛搜尋：[卡名] [編號]
+    # 2. Celebrations 特判：在廣泛搜尋前優先帶入系列名
+    if is_pokemon_celebrations and set_name and number_clean != '0':
+        queries_to_try.append(f"{name_query} {set_name} {number_clean}".replace(" ", "+"))
+
+    # 3. 廣泛搜尋：[卡名] [編號]
     if number_clean != '0':
         queries_to_try.append(f"{name_query} {number_clean}".replace(" ", "+"))
     
-    # 3. 系列備援：[卡名] [系列全名] [編號] (僅在沒找到時，且名稱不包含系列名時嘗試)
+    # 4. 系列備援：[卡名] [系列全名] [編號] (僅在沒找到時，且名稱不包含系列名時嘗試)
     if set_name and number_clean != '0':
         _sn_clean = set_name.lower().strip()
         if _sn_clean not in name_query.lower():
             queries_to_try.append(f"{name_query} {set_name} {number_clean}".replace(" ", "+"))
+    queries_to_try = list(dict.fromkeys(queries_to_try))
 
     is_one_piece = category.lower() == "one piece"
     _debug_log(f"PriceCharting: 類別={category} ({'航海王模式' if is_one_piece else '寶可夢模式'})，共 {len(queries_to_try)} 種查詢方案: {queries_to_try}")
@@ -869,6 +893,14 @@ def search_pricecharting(name, number, set_code, target_grade, is_alt_art, categ
                 set_code_slug=set_code_slug,
                 mega_name_hint=mega_name_hint,
             )
+            if is_pokemon_celebrations:
+                set_slug = _extract_pc_set_slug(u)
+                if "celebrations" in set_slug:
+                    sc += 140
+                    why.append("celebrations_set_boost")
+                if "promo" in set_slug and "celebrations" not in set_slug:
+                    sc -= 150
+                    why.append("promo_set_penalty")
             scored_urls.append((u, sc, why))
         scored_urls.sort(key=lambda x: x[1], reverse=True)
         ranked_urls = [u for u, _, _ in scored_urls]
