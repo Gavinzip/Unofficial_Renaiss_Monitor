@@ -255,6 +255,8 @@ def _normalize_card_language(raw_value):
         return "EN"
     if value in ("jp", "ja", "jpn", "japanese", "日文", "日語", "日本語", "日版"):
         return "JP"
+    if value in ("kr", "ko", "kor", "korean", "韓文", "韓語", "韓文版", "韓国語", "韓國語"):
+        return "KR"
     return "UNKNOWN"
 
 def _has_pokemon_mega_feature(features_text):
@@ -275,6 +277,14 @@ def _title_has_en_marker(title):
         "[en]", "【en】", " english", "english version", "英語版", "英文版"
     ]
     return any(m in title_l for m in en_markers)
+
+
+def _title_has_kr_marker(title):
+    title_l = str(title).lower()
+    kr_markers = [
+        "[kr]", "【kr】", " korean", "korean version", "韓文版", "韓語版", "韓国語", "韓國語"
+    ]
+    return any(m in title_l for m in kr_markers)
 
 def _fetch_pc_prices_from_url(product_url, md_content=None, skip_hi_res=False, target_grade="PSA 10"):
     """
@@ -446,6 +456,39 @@ def _extract_pc_set_slug(url):
     """Extract PriceCharting set slug from /game/<set-slug>/<card-slug> URL."""
     m = re.search(r'/game/([^/]+)/', str(url or "").lower())
     return m.group(1) if m else ""
+
+
+def _extract_release_hint(text):
+    src = str(text or "").strip()
+    if not src:
+        return ""
+    src = re.sub(r"^\s*(19|20)\d{2}\s*[-–—]\s*", "", src).strip()
+    src = src.replace("_", " ").replace("/", " ").replace("|", " ")
+    src = re.sub(r"\s+", " ", src).strip()
+    return src
+
+
+def _build_pc_set_name_hint(card_info, card_language="UNKNOWN"):
+    """Build set-name hint for PriceCharting query when language-specific routing is needed."""
+    category = str(card_info.get("category", "Pokemon") or "Pokemon").strip().lower()
+    if category != "pokemon":
+        return ""
+
+    raw_set_name = str(card_info.get("set_name", "") or "").strip()
+    release_hint = _extract_release_hint(card_info.get("release_info", ""))
+    base = raw_set_name or release_hint
+    if not base:
+        return ""
+
+    if str(card_language or "").upper() == "KR":
+        lower = base.lower()
+        if "korean" in lower:
+            return base if "pokemon" in lower else f"Pokemon {base}"
+        if lower.startswith("pokemon "):
+            return re.sub(r'(?i)^pokemon\s+', 'Pokemon Korean ', base, count=1).strip()
+        return f"Pokemon Korean {base}"
+
+    return base
 
 
 def _title_number_match(title_text, number_clean, number_padded):
@@ -622,20 +665,34 @@ def search_pricecharting(name, number, set_code, target_grade, is_alt_art, categ
     )
     if is_pokemon_celebrations:
         _debug_log("PriceCharting: 啟用 Pokemon Celebrations 特判（避免誤選 Pokemon Promo）")
+    is_pokemon_korean = (
+        category.lower() == "pokemon"
+        and (
+            "pokemon-korean" in set_name_norm
+            or ("pokemon" in set_name_norm and "korean" in set_name_norm)
+            or "korean" in set_name_norm
+        )
+    )
+    if is_pokemon_korean:
+        _debug_log("PriceCharting: 啟用 Pokemon Korean 特判（韓文卡優先 Korean 系列）")
     
-    # 1. 精確搜尋 (優先)：[卡名] [Set Code] [編號]
+    # 1. Korean 特判：優先帶入系列全名（例如 Pokemon Korean Eevee Heroes）
+    if is_pokemon_korean and set_name and number_clean != '0':
+        queries_to_try.append(f"{name_query} {set_name} {number_clean}".replace(" ", "+"))
+
+    # 2. 精確搜尋 (優先)：[卡名] [Set Code] [編號]
     if final_set_code and number_clean != '0':
         queries_to_try.append(f"{name_query} {final_set_code} {number_clean}".replace(" ", "+"))
 
-    # 2. Celebrations 特判：在廣泛搜尋前優先帶入系列名
+    # 3. Celebrations 特判：在廣泛搜尋前優先帶入系列名
     if is_pokemon_celebrations and set_name and number_clean != '0':
         queries_to_try.append(f"{name_query} {set_name} {number_clean}".replace(" ", "+"))
 
-    # 3. 廣泛搜尋：[卡名] [編號]
+    # 4. 廣泛搜尋：[卡名] [編號]
     if number_clean != '0':
         queries_to_try.append(f"{name_query} {number_clean}".replace(" ", "+"))
     
-    # 4. 系列備援：[卡名] [系列全名] [編號] (僅在沒找到時，且名稱不包含系列名時嘗試)
+    # 5. 系列備援：[卡名] [系列全名] [編號] (僅在沒找到時，且名稱不包含系列名時嘗試)
     if set_name and number_clean != '0':
         _sn_clean = set_name.lower().strip()
         if _sn_clean not in name_query.lower():
@@ -901,6 +958,14 @@ def search_pricecharting(name, number, set_code, target_grade, is_alt_art, categ
                 if "promo" in set_slug and "celebrations" not in set_slug:
                     sc -= 150
                     why.append("promo_set_penalty")
+            if is_pokemon_korean:
+                set_slug = _extract_pc_set_slug(u)
+                if "korean" in set_slug:
+                    sc += 140
+                    why.append("korean_set_boost")
+                if "japanese" in set_slug and "korean" not in set_slug:
+                    sc -= 130
+                    why.append("japanese_set_penalty")
             scored_urls.append((u, sc, why))
         scored_urls.sort(key=lambda x: x[1], reverse=True)
         ranked_urls = [u for u, _, _ in scored_urls]
@@ -952,7 +1017,26 @@ def search_pricecharting(name, number, set_code, target_grade, is_alt_art, categ
             raise
     else:
         print(f"DEBUG: Landed directly on PC product page")
-        product_url = search_url
+        direct_urls = re.findall(r'(https://www\.pricecharting\.com/game/[^/]+/[^" )\]]+)', md_content or "")
+        direct_urls = list(dict.fromkeys(direct_urls))
+        product_url = direct_urls[0] if direct_urls else search_url
+        if direct_urls:
+            _debug_log(f"PriceCharting: 直接頁面解析到商品 URL -> {product_url}")
+        else:
+            # Fallback: ask origin directly; PriceCharting often redirects search URL to canonical /game URL.
+            try:
+                resp = requests.get(
+                    search_url,
+                    timeout=20,
+                    allow_redirects=True,
+                    headers={"User-Agent": "Mozilla/5.0"},
+                )
+                final_url = str(getattr(resp, "url", "") or "")
+                if "/game/" in final_url:
+                    product_url = final_url
+                    _debug_log(f"PriceCharting: 透過 HTTP redirect 解析到商品 URL -> {product_url}")
+            except Exception as e:
+                _debug_log(f"PriceCharting: redirect 解析 canonical URL 失敗: {e}")
         _debug_step("PriceCharting", f"{pc_step}+1", "", product_url,
                     "OK", reason="直接落在商品頁面，跳過 URL 篩選")
                     
@@ -960,7 +1044,10 @@ def search_pricecharting(name, number, set_code, target_grade, is_alt_art, categ
             # If the main app expects candidate URLs, wrap the direct match as a candidate
             return filter_pricecharting_candidates([f"{product_url} — {name}"]), None, None
             
-        records, resolved_url, pc_img_url = _fetch_pc_prices_from_url(product_url, md_content=md_content, target_grade=target_grade)
+        if product_url != search_url:
+            records, resolved_url, pc_img_url = _fetch_pc_prices_from_url(product_url, target_grade=target_grade)
+        else:
+            records, resolved_url, pc_img_url = _fetch_pc_prices_from_url(product_url, md_content=md_content, target_grade=target_grade)
     
     return records, resolved_url, pc_img_url
 
@@ -1179,11 +1266,16 @@ def search_snkrdunk(en_name, jp_name, number, set_code, target_grade, is_alt_art
             top_score = max((score_by_pid.get(p, -10**9) for _, p, _ in working_set2), default=-10**9)
             top_tied = [(t, p, i) for t, p, i in working_set2 if score_by_pid.get(p, -10**9) == top_score]
             norm_lang = _normalize_card_language(card_language)
-            if len(top_tied) > 1 and norm_lang in ("EN", "JP"):
+            if len(top_tied) > 1 and norm_lang in ("EN", "JP", "KR"):
                 if norm_lang == "EN":
                     lang_tied = [(t, p, i) for t, p, i in top_tied if _title_has_en_marker(t)]
+                elif norm_lang == "KR":
+                    lang_tied = [(t, p, i) for t, p, i in top_tied if _title_has_kr_marker(t)]
                 else:
-                    lang_tied = [(t, p, i) for t, p, i in top_tied if not _title_has_en_marker(t)]
+                    lang_tied = [
+                        (t, p, i) for t, p, i in top_tied
+                        if (not _title_has_en_marker(t) and not _title_has_kr_marker(t))
+                    ]
 
                 if lang_tied:
                     product_id = lang_tied[0][1]
@@ -1295,7 +1387,7 @@ async def analyze_image_with_openai(image_path, api_key, lang="zh"):
   "collection_value": "收藏價值評估 (必填，開頭填寫 High / Medium / Low，後面白話文評論請務必使用『繁體中文』撰寫)",
   "competitive_freq": "競技頻率評估 (必填，開頭填寫 High / Medium / Low，後面白話文評論請務必使用『繁體中文』撰寫)",
   "is_alt_art": "是否為漫畫背景(Manga/Comic)或異圖(Parallel)？布林值 true/false。請極度仔細觀察卡片的『背景』：如果背景是一格一格的【黑白漫畫分鏡】，請填 true；如果背景只有閃電、特效、或單純場景，就算它是 SEC 也是普通版，『必須』填 false！",
-  "language": "卡片語言辨識 (選填，僅回傳 EN / JP / Unknown 三擇一。此欄位只作為 SNKRDUNK 最後平手時的 tie-break，不影響其他邏輯)"
+  "language": "卡片語言辨識 (選填，僅回傳 EN / JP / KR / Unknown 四擇一。此欄位只作為 SNKRDUNK 最後平手時的 tie-break，不影響其他邏輯)"
 }"""
 
     payload = {
@@ -1377,7 +1469,7 @@ async def analyze_image_with_minimax(image_path, api_key, lang="zh"):
   "collection_value": "收藏價值評估 (必填，開頭填寫 High / Medium / Low，後面白話文評論請務必使用『繁體中文』撰寫)",
   "competitive_freq": "競技頻率評估 (必填，開頭填寫 High / Medium / Low，後面白話文評論請務必使用『繁體中文』撰寫)",
   "is_alt_art": "是否為漫畫背景(Manga/Comic)或異圖(Parallel)？布林值 true/false。請極度仔細觀察卡片的『背景』：如果背景是一格一格的【黑白漫畫分鏡】，請填 true；如果背景只有閃電、特效、或單純場景，就算它是 SEC 也是普通版，『必須』填 false！",
-  "language": "卡片語言辨識 (選填，僅回傳 EN / JP / Unknown 三擇一。此欄位只作為 SNKRDUNK 最後平手時的 tie-break，不影響其他邏輯)"
+  "language": "卡片語言辨識 (選填，僅回傳 EN / JP / KR / Unknown 四擇一。此欄位只作為 SNKRDUNK 最後平手時的 tie-break，不影響其他邏輯)"
 }"""
 
     payload = {
@@ -1561,16 +1653,29 @@ async def process_single_image(image_path, api_key, out_dir=None, debug_session_
     raw_language = card_info.get("language", card_info.get("card_language", card_info.get("lang", "")))
     card_language = _normalize_card_language(raw_language)
     if is_one_piece_cat:
-        if card_language in ("EN", "JP"):
+        if card_language in ("EN", "JP", "KR"):
             _debug_log(f"🌐 Language detected: {card_language} (從 AI language 欄位)")
         elif any(kw in features_lower for kw in ["英文版", "english version", "[en]"]):
             card_language = "EN"
             _debug_log("🌐 Language detected: EN (從 features 偵測到英文版)")
+        elif any(kw in features_lower for kw in ["韓文版", "韓語版", "korean version", "[kr]"]):
+            card_language = "KR"
+            _debug_log("🌐 Language detected: KR (從 features 偵測到韓文版)")
         else:
             card_language = "UNKNOWN"
             _debug_log("🌐 Language detected: UNKNOWN (無明確語言欄位，不啟用語言偏好)")
     else:
-        card_language = "UNKNOWN"
+        if card_language == "KR":
+            _debug_log("🌐 Language detected: KR (非航海王韓文卡，啟用 KR tie-break)")
+        elif any(kw in features_lower for kw in ["韓文版", "韓語版", "korean version", "[kr]"]):
+            card_language = "KR"
+            _debug_log("🌐 Language detected: KR (非航海王，從 features 偵測到韓文版)")
+        else:
+            card_language = "UNKNOWN"
+    pc_set_name_hint = _build_pc_set_name_hint(card_info, card_language)
+    skip_snkr_for_korean = (category.lower() == "pokemon" and card_language == "KR")
+    if skip_snkr_for_korean:
+        _debug_log("🛑 SNKRDUNK 已停用：韓文 Pokemon 卡改為僅查 PriceCharting")
     # ── Detect specific card variant for SNKRDUNK precision filter ──
     # 優先順序：Flagship > SR-P > L-P > Manga/コミパラ > 通用 Alt-Art
     snkr_variant_kws = []
@@ -1599,13 +1704,35 @@ async def process_single_image(image_path, api_key, out_dir=None, debug_session_
     # fetch_jina_markdown 內的 _jina_lock (threading.Lock) + _jina_requests_queue 是
     # module-level 全域變數，所有 thread 共用同一份，thread-safe 排隊機制依然完整生效。
     print("--------------------------------------------------")
-    print(f"🌐 正在從網路(PC & SNKRDUNK)抓取市場行情 (異圖/特殊版: {is_alt_art})...")
+    if skip_snkr_for_korean:
+        print(f"🌐 正在從網路(PriceCharting only)抓取市場行情 (韓文卡已略過 SNKRDUNK, 異圖/特殊版: {is_alt_art})...")
+    else:
+        print(f"🌐 正在從網路(PC & SNKRDUNK)抓取市場行情 (異圖/特殊版: {is_alt_art})...")
     loop = asyncio.get_running_loop()
     # Using independent copy_context().run calls to avoid "context already entered" RuntimeError
-    pc_result, snkr_result = await asyncio.gather(
-        loop.run_in_executor(None, contextvars.copy_context().run, search_pricecharting, name, number, set_code, grade, is_alt_art, category, is_flagship, False, "", jp_name, mega_name_hint),
-        loop.run_in_executor(None, contextvars.copy_context().run, search_snkrdunk, name, jp_name, number, set_code, grade, is_alt_art, card_language, snkr_variant_kws),
-    )
+    if skip_snkr_for_korean:
+        pc_result = await loop.run_in_executor(
+            None,
+            contextvars.copy_context().run,
+            search_pricecharting,
+            name,
+            number,
+            set_code,
+            grade,
+            is_alt_art,
+            category,
+            is_flagship,
+            False,
+            pc_set_name_hint,
+            jp_name,
+            mega_name_hint,
+        )
+        snkr_result = None
+    else:
+        pc_result, snkr_result = await asyncio.gather(
+            loop.run_in_executor(None, contextvars.copy_context().run, search_pricecharting, name, number, set_code, grade, is_alt_art, category, is_flagship, False, pc_set_name_hint, jp_name, mega_name_hint),
+            loop.run_in_executor(None, contextvars.copy_context().run, search_snkrdunk, name, jp_name, number, set_code, grade, is_alt_art, card_language, snkr_variant_kws),
+        )
         
     pc_records = pc_result[0] if pc_result else None
     pc_url = pc_result[1] if pc_result else None
@@ -1841,6 +1968,15 @@ async def process_image_for_candidates(image_path, api_key, lang="zh"):
     if is_one_piece_cat and card_language == "UNKNOWN":
         if any(kw in features_lower for kw in ["英文版", "english version", "[en]"]):
             card_language = "EN"
+        elif any(kw in features_lower for kw in ["韓文版", "韓語版", "korean version", "[kr]"]):
+            card_language = "KR"
+    elif (not is_one_piece_cat) and card_language != "KR":
+        if any(kw in features_lower for kw in ["韓文版", "韓語版", "korean version", "[kr]"]):
+            card_language = "KR"
+        else:
+            card_language = "UNKNOWN"
+    pc_set_name_hint = _build_pc_set_name_hint(card_info, card_language)
+    skip_snkr_for_korean = (category.lower() == "pokemon" and card_language == "KR")
         
     snkr_variant_kws = []
     if is_one_piece_cat and is_alt_art:
@@ -1856,10 +1992,29 @@ async def process_image_for_candidates(image_path, api_key, lang="zh"):
             snkr_variant_kws = ["パラレル", "-p"]
 
     loop = asyncio.get_running_loop()
-    pc_result, snkr_result = await asyncio.gather(
-        loop.run_in_executor(None, contextvars.copy_context().run, search_pricecharting, name, number, set_code, grade, is_alt_art, category, is_flagship, True, "", jp_name, mega_name_hint),
-        loop.run_in_executor(None, contextvars.copy_context().run, search_snkrdunk, name, jp_name, number, set_code, grade, is_alt_art, card_language, snkr_variant_kws, True),
-    )
+    if skip_snkr_for_korean:
+        pc_result = await loop.run_in_executor(
+            None,
+            contextvars.copy_context().run,
+            search_pricecharting,
+            name,
+            number,
+            set_code,
+            grade,
+            is_alt_art,
+            category,
+            is_flagship,
+            True,
+            pc_set_name_hint,
+            jp_name,
+            mega_name_hint,
+        )
+        snkr_result = None
+    else:
+        pc_result, snkr_result = await asyncio.gather(
+            loop.run_in_executor(None, contextvars.copy_context().run, search_pricecharting, name, number, set_code, grade, is_alt_art, category, is_flagship, True, pc_set_name_hint, jp_name, mega_name_hint),
+            loop.run_in_executor(None, contextvars.copy_context().run, search_snkrdunk, name, jp_name, number, set_code, grade, is_alt_art, card_language, snkr_variant_kws, True),
+        )
     
     pc_candidates = (pc_result[0] if pc_result else None) or []
     snkr_candidates = (snkr_result[0] if snkr_result else None) or []
