@@ -586,6 +586,10 @@ def _dedupe_signature(card: StoryCard) -> str:
     topic = infer_topic_phrase(card.raw_text or card.title, card.card_type)
     topic_key = dedupe_key(topic or card.title)
     date_hint = _event_date_hint(card)
+    # Events are often reposted by different accounts for the same session.
+    # Cross-account dedupe should still collapse those into one best card.
+    if card.card_type == "event":
+        return "|".join(["event", date_hint, topic_key[:56]])
     account = str(card.account or "").strip().lower()
     return "|".join([account, card.card_type, date_hint, topic_key[:56]])
 
@@ -735,8 +739,8 @@ def apply_minimax_global_dedupe(
         "你是社群情報總編，任務是『去重』而不是重寫內容。"
         "請從候選卡片中判斷哪些是同一事件/同一更新的重複貼文，只輸出應該刪掉的 id。"
         "規則："
-        "1) 同帳號、同主題、同日期（或同場次）且內容高度重疊，視為重複；"
-        "2) 優先保留資訊更完整者（有時間/地點/獎勵/參與方式/圖片）；"
+        "1) 同主題、同日期（或同場次）且內容高度重疊，跨帳號也可視為重複；"
+        "2) 優先保留資訊更完整者（有時間/地點/獎勵/參與方式/圖片）；完整度相近時再優先官方來源；"
         "3) 不要刪掉跨主題卡片；"
         "4) 不可捏造。"
         "輸出 JSON：{\"drop_ids\":[...],\"notes\":[...]}。\n\n"
