@@ -1,0 +1,83 @@
+[
+  {
+    "id": "2044381540067803312",
+    "account": "chenyichiao",
+    "url": "https://x.com/chenyichiao/status/2044381540067803312",
+    "title": "功能進度｜三個我用過的集運： 1. buy and ship: 價格: 包稅170NTD 優點: 大間、價格合理、一磅一磅算、可以多國運回 缺點:...",
+    "summary": "這則內容屬於官方更新/功能進度。 建議關注後續公告，確認正式開放條件。",
+    "bullets": [
+      "更新重點：三個我用過的集運： 1. buy and ship: 價格: 包稅170NTD 優點:...",
+      "追蹤建議：留意下一則官方公告。",
+      "功能定位：屬於進度釋出，細節可能調整。"
+    ],
+    "published_at": "2026-04-16T04:10:01+00:00",
+    "confidence": 0.56,
+    "card_type": "feature",
+    "layout": "timeline",
+    "tags": [
+      "功能",
+      "即將開放"
+    ],
+    "raw_text": "Show translation 最近的好消息是 要準備開放領卡了，不過直送台灣運費+稅金應該是大家在意的點，所以來介紹一下另外一個方法，也就是集運，以下分享的價格都是美國倉包稅一磅的價格！ 三個我用過的集運： 1. buy and ship: 價格: 包稅170NTD 優點: 大間、價格合理、一磅一磅算、可以多國運回 缺點: 因為可以多國集中運回，所以或是會先到香港，再送回台灣，需要等14~28天 2. 星球集運: 價格: 包稅170NTD 優點: 速度快，跟bns一樣有許多國家都可以集運 缺點: 未滿 20 磅需多加 150NTD 宅配費用 3. 好運集運: 價格: 包稅175NTD 優點: 速度快，單筆出貨10磅以上有折扣 缺點: 目前只有大陸以及美國倉，並且如果只運1磅運費為300 使用方式(以BNS為例): 註冊過後進入會員中心，點擊海外倉庫地址，會看到下面圖片的地址，把這個收件人跟地址填到renaiss就可以了，這邊要注意一定要填上自己的編號喔！ 基本上每一家的使用方式都一樣，相信大家可以舉一反三！ 大致上這樣就可以了，如果還有什麼問題可以再問我，我有空都會回答，希望有幫到大家，另外還沒加入renaiss的也歡迎使用我的邀請碼~ · 6 3 20 5 Read 6 replies",
+    "provider": "r.jina.ai",
+    "cover_image": "https://pbs.twimg.com/media/HF8Y11FaAAA_7I6?format=png&name=small",
+    "metrics": {},
+    "importance": 5.0,
+    "template_id": "announcement_timeline",
+    "glance": "功能進度 功能進度｜三個我用過的集運： 1. buy and ship: 價格: 包稅170NTD...，留意下一則官方公告。",
+    "timeline_date": "",
+    "urgency": "normal",
+    "manual_pick": true
+  },
+  {
+    "id": "2047616545090859207",
+    "account": "renaissxyz",
+    "url": "https://x.com/renaissxyz/status/2047616545090859207",
+    "title": "活動重點｜SBT 與積分機制",
+    "summary": "Renaiss 官方釋出「SBT 與積分機制」活動資訊。時間為 3PM、UTC+8。主要誘因是 SBT。SBT 取得方式：在 May 前完成 1 次「Omega Pack」抽卡以解鎖。這類活動有明確誘因，通常會提高參與率與社群擴散。",
+    "bullets": [
+      "SBT 取得方式：在 May 前完成 1 次「Omega Pack」抽卡以解鎖。",
+      "活動重點：活動資訊已釋出，請先確認時間地點",
+      "時間與地點：3PM、UTC+8"
+    ],
+    "published_at": "2026-04-24T10:00:01+00:00",
+    "confidence": 0.56,
+    "card_type": "event",
+    "layout": "poster",
+    "tags": [
+      "活動",
+      "參與"
+    ],
+    "raw_text": "🎴 Omega Pack Restocking Soon 🗓 26 Apr, 3PM (UTC+8) Omega Pack is coming back with 10+ new S-Tier cards. 💎 Top hits worth $1,000+ 🎖 Omega Restock SBT Pull Omega Pack once before May to unlock it. And one more thing 👀 We’re getting close to the 10M milestone. If Renaiss https://t.co/UcXUiI14oV",
+    "provider": "tweet-result",
+    "cover_image": "https://pbs.twimg.com/media/HGp_eGTaAAAc6SX.jpg",
+    "metrics": {},
+    "importance": 10.3,
+    "template_id": "event_poster",
+    "glance": "活動 SBT 與積分機制，時間 3PM、UTC+8，重點獎勵 SBT。",
+    "timeline_date": "2026-04-26T00:00:00+00:00",
+    "urgency": "high",
+    "manual_pick": true,
+    "event_facts": {
+      "reward": "SBT",
+      "schedule": "3PM、UTC+8"
+    },
+    "topic_labels": [
+      "official",
+      "events",
+      "sbt",
+      "pokemon",
+      "alpha"
+    ],
+    "detail_summary": "Renaiss 官方 這則活動主軸是「活動資訊已釋出，請先確認時間地點」，時間在 3PM、UTC+8，主要誘因是 SBT，參與方式請以原文公告為準。這類活動有明確誘因，通常會提高參與率與社群擴散",
+    "detail_lines": [
+      "活動主軸：活動資訊已釋出，請先確認時間地點",
+      "時間與地點：3PM、UTC+8",
+      "獎勵重點：SBT",
+      "SBT 取得方式：在 May 前完成 1 次「Omega Pack」抽卡以解鎖。",
+      "參與方式：先確認報名方式、截止時間與名額。",
+      "影響：這類活動有明確誘因，通常會提高參與率與社群擴散"
+    ],
+    "reply_to_id": ""
+  }
+]

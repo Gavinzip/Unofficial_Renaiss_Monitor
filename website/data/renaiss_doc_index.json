@@ -1,0 +1,216 @@
+{
+  "source_url": "https://r.jina.ai/https://docs.google.com/document/u/0/d/1Tch9-CuDa4co2zT6sak318cuJiHHCAXek6SVDrLuShY/mobilebasic",
+  "fetched_at": "2026-04-15T17:00:02.492972+00:00",
+  "image_count": 26,
+  "link_count": 53,
+  "heading_count": 20,
+  "headings": [
+    "Title: Renaiss 新手入门指南",
+    "💎 Renaiss项目介绍",
+    "Renaiss项目介绍",
+    "近期更新",
+    "二、常见的 TCG 举例",
+    "三、TCG 的未来形态：RWA × Renaiss",
+    "🤩 Renaiss TCG购卡指南",
+    "Renaiss Pokemon NFT 购卡指南",
+    "1️⃣ 了解宝可梦本身",
+    "2️⃣ 了解卡牌的评级分数",
+    "3️⃣ 查询价格，参考市场共识",
+    "TCG 生态中的卡牌评级机构-PSA",
+    "TCG 生态中的卡牌评级机构-BGS",
+    "近期投资卡牌趋势更新",
+    "※ 根据情况可能会有变动，随时更新",
+    "宝可梦补充包市场全面上涨 📈",
+    "重点涨幅产品",
+    "长期价格潜力",
+    "市场结构变化",
+    "后续关注方向"
+  ],
+  "images": [
+    {
+      "id": 1,
+      "alt": "Image 1",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg3XEQcesIV_q5BZhBgGPEG1osE1gVqTatbJuGSLQ-UlUhHijWSvaGrpeoFZas0P0LBexVhnIKkQDXxBvULd4wH2P01PmPcOrHbz-_MN19oVOkQ3B_PD0JiEIr8bfoOjRxTo1S7pSt-frf99fW7juUPBXNZ5xrsAq7hW2c1z=s800"
+    },
+    {
+      "id": 2,
+      "alt": "Image 2",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg0ts3YmbJOQCViDRJ4uXwRujA6J1xqXwoQ80xGKx-m42wZiNsQKX9b6Qyyh6NfddtDZHDq2jrrvTFm_rDE9YeEJKrKt3etDL15aAmgujyMYeIht0sbWjlIdd4lB34Yqu6KuqdguxX7zZWLivdcmnDL8A3je_BjQo5VljrXb=s800"
+    },
+    {
+      "id": 3,
+      "alt": "Image 3",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg2ZPcZeSstpEujwYZ6I0F4efjatve5bjeFuNu0aTn9eHywsBQU6vj1l98sqpFi_aegBWefYie0_7moGeXQgo3rKg0vpAeOWV9WNuYccv-_aLWaBv3jXaJdZtKnXEnLMmRD7opT_qFKr5dwSxC7yNcLHjtqhj6_h46osr7VH=s800"
+    },
+    {
+      "id": 4,
+      "alt": "Image 4",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg19B5eDsG6vDau_6LelcvBxJ1y0KgYapepAKP4FPSZOL8QpK1GqKG4SgQxfpBdSRLP234wGADAqRJXaOVQWaJnd9EXY0FS2MP1vbdpzyK66CEXRE7NGSdHypZZtSv2-tJfWnaNbrxAFCfuwpGZ6QrS9VdvICqLA6i6EOcsk=s800"
+    },
+    {
+      "id": 5,
+      "alt": "Image 5",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg1i-cLT1q53WVP4_ORvsyZGzUbQQ0L1JOA0ij6BxEXr9z5rPjRh-9pUvF0a94zhCyY7kJz3KLBsOmUXwGfroPpzwLBfFjiqd-jp7-1l-pPJyRSDDXtnUpJYLiIUYIejpt1xBGXCRoWaRW-orOFucCw6LCIQCT3NplbmWA=s800"
+    },
+    {
+      "id": 6,
+      "alt": "Image 6",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg2sZaLJJhS0Wd8wjuIhyroXM2pNqXQg8e4AKimDYIWUU9hm8NVUHrSe_-nnbDBoIhl1ZZ-xCaBU9iD9E5bJEwQmMkLlYXGaiZlIyXeAgtharCiKwMwXJoHg8jpmPfBZPxHAFdxp6fakDS8NQ8TqUixp3WWFYJFjHr4MYknV=s800"
+    },
+    {
+      "id": 7,
+      "alt": "Image 7",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg05KsTXwZGRbSpYnC-a9supY_upxHmcJj0krB4b4xP_UuCoJ4LHzg9dpe65Oi4DX_1-zl7QunDIw30TIxmcCF9u0JAa5uyhfOpGFjzW3kXcPUm5vKoDjY-8vBFSwzsgOMBSF2PjQ9Nl2Ejsrx32EjhzCcc4uKctn2zQAg=s800"
+    },
+    {
+      "id": 8,
+      "alt": "Image 8",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg0qR-8Ar2emIiwBJE9bEnW5fX-kgmMCR7Uk3oBdz3Qzn-x-qn-tarmG0ousEAgxcmdO7bbEkMBWGdiZdqwGo0xWDGWKKlbYAqbxtPgKjcM4Sry1IiFIEpPz7RyAFKDOp-ssa15dDgsvlUu6Gy03IXpU8yrbnhSMRqHhK3hS=s800"
+    },
+    {
+      "id": 9,
+      "alt": "Image 9",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg2XFddQYdwM7P2jz5FyncpK1IvE4cz-pGLjRJJ3ZVkCGyAApJFF2ROADE4ayAXUEO1mS1ps-RzlGDegzhYqfVP8DbivP8YtkW8ePHbMCsgzzjMFDn6mNecAYh-z5GL9A6t-oyVhi40NBFI9Eql8QEl0eI3W0L89Ir_Dr4VN=s800"
+    },
+    {
+      "id": 10,
+      "alt": "Image 10",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg07qb-n_Me-EbP2z3rnnMhXhywycLEP-V-Y5KQMT9tDfv_9QaHQIcOPzwJFnhGH6lXuK9NSzq4vHtabgTpyPhvWujBYljoGR9hjZmfxO0fe_oW4BmViuHsq_oK0YT-eOQHF4Jkjg-O5WHh_hKPKqCJ8jrlp9yGirwXeynpO=s800"
+    },
+    {
+      "id": 11,
+      "alt": "Image 11",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg0mDSRskbjOomauu1nF48ndROsQhyTMi4G6aJv7WsDn2xa6hWZ7ni8aoLWlZe85o7fCEYUusvIBWS4FHk0_WRjQtC-XpqkcIlgG-C7rfdQGR1l5kKCvkKwQOQ-hVdT3xrKHUYAJEeHHTuEi1CTLelLSNshaijsf9JxuBw=s800"
+    },
+    {
+      "id": 12,
+      "alt": "Image 12",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg2vUeJSmhOTRzkUy6sMGQjT7qWSY0z_HWjLaUIg4h3Y5eBFDSfQpo0TlqwtPsZobypm3XZ4dWCOvYMrAJi7XnsyvfAyE0-OCwwiY5fHKq1gNHdQrEFuSnD_fFGVYFz7w-gzE924_Sv0V9qK-Ew6r2vj4YMCvRvVxPYIhfrE=s800"
+    },
+    {
+      "id": 13,
+      "alt": "Image 13",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg00odcFyo1BbcULz20aVhL1cTAOfqCOGw8L9YbOGU4Ki92oFJ-n0rg_28ClSjKWv6lmPk4XFt5XF5uN7c6s3yp7yMYzD0uax2-a1QxyJi0Ea20lR2-IxZ14JjGGediBwTz3-KiGdWOhQtxiVfx4wv41ZaKscibvjaos5A=s800"
+    },
+    {
+      "id": 14,
+      "alt": "Image 14",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg0Yvm3OW7biL8ww3wSSO4ECw9uOFMyu8pAfaVPNj_XSm7S-Jyth4ghnVYgUXTshDgRAWIDQneuZAyPmSzrg1ifjFA916_Ed3a8TVG0rX7EmLOCHxGu3CGTomvl2TZTbZP04-kg09OF3uuYS05ZKQ-ML1nLEUSD1vEaXx4cF=s800"
+    },
+    {
+      "id": 15,
+      "alt": "Image 15",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg3e9A5QG9YjTscM9y0pg2fYVzO8i85S9VOoT9_Cd_maLO6KnUUh-lGdLCsaacQ0uI9gvvUj24_51FkdxilN1NG9OTQmXv8vvYmLYNqxobdWh26xeekw6n8js0e31xZ8mF1ct2mmsGZvd7sSaQbcZNozcHHuDr_aCucu_zPd=s800"
+    },
+    {
+      "id": 16,
+      "alt": "Image 16",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg1mNZTA5NNAA7IXJeOlrES07zK4srJzaF8WpRUxvjzS084BHrgA0wTbfGF1fj1_XbgPKyltZ8LykfJTTDHAOKqSbXbgAQW_dFrlbL4pg2e7a386rKrFQccbgBkpbQAmRnU2D84Ad5iWJUISOOptke1DTanM_cnEutaIeV3O=s800"
+    },
+    {
+      "id": 17,
+      "alt": "Image 17",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg3_q_iD6XZT8G1v1n5x1eBz_i-aZFrduD9gnF3tbLBPn6OAtWujoh7MUaPzIEEK3YrLoDmaLz8WeHTYa6TyHb5tBZ5NaRqfcOl_RlSvcqRE0NNHBCKdlpIKz-1VPSRwaNFiBM1jJqBdbu1qLOSA0rB1MTj-xtR_2R_1tw=s800"
+    },
+    {
+      "id": 18,
+      "alt": "Image 18",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg3WrU1TeaTmawrzRh6pr7Qc2wO45Wpz76vDiYfyqxFZm8hQ8oIc9SooCq2ZA2NQU6D0yCRbAa8A3X7cCuouBpBbVlzHpeKzJAxRsg2Vjef7IceReBPJQK-Vzv27EDRnMkTl1lACtLPM5NLPFZIypnyeUVJP-T97XieOq7FZ=s800"
+    },
+    {
+      "id": 19,
+      "alt": "Image 19",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg3bZeIYJxDx3I9l7wRrhUDP6JvLd6jOwisX1ybakjmlcXzJm7HqfYJq6m24w4fvuDp3uDDuWYk4l2pdk-mRKnq8-OgZN8ns5bRbE-5sESzfijP86k0PkCtvE5O0hqiPLLfUHfXbtSkM6dOa4QRZpDAU0F4ZS87MJbTFGCHu=s800"
+    },
+    {
+      "id": 20,
+      "alt": "Image 20",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg0QN3EYzitkVfNv_Mz0tJ4bb6oIDGXpBwKn5sn5J7M4PJOirKNwLt2R5g5EJxus1FotovOaWudYsAn3EqoKQ5ez5oROXEREepJFxxDEA2YfAhEL463cAc_iiuKf70mrZ99Lgkimutvm07WX4j3KW1G0g7KlL6KyvtUw7XMJ=s800"
+    },
+    {
+      "id": 21,
+      "alt": "Image 21",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg1ENN8XpSbLD3lvnTAIBgEXPnAPh825_zVhMnlmvaceNKcCm5gN2vRk6eLAT94X16GVj6PYLSjPNy9QlbobBbm-MmsXUztlChtmb4_sgr2XurozGZB8EMGCqFAKWiEdsRqf7HyxI5Mg1NQqAWOn1lEJ_kWPAMeOiNGqYDKQ=s800"
+    },
+    {
+      "id": 22,
+      "alt": "Image 22",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg0pZQe3nrkb5-SPQ7sEIpce9qkwmd_ijgnmPKste-lBqEcHLtEf1CRBt2ZzfWP0hGqrPzzDpGJkINrjT7tepNQWDqrS8SGiRlCjenHwjxMs9dE6QI4t8c08umajozNM-Et0NkBmo6f5hFEtFwn3_YoFmUZTLrevA6HFFTgi=s800"
+    },
+    {
+      "id": 23,
+      "alt": "Image 23",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg1nsaD-s6LW8T_Li4Kvq9m5kS7DfA9s6KiclyEfrq_HqqN8PzQ85j9fk-PlI7MFYRlvfLyUPhqGFQznZMcMUyj8EcvvQZj7YnNAHYwFgy3UlYako0acPASqUn5dPVoPtqXKejobrVpXPpNGSQAxvHvKOOYlfmi8BW8m0qOA=s800"
+    },
+    {
+      "id": 24,
+      "alt": "Image 24",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg21nFANCLolnpfGbuElalJ4H8D1ca0PHeNtkUolRoA28Wg-FVtt80SHx39BEp8YYF0safGB16Iq0koF4Wxx_sO-v8lPCsa1onzOeFYPzzAJ5V4VyfwfC_SUcTNWNm-af49G-xKSkyK5uETZOWC8M2_TsDiPEFXw1t-t0_Hq=s800"
+    },
+    {
+      "id": 25,
+      "alt": "Image 25",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg2_x-VDoiYUPo8HHOhaKrLOdSoupZWG6rIBN4oZ21U64-K9ykmyD7dWPodUX5UYFhdaoOUy9sqoaqn6TfqvX4rFrUsgIun4I3ymtj18eC22QkmQbynuruWg146sqBY5aXQHo0cgU83qLKDdO8Z9IgAA0zRuYsNbYftHXQ=s800"
+    },
+    {
+      "id": 26,
+      "alt": "Image 26",
+      "url": "https://docs.google.com/docs-images-rt/ABaEjg23RaCP-XMOiOj40zstIzb_VQUCkdMaXPTwvtK_0rofoFjnCbq1surDqb_nTKjMJEJTMwqNqRVydCDctcLaOMNJCA_pXn7MquiSREWqaNRJMRSum9-jhpSEZKn9GqIfzzufzkTmL9eODdr83GaCMn4DuGQiPiFexrTUyPf9=s800"
+    }
+  ],
+  "links": [
+    "https://docs.google.com/docs-images-rt/ABaEjg3XEQcesIV_q5BZhBgGPEG1osE1gVqTatbJuGSLQ-UlUhHijWSvaGrpeoFZas0P0LBexVhnIKkQDXxBvULd4wH2P01PmPcOrHbz-_MN19oVOkQ3B_PD0JiEIr8bfoOjRxTo1S7pSt-frf99fW7juUPBXNZ5xrsAq7hW2c1z=s800",
+    "https://docs.google.com/docs-images-rt/ABaEjg0ts3YmbJOQCViDRJ4uXwRujA6J1xqXwoQ80xGKx-m42wZiNsQKX9b6Qyyh6NfddtDZHDq2jrrvTFm_rDE9YeEJKrKt3etDL15aAmgujyMYeIht0sbWjlIdd4lB34Yqu6KuqdguxX7zZWLivdcmnDL8A3je_BjQo5VljrXb=s800",
+    "https://discord.com/invite/renaiss%EF%BC%88AMA%E7%9B%B4%E6%92%AD%E3%80%81%E6%8A%BD%E5%8D%A1%E6%B4%BB%E5%8A%A8%E3%80%81SBT%E4%BA%92%E5%8A%A8%EF%BC%89%E3%80%82",
+    "https://docs.google.com/docs-images-rt/ABaEjg2ZPcZeSstpEujwYZ6I0F4efjatve5bjeFuNu0aTn9eHywsBQU6vj1l98sqpFi_aegBWefYie0_7moGeXQgo3rKg0vpAeOWV9WNuYccv-_aLWaBv3jXaJdZtKnXEnLMmRD7opT_qFKr5dwSxC7yNcLHjtqhj6_h46osr7VH=s800",
+    "https://x.com/renaissxyz/status/2011015569546625077",
+    "https://docs.google.com/docs-images-rt/ABaEjg19B5eDsG6vDau_6LelcvBxJ1y0KgYapepAKP4FPSZOL8QpK1GqKG4SgQxfpBdSRLP234wGADAqRJXaOVQWaJnd9EXY0FS2MP1vbdpzyK66CEXRE7NGSdHypZZtSv2-tJfWnaNbrxAFCfuwpGZ6QrS9VdvICqLA6i6EOcsk=s800",
+    "https://x.com/WhatsYourRefs",
+    "https://docs.google.com/docs-images-rt/ABaEjg1i-cLT1q53WVP4_ORvsyZGzUbQQ0L1JOA0ij6BxEXr9z5rPjRh-9pUvF0a94zhCyY7kJz3KLBsOmUXwGfroPpzwLBfFjiqd-jp7-1l-pPJyRSDDXtnUpJYLiIUYIejpt1xBGXCRoWaRW-orOFucCw6LCIQCT3NplbmWA=s800",
+    "https://docs.google.com/docs-images-rt/ABaEjg2sZaLJJhS0Wd8wjuIhyroXM2pNqXQg8e4AKimDYIWUU9hm8NVUHrSe_-nnbDBoIhl1ZZ-xCaBU9iD9E5bJEwQmMkLlYXGaiZlIyXeAgtharCiKwMwXJoHg8jpmPfBZPxHAFdxp6fakDS8NQ8TqUixp3WWFYJFjHr4MYknV=s800",
+    "http://snkrdunk.com",
+    "https://docs.google.com/docs-images-rt/ABaEjg05KsTXwZGRbSpYnC-a9supY_upxHmcJj0krB4b4xP_UuCoJ4LHzg9dpe65Oi4DX_1-zl7QunDIw30TIxmcCF9u0JAa5uyhfOpGFjzW3kXcPUm5vKoDjY-8vBFSwzsgOMBSF2PjQ9Nl2Ejsrx32EjhzCcc4uKctn2zQAg=s800",
+    "https://t.co/Rm8afrCB2m",
+    "https://docs.google.com/docs-images-rt/ABaEjg0qR-8Ar2emIiwBJE9bEnW5fX-kgmMCR7Uk3oBdz3Qzn-x-qn-tarmG0ousEAgxcmdO7bbEkMBWGdiZdqwGo0xWDGWKKlbYAqbxtPgKjcM4Sry1IiFIEpPz7RyAFKDOp-ssa15dDgsvlUu6Gy03IXpU8yrbnhSMRqHhK3hS=s800",
+    "https://docs.google.com/docs-images-rt/ABaEjg2XFddQYdwM7P2jz5FyncpK1IvE4cz-pGLjRJJ3ZVkCGyAApJFF2ROADE4ayAXUEO1mS1ps-RzlGDegzhYqfVP8DbivP8YtkW8ePHbMCsgzzjMFDn6mNecAYh-z5GL9A6t-oyVhi40NBFI9Eql8QEl0eI3W0L89Ir_Dr4VN=s800",
+    "https://docs.google.com/docs-images-rt/ABaEjg07qb-n_Me-EbP2z3rnnMhXhywycLEP-V-Y5KQMT9tDfv_9QaHQIcOPzwJFnhGH6lXuK9NSzq4vHtabgTpyPhvWujBYljoGR9hjZmfxO0fe_oW4BmViuHsq_oK0YT-eOQHF4Jkjg-O5WHh_hKPKqCJ8jrlp9yGirwXeynpO=s800",
+    "https://docs.google.com/docs-images-rt/ABaEjg0mDSRskbjOomauu1nF48ndROsQhyTMi4G6aJv7WsDn2xa6hWZ7ni8aoLWlZe85o7fCEYUusvIBWS4FHk0_WRjQtC-XpqkcIlgG-C7rfdQGR1l5kKCvkKwQOQ-hVdT3xrKHUYAJEeHHTuEi1CTLelLSNshaijsf9JxuBw=s800",
+    "https://docs.google.com/docs-images-rt/ABaEjg2vUeJSmhOTRzkUy6sMGQjT7qWSY0z_HWjLaUIg4h3Y5eBFDSfQpo0TlqwtPsZobypm3XZ4dWCOvYMrAJi7XnsyvfAyE0-OCwwiY5fHKq1gNHdQrEFuSnD_fFGVYFz7w-gzE924_Sv0V9qK-Ew6r2vj4YMCvRvVxPYIhfrE=s800",
+    "https://docs.google.com/docs-images-rt/ABaEjg00odcFyo1BbcULz20aVhL1cTAOfqCOGw8L9YbOGU4Ki92oFJ-n0rg_28ClSjKWv6lmPk4XFt5XF5uN7c6s3yp7yMYzD0uax2-a1QxyJi0Ea20lR2-IxZ14JjGGediBwTz3-KiGdWOhQtxiVfx4wv41ZaKscibvjaos5A=s800",
+    "https://docs.google.com/docs-images-rt/ABaEjg0Yvm3OW7biL8ww3wSSO4ECw9uOFMyu8pAfaVPNj_XSm7S-Jyth4ghnVYgUXTshDgRAWIDQneuZAyPmSzrg1ifjFA916_Ed3a8TVG0rX7EmLOCHxGu3CGTomvl2TZTbZP04-kg09OF3uuYS05ZKQ-ML1nLEUSD1vEaXx4cF=s800",
+    "https://docs.google.com/docs-images-rt/ABaEjg3e9A5QG9YjTscM9y0pg2fYVzO8i85S9VOoT9_Cd_maLO6KnUUh-lGdLCsaacQ0uI9gvvUj24_51FkdxilN1NG9OTQmXv8vvYmLYNqxobdWh26xeekw6n8js0e31xZ8mF1ct2mmsGZvd7sSaQbcZNozcHHuDr_aCucu_zPd=s800",
+    "https://docs.google.com/docs-images-rt/ABaEjg1mNZTA5NNAA7IXJeOlrES07zK4srJzaF8WpRUxvjzS084BHrgA0wTbfGF1fj1_XbgPKyltZ8LykfJTTDHAOKqSbXbgAQW_dFrlbL4pg2e7a386rKrFQccbgBkpbQAmRnU2D84Ad5iWJUISOOptke1DTanM_cnEutaIeV3O=s800",
+    "https://docs.google.com/docs-images-rt/ABaEjg3_q_iD6XZT8G1v1n5x1eBz_i-aZFrduD9gnF3tbLBPn6OAtWujoh7MUaPzIEEK3YrLoDmaLz8WeHTYa6TyHb5tBZ5NaRqfcOl_RlSvcqRE0NNHBCKdlpIKz-1VPSRwaNFiBM1jJqBdbu1qLOSA0rB1MTj-xtR_2R_1tw=s800",
+    "https://docs.google.com/docs-images-rt/ABaEjg3WrU1TeaTmawrzRh6pr7Qc2wO45Wpz76vDiYfyqxFZm8hQ8oIc9SooCq2ZA2NQU6D0yCRbAa8A3X7cCuouBpBbVlzHpeKzJAxRsg2Vjef7IceReBPJQK-Vzv27EDRnMkTl1lACtLPM5NLPFZIypnyeUVJP-T97XieOq7FZ=s800",
+    "https://docs.google.com/docs-images-rt/ABaEjg3bZeIYJxDx3I9l7wRrhUDP6JvLd6jOwisX1ybakjmlcXzJm7HqfYJq6m24w4fvuDp3uDDuWYk4l2pdk-mRKnq8-OgZN8ns5bRbE-5sESzfijP86k0PkCtvE5O0hqiPLLfUHfXbtSkM6dOa4QRZpDAU0F4ZS87MJbTFGCHu=s800",
+    "https://docs.google.com/docs-images-rt/ABaEjg0QN3EYzitkVfNv_Mz0tJ4bb6oIDGXpBwKn5sn5J7M4PJOirKNwLt2R5g5EJxus1FotovOaWudYsAn3EqoKQ5ez5oROXEREepJFxxDEA2YfAhEL463cAc_iiuKf70mrZ99Lgkimutvm07WX4j3KW1G0g7KlL6KyvtUw7XMJ=s800",
+    "https://docs.google.com/docs-images-rt/ABaEjg1ENN8XpSbLD3lvnTAIBgEXPnAPh825_zVhMnlmvaceNKcCm5gN2vRk6eLAT94X16GVj6PYLSjPNy9QlbobBbm-MmsXUztlChtmb4_sgr2XurozGZB8EMGCqFAKWiEdsRqf7HyxI5Mg1NQqAWOn1lEJ_kWPAMeOiNGqYDKQ=s800",
+    "https://docs.google.com/docs-images-rt/ABaEjg0pZQe3nrkb5-SPQ7sEIpce9qkwmd_ijgnmPKste-lBqEcHLtEf1CRBt2ZzfWP0hGqrPzzDpGJkINrjT7tepNQWDqrS8SGiRlCjenHwjxMs9dE6QI4t8c08umajozNM-Et0NkBmo6f5hFEtFwn3_YoFmUZTLrevA6HFFTgi=s800",
+    "https://renaiss77.xyz/",
+    "https://docs.google.com/docs-images-rt/ABaEjg1nsaD-s6LW8T_Li4Kvq9m5kS7DfA9s6KiclyEfrq_HqqN8PzQ85j9fk-PlI7MFYRlvfLyUPhqGFQznZMcMUyj8EcvvQZj7YnNAHYwFgy3UlYako0acPASqUn5dPVoPtqXKejobrVpXPpNGSQAxvHvKOOYlfmi8BW8m0qOA=s800",
+    "https://docs.google.com/docs-images-rt/ABaEjg21nFANCLolnpfGbuElalJ4H8D1ca0PHeNtkUolRoA28Wg-FVtt80SHx39BEp8YYF0safGB16Iq0koF4Wxx_sO-v8lPCsa1onzOeFYPzzAJ5V4VyfwfC_SUcTNWNm-af49G-xKSkyK5uETZOWC8M2_TsDiPEFXw1t-t0_Hq=s800",
+    "https://docs.google.com/docs-images-rt/ABaEjg2_x-VDoiYUPo8HHOhaKrLOdSoupZWG6rIBN4oZ21U64-K9ykmyD7dWPodUX5UYFhdaoOUy9sqoaqn6TfqvX4rFrUsgIun4I3ymtj18eC22QkmQbynuruWg146sqBY5aXQHo0cgU83qLKDdO8Z9IgAA0zRuYsNbYftHXQ=s800",
+    "https://t.co/OULl869FTc",
+    "https://discord.gg/renaiss",
+    "https://x.com/renaissxyz",
+    "https://www.renaiss.xyz/",
+    "https://docs.google.com/docs-images-rt/ABaEjg23RaCP-XMOiOj40zstIzb_VQUCkdMaXPTwvtK_0rofoFjnCbq1surDqb_nTKjMJEJTMwqNqRVydCDctcLaOMNJCA_pXn7MquiSREWqaNRJMRSum9-jhpSEZKn9GqIfzzufzkTmL9eODdr83GaCMn4DuGQiPiFexrTUyPf9=s800",
+    "https://docs.google.com/document/u/0/d/1Tch9-CuDa4co2zT6sak318cuJiHHCAXek6SVDrLuShY/mobilebasic",
+    "https://x.com/Renaiss_CN/status/2019031940134023597",
+    "https://www.renaiss.xyz。点击“Log",
+    "https://x.com/renaissxyz/status/2011015569546625077（Superliquid完整教程：Bid/List/Trade/积分）",
+    "https://discord.com/invite/renais](https://www.google.com/url?q=https://discord.com/invite/renaiss%25EF%25BC%2588AMA%25E7%259B%25B4%25E6%2592%25AD%25E3%2580%2581%25E6%258A%25BD%25E5%258D%25A1%25E6%25B4%25BB%25E5%258A%25A8%25E3%2580%2581SBT%25E4%25BA%2592%25E5%258A%25A8%25EF%25BC%2589%25E3%2580%2582&sa=D&source=editors&ust=1776276000660826&usg=AOvVaw0y0tFuaPl-dvQpzjl8BOHI",
+    "https://x.com/renaissxyz/status/2011015569546625077](https://www.google.com/url?q=https://x.com/renaissxyz/status/2011015569546625077&sa=D&source=editors&ust=1776276000661834&usg=AOvVaw0rpmClMlnzOxnV03Tx0PpV",
+    "https://luma.com/6nid21c4",
+    "https://x.com/WhatsYourRefs&sa=D&source=editors&ust=1776276000669654&usg=AOvVaw3SgZZJgeom8h47U1DbShGo",
+    "http://snkrdunk.com](https://www.google.com/url?q=http://snkrdunk.com&sa=D&source=editors&ust=1776276000690925&usg=AOvVaw2UsaP4z7gC7EE9_jzSVK1j",
+    "https://pricecharting.com](https://www.google.com/url?q=https://t.co/Rm8afrCB2m&sa=D&source=editors&ust=1776276000691218&usg=AOvVaw2pewCmk2GHMPBfwlCbeJt6",
+    "https://x.com/TCGRWA/status/1992494975570120873?s=20",
+    "https://renaiss77.xyz/](https://www.google.com/url?q=https://renaiss77.xyz/&sa=D&source=editors&ust=1776276000696723&usg=AOvVaw38-FFbbRoU90RexYmetY8u",
+    "http://snkrdunk.com](https://www.google.com/url?q=https://t.co/OULl869FTc&sa=D&source=editors&ust=1776276000697314&usg=AOvVaw3sHc9QZ_WF8Ynv8_8dzGjl",
+    "https://pricecharting.com](https://www.google.com/url?q=https://t.co/Rm8afrCB2m&sa=D&source=editors&ust=1776276000697560&usg=AOvVaw1ISAiBBzTPhPmz2S7dIl3j",
+    "https://discord.gg/renaiss](https://www.google.com/url?q=https://discord.gg/renaiss&sa=D&source=editors&ust=1776276000698558&usg=AOvVaw126HWfMNIfkT03pTlp4_VB",
+    "https://x.com/renaissxyz](https://www.google.com/url?q=https://x.com/renaissxyz&sa=D&source=editors&ust=1776276000698633&usg=AOvVaw1Gvy7fTfM1cPKO8-x1mHOT",
+    "https://www.renaiss.xyz/](https://www.google.com/url?q=https://www.renaiss.xyz/&sa=D&source=editors&ust=1776276000698724&usg=AOvVaw1wPeZOWSoAGRaKvpT1FSB4"
+  ]
+}

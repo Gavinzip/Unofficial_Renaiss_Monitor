@@ -1,0 +1,61 @@
+{
+  "updated_at": "2026-04-25T15:35:58.929499+00:00",
+  "items": {
+    "2047674412221280632": {
+      "label": "exclude",
+      "label_kind": "exclude",
+      "raw_reason": "這則只是 Omegapack / 卡包更新提示，不是需要放在活動主時間軸的實際活動；之後類似卡包更新不要放進活動時間軸。",
+      "count": 1,
+      "source_account": "davidcheang99",
+      "source_title": "接下来几天有大家特别喜欢的更新✨ 4月26号 Omegapack",
+      "source_card_type": "event",
+      "source_topic_labels": [
+        "events",
+        "sbt",
+        "pokemon"
+      ],
+      "source_url": "https://x.com/davidcheang99/status/2047674412221280632",
+      "updated_at": "2026-04-25T15:35:40.823815+00:00",
+      "memory_status": "ready",
+      "memory_rule": "卡包更新提示不屬於活動，應排除在活動時間軸之外。",
+      "memory_scope": "卡包更新提示",
+      "memory_rationale": "卡包更新屬資訊提示而非實際活動，不應放於活動時間軸。"
+    }
+  },
+  "rules": {
+    "exclude__卡包更新提示不屬於活動_應排除在活動時間軸之外_": {
+      "label": "exclude",
+      "label_kind": "exclude",
+      "rule": "卡包更新提示不屬於活動，應排除在活動時間軸之外。",
+      "scope": "卡包更新提示",
+      "rationale": "卡包更新屬資訊提示而非實際活動，不應放於活動時間軸。",
+      "account": "",
+      "examples": [
+        "2047674412221280632"
+      ],
+      "count": 1,
+      "updated_at": "2026-04-25T15:35:58.929472+00:00"
+    }
+  },
+  "source_profiles": {
+    "davidcheang99": {
+      "account": "davidcheang99",
+      "label_counts": {
+        "exclude": 1
+      },
+      "examples": [
+        {
+          "id": "2047674412221280632",
+          "label": "exclude",
+          "label_kind": "exclude",
+          "reason": "這則只是 Omegapack / 卡包更新提示，不是需要放在活動主時間軸的實際活動；之後類似卡包更新不要放進活動時間軸。",
+          "title": "接下来几天有大家特别喜欢的更新✨ 4月26号 Omegapack",
+          "updated_at": "2026-04-25T15:25:52.896782+00:00",
+          "memory_rule": "卡包更新提示不屬於活動，應排除在活動時間軸之外。",
+          "memory_status": "ready"
+        }
+      ],
+      "updated_at": "2026-04-25T15:25:52.896785+00:00"
+    }
+  }
+}

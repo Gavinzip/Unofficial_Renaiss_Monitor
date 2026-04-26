@@ -1,0 +1,44 @@
+{
+  "updated_at": "2026-04-24T16:15:55.871122+00:00",
+  "jobs": {
+    "55a21cee5a06": {
+      "id": "55a21cee5a06",
+      "url": "https://x.com/chenyichiao/status/2044381540067803312?s=46",
+      "status": "done",
+      "message": "分析完成，已加入精選卡片。",
+      "created_at": "2026-04-16T04:20:04.716688+00:00",
+      "updated_at": "2026-04-16T04:21:03.607079+00:00",
+      "started_at": "2026-04-16T04:20:04.718712+00:00",
+      "finished_at": "2026-04-16T04:21:03.606748+00:00",
+      "tweet_id": null,
+      "tweet_url": null,
+      "generated_at": "2026-04-16T04:21:03.604943+00:00"
+    },
+    "b5ec0f4da523": {
+      "id": "b5ec0f4da523",
+      "url": "https://x.com/renaissxyz/status/2047616545090859207",
+      "status": "done",
+      "message": "分析完成，已加入精選卡片。",
+      "created_at": "2026-04-24T16:04:29.503963+00:00",
+      "updated_at": "2026-04-24T16:15:55.871118+00:00",
+      "started_at": "2026-04-24T16:04:29.504676+00:00",
+      "finished_at": "2026-04-24T16:15:55.870827+00:00",
+      "tweet_id": null,
+      "tweet_url": null,
+      "generated_at": "2026-04-24T16:15:40.459229+00:00"
+    },
+    "402a5096ffc6": {
+      "id": "402a5096ffc6",
+      "url": "https://x.com/renaissxyz/status/2047616545090859207",
+      "status": "done",
+      "message": "分析完成，已加入精選卡片。",
+      "created_at": "2026-04-24T16:05:01.351797+00:00",
+      "updated_at": "2026-04-24T16:15:38.382266+00:00",
+      "started_at": "2026-04-24T16:05:01.352034+00:00",
+      "finished_at": "2026-04-24T16:15:38.381651+00:00",
+      "tweet_id": null,
+      "tweet_url": null,
+      "generated_at": "2026-04-24T16:15:21.955114+00:00"
+    }
+  }
+}

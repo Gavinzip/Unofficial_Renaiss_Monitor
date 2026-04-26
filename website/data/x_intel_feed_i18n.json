@@ -1,0 +1,3444 @@
+{
+  "version": 4,
+  "generated_at": "2026-04-26T13:26:04.289863+00:00",
+  "source_generated_at": "2026-04-26T05:55:08.211632+00:00",
+  "langs": {
+    "zh-Hans": {
+      "generated_at": "2026-04-26T05:55:08.211632+00:00",
+      "window_days": 30,
+      "accounts": [
+        "TCGRWA",
+        "ChenYichiao",
+        "renaissxyz",
+        "davidcheang99"
+      ],
+      "total_cards": 22,
+      "layout_counts": {
+        "poster": 7,
+        "brief": 5,
+        "data": 4,
+        "timeline": 6
+      },
+      "digest": {
+        "headline": "Renaiss 春季资讯快報：亚洲邀请赛启动、Omega Pack 补货、Legacy Pack 8.0 限量来袭",
+        "conclusion": "本季焦点集中于亚洲邀请赛的范围扩大至台湾及东南亚五国、Omega Pack 补货提供逾十张 S 级卡牌，以及 Legacy Pack 8.0 限量发售（1000 包、每包 100 美元，最高单卡价值 2850 美元），同时香港 TCG Tour 与 Renaiss × Portaldot 扑克之夜将接连举行，市场热度升温。提醒玩家在交易过程中注意假卡风险与交易延迟，确保入手真品。",
+        "takeaways": [
+          "亚洲邀请赛预告出炉，将覆盖台湾及东南亚五国，正式拉开春季赛季帷幕。",
+          "Omega Pack 将于 4 月 26 日补货，新增逾 10 张 S 级卡牌，提升稀有卡牌取得机会。",
+          "Legacy Pack 8.0 限量发售（1000 包、每包 100 美元，最高单卡价值 2850 美元），市场热点瞩目，亦提醒玩家注意假卡与交易延迟风险。"
+        ],
+        "accounts_active": [
+          "ChenYichiao",
+          "TCGRWA",
+          "chenyichiao",
+          "davidcheang99",
+          "renaissxyz"
+        ],
+        "key_terms": [
+          "pack",
+          "hong",
+          "kong",
+          "tour",
+          "superliquid",
+          "your",
+          "more",
+          "local",
+          "community",
+          "packs",
+          "omega",
+          "utc+8"
+        ]
+      },
+      "cards": [
+        {
+          "id": "2047990492592537885",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2047990492592537885",
+          "title": "Renaiss 亚洲邀请赛预告 涵盖台湾与东南亚五国",
+          "summary": "Renaiss 宣布即将举办「Region Royale: Invite Battle」，参赛地区包括韩国、泰国、马来西亚、新加坡与台湾。此活动聚焦亚洲市场成长与在地社群壮大，官方已预备奖励並呼吁各地区整备。这是针对亚洲玩家与社群的定向邀请赛，对于想在区域层级竞争的玩家具有指标意义，后续需关注官方公告的報名与赛程细节。",
+          "bullets": [
+            "五国参赛：韩国、泰国、马来西亚、新加坡与台湾",
+            "活动聚焦成长与在地社群的定向邀请赛",
+            "官方已预备奖励，等待后续報名与时间公告"
+          ],
+          "published_at": "2026-04-25T10:45:57+00:00",
+          "confidence": 0.85,
+          "card_type": "announcement",
+          "layout": "timeline",
+          "tags": [
+            "亚洲赛事",
+            "社群活动",
+            "邀请赛"
+          ],
+          "raw_text": "Region Royale: Invite Battle is coming. ⚔️ Korea, Thailand, Malaysia, Singapore, and Taiwan are entering the arena. This round is about growth, new users, and stronger local communities across Asia. Rewards are prepared. Pride is on the line. Get your region ready. Region https://t.co/HmnUvPrwTN",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGvsfIRbUAACDgf.jpg",
+          "metrics": {},
+          "importance": 9.6,
+          "template_id": "announcement_timeline",
+          "glance": "官方公告 Renaiss 亚洲邀请赛预告 涵盖台湾与东南亚五国，请以原文作为最终版本。",
+          "timeline_date": "",
+          "urgency": "medium",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "official",
+            "alpha"
+          ],
+          "detail_summary": "Renaiss 官方 这則属于功能更新，核心为「功能规則已更新，请依贴文列出的时间与条件操作」。对使用者的直接影响是：这代表产品进度往下一个节点前进，需留意正式开放时间与条件",
+          "detail_lines": [
+            "更新主轴：功能规則已更新，请依贴文列出的时间与条件操作",
+            "时间节点：待官方公告",
+            "影响：这代表产品进度往下一个节点前进，需留意正式开放时间与条件",
+            "下一步：追踪官方下一則公告确认最终规則。"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2047620731115065582",
+          "account": "TCGRWA",
+          "url": "https://x.com/TCGRWA/status/2047620731115065582",
+          "title": "Renaiss × Portaldot 扑克之夜今晚8点开赛",
+          "summary": "Renaiss 与 Portaldot 联合举办扑克之夜活动，今晚8点开放報名参与。奖励包含200 USDT奖池与Renaiss专属M3卡包（Top 1-10名），为结合加密货币与实体卡牌收藏的社群活动。",
+          "bullets": [
+            "今晚8点开赛，報名连结：https://t.co/SCqjRMQunr",
+            "奖池含200 USDT与M3卡包，Top 1-10名可获卡包",
+            "需持有 Renaiss SBT 方可参与，報名前请先确认钱包状态"
+          ],
+          "published_at": "2026-04-24T10:16:39+00:00",
+          "confidence": 0.95,
+          "card_type": "event",
+          "layout": "poster",
+          "tags": [
+            "扑克之夜",
+            "Renaiss",
+            "Portaldot"
+          ],
+          "raw_text": "🎴 Renaiss × Portaldot Poker Night 即将开启！ ⏰ 今晚8点 🎟 报名入口： https://t.co/SCqjRMQunr 本次活动由 @Renaiss_CN × @PortaldotL0 联合举办 更有丰富奖励等你来拿👇 💰 Portaldot 奖池 — 200 USDT 等你瓜分 🎴 Renaiss 专属奖励 — 宝可梦 M3 卡包（Top 1–10） — Community Event https://t.co/L8HHOGWMtY",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGqbz1pbEAAEE5X.jpg",
+          "metrics": {},
+          "importance": 7.4,
+          "template_id": "event_poster",
+          "glance": "活动 Renaiss × Portaldot 扑克之夜今晚8点开赛，时间 今晚，重点奖励 活动奖励。",
+          "timeline_date": "2026-04-24T00:00:00+00:00",
+          "urgency": "medium",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {
+            "reward": "活动奖励",
+            "participation": "報名",
+            "audience": "社群玩家",
+            "schedule": "今晚"
+          },
+          "topic_labels": [
+            "events",
+            "pokemon"
+          ],
+          "detail_summary": "@tcgrwa 这則活动主轴是「⏰ 今晚8点 🎟 报名入口；本次活动由 × 联合举办 更有丰富奖励等你来拿👇 💰 Portaldot 奖池 — 200 USDT 等你瓜分 🎴 Renaiss 专属奖励 —」，时间在 今晚，主要诱因是 活动奖励，参与方式为 報名。这是社群动员型资讯，重点是把人导向直播或现场互动",
+          "detail_lines": [
+            "活动主轴：⏰ 今晚8点 🎟 报名入口；本次活动由 × 联合举办 更有丰富奖励等你来拿👇 💰 Portaldot 奖池 — 200 USDT 等你瓜分 🎴 Renaiss 专属奖励 —",
+            "时间与地点：今晚",
+            "奖励重点：活动奖励",
+            "参与方式：報名",
+            "影响：这是社群动员型资讯，重点是把人导向直播或现场互动",
+            "补充脉络：活动资讯已释出，请先确认时间地点"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2047616545090859207",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2047616545090859207",
+          "title": "Omega Pack 将于4月26日补货 新增逾10张S级卡牌",
+          "summary": "Renaiss 官方宣布 Omega Pack 将于台湾时间4月26日下午3点进行补货，並一次新增超过10张 S 级卡牌。官方指出此次上架的顶级卡牌市场价值突破1000美元，凸显高稀有度卡牌的投资吸引力。同时针对 Omega Restock SBT 解锁条件，官方说明玩家需在5月前完成至少一次 Omega Pack 抽取即可获得领取资格。此外品牌即将达成1000万用户里程碑，显示平台用户规模持续扩张。",
+          "bullets": [
+            "Omega Pack 补货时间为4月26日15:00（UTC+8），建议设定提醒或查看官方直播",
+            "Omega Restock SBT 解锁条件为5月前完成一次抽取，可至钱包页面确认领取状态",
+            "此次上架新卡以S级为主，顶级卡牌价值逾1000美元，追踪卡价可留意二级市场報价"
+          ],
+          "published_at": "2026-04-24T10:00:01+00:00",
+          "confidence": 0.92,
+          "card_type": "feature",
+          "layout": "poster",
+          "tags": [
+            "卡包补货",
+            "SBT解锁",
+            "新卡上架"
+          ],
+          "raw_text": "🎴 Omega Pack Restocking Soon 🗓 26 Apr, 3PM (UTC+8) Omega Pack is coming back with 10+ new S-Tier cards. 💎 Top hits worth $1,000+ 🎖 Omega Restock SBT Pull Omega Pack once before May to unlock it. And one more thing 👀 We’re getting close to the 10M milestone. If Renaiss https://t.co/UcXUiI14oV",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGp_eGTaAAAc6SX.jpg",
+          "metrics": {},
+          "importance": 10.0,
+          "template_id": "announcement_timeline",
+          "glance": "功能进度 卡包与抽卡表现，时间节点 3PM，留意开放条件。",
+          "timeline_date": "2026-04-26T00:00:00+00:00",
+          "urgency": "high",
+          "manual_pick": true,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "official",
+            "sbt",
+            "alpha",
+            "pokemon"
+          ],
+          "detail_summary": "Renaiss 官方 这則属于功能更新，核心为「功能规則已更新，请依贴文列出的时间与条件操作」。主要时间节点在 3PM、UTC+8。对使用者的直接影响是：这代表产品进度往下一个节点前进，需留意正式开放时间与条件",
+          "detail_lines": [
+            "更新主轴：功能规則已更新，请依贴文列出的时间与条件操作",
+            "时间节点：3PM、UTC+8",
+            "SBT 取得方式：在 May 前完成 1 次「Omega Pack」抽卡以解锁。",
+            "影响：这代表产品进度往下一个节点前进，需留意正式开放时间与条件",
+            "下一步：追踪官方下一則公告确认最终规則。"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2047565179693777294",
+          "account": "TCGRWA",
+          "url": "https://x.com/TCGRWA/status/2047565179693777294",
+          "title": "Legacy Pack #8 卡池市场分析出炉 固拉多/盖歐卡EX成交价差500U",
+          "summary": "TCGRWA 分析 Legacy Pack #8 卡池，盘点熔岩队固拉多EX与海洋队盖歐卡EX的市场数据。POP 10总量1597张，鞋店均价2500U，EBAY均价3000U，显示经典老卡需求稳定。本次分析亦纳入简中独占皮卡丘，为卡包投资者提供价值参考。",
+          "bullets": [
+            "固拉多/盖歐卡EX的 POP 10 总量1597张，投资人可追踪后续供需变化",
+            "同套卡鞋店均价2500U、EBAY均价3000U，价差500U反映通路溢价",
+            "简中独占皮卡丘列入本次卡池，可持续关注其二级市场流动性"
+          ],
+          "published_at": "2026-04-24T06:35:55+00:00",
+          "confidence": 0.92,
+          "card_type": "market",
+          "layout": "data",
+          "tags": [
+            "Legacy Pack",
+            "市场数据",
+            "经典老卡"
+          ],
+          "raw_text": "Legacy Pack #8 | 卡池详解 ⏰时间为下午三点 1⃣熔岩队的固拉多EX 该卡来自2015年的CP1卡包中，还有另外一张海洋队的盖欧卡EX组成一套，非常经典老卡，价值稳定 POP 10 数量1597张 鞋店成交价约 2500U EBAY成交价3000U 2⃣简中独占皮卡丘 https://t.co/cE544OvhRj",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGpphA7aAAA1xLq.png",
+          "metrics": {},
+          "importance": 4.2,
+          "template_id": "market_signal",
+          "glance": "市场重点：交易量与市场成长。1597 代表成交金额或价格里程碑。",
+          "timeline_date": "",
+          "urgency": "normal",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "pokemon"
+          ],
+          "detail_summary": "@tcgrwa 这則市场更新主轴是「Legacy Pack；卡池详解 ⏰时间为下午三点 1⃣熔岩队的固拉多EX 该卡来自2015年的CP1卡包中」。贴文数字代表：1597 代表成交金额或价格里程碑；2500 代表成交金额或价格里程碑。影响面：这則内容会把讨论焦点拉到高价成交与估值区间。",
+          "detail_lines": [
+            "市场主轴：Legacy Pack；卡池详解 ⏰时间为下午三点 1⃣熔岩队的固拉多EX 该卡来自2015年的CP1卡包中",
+            "数字解读：1597 代表成交金额或价格里程碑。",
+            "补充：2500 代表成交金额或价格里程碑。",
+            "影响：这則内容会把讨论焦点拉到高价成交与估值区间。",
+            "下一步：比对至少两个来源后再做判断。"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2047556145347195181",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2047556145347195181",
+          "title": "Legacy Pack 8.0 即将推出",
+          "summary": "Renaiss官方帐号宣布Legacy Pack 8.0将于1小时后上线，发布时间为今日下午3点（UTC+8）。这是Renaiss平台的卡包产品版本更新，用户需留意官方公告或平台钱包升级。Alpha玩家与收藏者可追踪新包动态，抢先了解卡牌组合与稀有度分布。",
+          "bullets": [
+            "下午3点前确认钱包已连接Renaiss平台，避免错过解锁时机",
+            "追踪Renaiss官方帐号，第一时间获取新包详细资讯",
+            "Alpha玩家可预先查阅官方文档，掌握卡包8.0更新要点"
+          ],
+          "published_at": "2026-04-24T06:00:01+00:00",
+          "confidence": 0.92,
+          "card_type": "announcement",
+          "layout": "poster",
+          "tags": [
+            "official",
+            "sbt",
+            "alpha"
+          ],
+          "raw_text": "🎴 Legacy Pack 8.0 goes live in 1 hours Today, 3PM (UTC+8). Get ready. https://t.co/V5lemhnP0z",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/amplify_video_thumb/2047537995864211456/img/dysXEb_xpIupphuK.jpg",
+          "metrics": {},
+          "importance": 9.6,
+          "template_id": "announcement_timeline",
+          "glance": "官方公告 卡包与抽卡表现，请以原文作为最终版本。",
+          "timeline_date": "2026-04-24T00:00:00+00:00",
+          "urgency": "medium",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "official",
+            "alpha",
+            "events",
+            "pokemon"
+          ],
+          "detail_summary": "Renaiss 官方 这則属于官方公告，核心为「Legacy Pack 卡包上新与价格区间更新」。主要时间节点在 3PM、UTC+8、Today。对使用者的直接影响是：这則更新会影响后续使用流程，需追踪官方下一則细节",
+          "detail_lines": [
+            "更新主轴：Legacy Pack 卡包上新与价格区间更新",
+            "时间节点：3PM、UTC+8、Today",
+            "影响：这則更新会影响后续使用流程，需追踪官方下一則细节",
+            "下一步：追踪官方下一則公告确认最终规則。"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2047525941434572836",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2047525941434572836",
+          "title": "Renaiss 回顾香港 Web3 Festival 参与 並开放活动 SBT 领取",
+          "summary": "Renaiss 團队针对上周香港 Web3 Festival 系列活动（包括 BNB Chain Super Meetup、RWA Night 与 HK TCG Tour）发布感谢公告，並宣佈开放活动 SBT 的领取机制。其中「Catch the CEO SBT」要求参与者与執行长合照並将照片发布至 Twitter 完成 claim 程序。此讯息主要提供给曾亲临香港活动现场的区块链玩家与 TCG 爱好者，下一步可检视个人钱包是否已收到 SBT 领取通知，或依指示完成 photo posting 流程。",
+          "bullets": [
+            "曾参加香港 Web3 Festival 系列活动的与会者，现在可依指示领取活动专属 SBT",
+            "欲取得 Catch the CEO SBT，需与執行长合影並将照片发布至 Twitter",
+            "钱包尚未收到 SBT 的参与者，建议确认钱包连接正确並重新整理页面"
+          ],
+          "published_at": "2026-04-24T04:00:00+00:00",
+          "confidence": 0.88,
+          "card_type": "announcement",
+          "layout": "brief",
+          "tags": [
+            "Web3 Festival",
+            "SBT 领取",
+            "香港线下活动"
+          ],
+          "raw_text": "🇭🇰 Thank you for joining Renaiss at Web3 Festival Hong Kong From the BNB Chain Super Meetup to RWA Night and the HK TCG Tour, thank you for being part of the journey and spending the week with us in Hong Kong. 🎖 Event SBTs • Catch the CEO SBT — snap a photo with our CEO, post https://t.co/UWDsI1uN28",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGo-auObIAAiWgJ.jpg",
+          "metrics": {},
+          "importance": 9.6,
+          "template_id": "announcement_timeline",
+          "glance": "官方公告 香港 Web3 Festival 行程，请以原文作为最终版本。",
+          "timeline_date": "",
+          "urgency": "medium",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "events",
+            "sbt",
+            "official",
+            "pokemon",
+            "alpha"
+          ],
+          "detail_summary": "Renaiss 官方 这則社群内容的核心是「Web3 Festival 社群行程更新」。主要场景在 香港。判读建议：这則贴文提供社群现场脉络，可用来补齐讨论背景",
+          "detail_lines": [
+            "社群主轴：Web3 Festival 社群行程更新",
+            "时间参考：以原文更新为准",
+            "场景：香港",
+            "SBT 取得方式：完成「参与活动」並符合活动条件后领取。",
+            "影响：这則贴文提供社群现场脉络，可用来补齐讨论背景",
+            "下一步：持续追踪官方或同帐号后续补充。"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2047316344258130405",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2047316344258130405",
+          "title": "Renaiss 香港TCG Tour 落幕 Web3 Festival期间走访卡店与庙宇",
+          "summary": "Renaiss于Web3 Festival期间完成为期两天的香港TCG Tour，带领社群走访旺角信和中心等本地卡店集散地，並在黄大仙祠进行「God Pack」祝福仪式。CEO Winchman现场合送 Pokémon、One Piece 等卡盒，参与者跨语言交流並分享市场观察。此活动展示实体收藏文化如何与链上机制结合，为日后代币化收藏品拓展流动性与参与者基础。",
+          "bullets": [
+            "香港TCG Tour已结束，下次活动報名资讯可追踪官方帐号获取",
+            "链上收藏品计画持续推进，相关代币化细节请关注 Renaiss 更新",
+            "官方Twitter有现场照片与后续内容，可点入原文查看更多细节"
+          ],
+          "published_at": "2026-04-23T14:07:13+00:00",
+          "confidence": 0.56,
+          "card_type": "announcement",
+          "layout": "brief",
+          "tags": [
+            "TCG",
+            "线下活动",
+            "链上收藏"
+          ],
+          "raw_text": "That’s a wrap on Hong Kong TCG Tour 🇭🇰 Over two days during Web3 Festival, the Renaiss community moved through local card shops, collector hubs, local food spots, and one very Hong Kong kind of blessing stop. It was a community experience shaped by the city’s TCG culture – and https://t.co/4yy4T9GzBx\n\n1/ 1/ One of the most distinctive moments of the tour was our stop at Wong Tai Sin Temple. With unopened packs in hand, the group visited one of Hong Kong’s most iconic temples for a local-style blessing before the day continued. The “God Pack” blessing added a playful touch, https://t.co/aIkuMwy3wO\n\n2/ 2/ From Smiling Plaza and Sino Centre to other local trading hubs across the city, the route gave people a real feel for how dense and layered Hong Kong’s TCG scene is. Different neighborhoods, different shop styles, different collector energy – all part of one living market https://t.co/tDLIWnh3q1\n\n3/ 3/ Inside the shops, the tour kept turning into shared collecting moments. Our CEO @Plus_Ultra_715 Winchman treated the group to boxes and packs across Pokémon, One Piece, and more, and before long the tables were full of reactions, comparisons, collector talk, and people https://t.co/oRl7dlivJ2\n\n4/ 4/ Another part that made the tour special was how naturally the community came together. Small groups, mixed languages, local meals, street snacks, card talk, market talk, and plenty of side conversations in between. People were sharing knowledge, helping each other navigate https://t.co/iSoscpUj4W\n\n🔚 Thanks to everyone who joined us in Hong Kong. TCGs have always carried culture, community, and real-world context around them. Renaiss is bringing collectibles on-chain in ways that connect more people to that world while expanding liquidity and participation around it.",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/amplify_video_thumb/2047313410917031936/img/CUp9P7EVjbb4I1Uy.jpg",
+          "metrics": {
+            "likes": 0,
+            "retweets": 0,
+            "replies": 0,
+            "quotes": 0,
+            "views": 0
+          },
+          "importance": 9.6,
+          "template_id": "announcement_timeline",
+          "glance": "官方公告 香港 Web3 Festival 行程，请以原文作为最终版本。",
+          "timeline_date": "",
+          "urgency": "medium",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "events",
+            "official",
+            "pokemon",
+            "alpha"
+          ],
+          "detail_summary": "Renaiss 官方 这則社群内容的核心是「社群直播与互动预告」。主要场景在 香港。判读建议：这則贴文提供社群现场脉络，可用来补齐讨论背景",
+          "detail_lines": [
+            "社群主轴：社群直播与互动预告",
+            "时间参考：以原文更新为准",
+            "场景：香港",
+            "影响：这則贴文提供社群现场脉络，可用来补齐讨论背景",
+            "下一步：持续追踪官方或同帐号后续补充。"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2047239060704399578",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2047239060704399578",
+          "title": "Legacy Pack 8.0 限量发售：1000包、每包100美元、单卡价值最高2850美元",
+          "summary": "Renaiss 官方宣布 Legacy Pack 8.0 将于4月24日下午3点（UTC+8）正式开卖，共释出1000包限量卡包，每包售价100美元，其中最高价卡牌价值达2850美元。此为官方首次揭露该系列具体定价与供应量资讯，有意入手的收藏家应提前准备钱包与帐户验证。建议追踪官方帐号以获取即时发售通知与可能的补货动态。",
+          "bullets": [
+            "4/24下午3点 UTC+8 开放购买，共1000包限量供应",
+            "每包定价100美元，单卡最高价值2850美元（以美元计价）",
+            "收藏家应提前确认帐户与付款方式，抢购热门系列"
+          ],
+          "published_at": "2026-04-23T09:00:02+00:00",
+          "confidence": 0.92,
+          "card_type": "announcement",
+          "layout": "data",
+          "tags": [
+            "renaiss",
+            "官方公告",
+            "限量发售"
+          ],
+          "raw_text": "🎴 Legacy Pack 8.0 Top cards to pull Top value up to $2850 💵 $100 per pull 📦 1000 packs 🗓 24 Apr, 3PM (UTC+8) Get ready. https://t.co/rdWU1qQXCI",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/amplify_video_thumb/2047201855793692672/img/dlLjmA16S2-aY6OE.jpg",
+          "metrics": {},
+          "importance": 9.6,
+          "template_id": "announcement_timeline",
+          "glance": "官方公告 卡包与抽卡表现，请以原文作为最终版本。",
+          "timeline_date": "2026-04-24T00:00:00+00:00",
+          "urgency": "medium",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "official",
+            "pokemon",
+            "alpha"
+          ],
+          "detail_summary": "Renaiss 官方 这則市场更新主轴是「Legacy Pack 卡包上新与价格区间更新」。贴文数字代表：8.0（版本） 在这里是版本编号，不是价格；$2850（美元） 代表产品售价或价值区间。影响面：这則内容直接影响玩家对入场时机与开包策略的判断。",
+          "detail_lines": [
+            "市场主轴：Legacy Pack 卡包上新与价格区间更新",
+            "数字解读：8.0（版本） 在这里是版本编号，不是价格。",
+            "补充：$2850（美元） 代表产品售价或价值区间。",
+            "影响：这則内容直接影响玩家对入场时机与开包策略的判断。",
+            "下一步：比对至少两个来源后再做判断。"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2047234754274041978",
+          "account": "davidcheang99",
+          "url": "https://x.com/davidcheang99/status/2047234754274041978",
+          "title": "玩家自述加入Renaiss后卡牌收藏失控的过程",
+          "summary": "一名社群成员分享加入Renaiss后卡牌收藏失控的历程，原本不收藏卡牌的他，透过参加线下社区活动开包、PK、赢卡，以及自行举办线上活动开盒，卡牌数量逐渐失控。原本打算等官方推出卡册再整理，但因数量过多决定先自行整理。此案例显示Renaiss的线上线下社区活动有效带动成员参与並累积收藏。",
+          "bullets": [
+            "Renaiss官方卡册尚未推出，有需要的成员可先自行建立整理系统",
+            "线下社区活动提供开包、PK、赢卡等互动机会，有助扩充收藏",
+            "Renaiss成员可透过自办线上活动获得额外开盒机会"
+          ],
+          "published_at": "2026-04-23T08:42:55+00:00",
+          "confidence": 0.82,
+          "card_type": "announcement",
+          "layout": "timeline",
+          "tags": [
+            "renaiss",
+            "community",
+            "cards"
+          ],
+          "raw_text": "从加入 Renaiss 那天开始 本身没收藏卡牌的我，卡牌量慢慢的失控了...🫠 一开始只是零零散散收到一些 后来参加线下社区活动开包、PK、赢卡 最近又因为自己做线上社区活动开了几盒 本来还打算等 Renaiss 出官方卡册再整理 但真的等不及了…卡太多了🤣🤣 先自己动手整理一波！ @Mark_Memelord https://t.co/bv1dtl8MAR",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGk8ix-bEAAgPPv.jpg",
+          "metrics": {},
+          "importance": 4.6,
+          "template_id": "announcement_timeline",
+          "glance": "官方公告 玩家自述加入Renaiss后卡牌收藏失控的过程，请以原文作为最终版本。",
+          "timeline_date": "",
+          "urgency": "normal",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "alpha",
+            "other",
+            "pokemon"
+          ],
+          "detail_summary": "@davidcheang99 这則属于官方公告，核心为「从加入 Renaiss 那天开始 本身没收藏卡牌的我；卡牌量慢慢的失控了...🫠 一开始只是零零散散收到一些 后来参加线下社区活动开包、PK、赢卡」。对使用者的直接影响是：这則更新会影响后续使用流程，需追踪官方下一則细节",
+          "detail_lines": [
+            "更新主轴：从加入 Renaiss 那天开始 本身没收藏卡牌的我；卡牌量慢慢的失控了...🫠 一开始只是零零散散收到一些 后来参加线下社区活动开包、PK、赢卡",
+            "时间节点：待官方公告",
+            "影响：这則更新会影响后续使用流程，需追踪官方下一則细节",
+            "下一步：追踪官方下一則公告确认最终规則。"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2047203430989783437",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2047203430989783437",
+          "title": "SuperLiquid Beta 2.0 SBT门槛公告　快照时间定于27日凌晨",
+          "summary": "Renaiss官方公布SuperLiquid Beta 2.0的SBT资格门槛，共设三级：Top 40%需170点、Top 10%需930点、Top 1%需4900点。官方强调这些为动态参考值，会随用户参与增加而浮动。快照时间定于台湾时间4月27日凌晨3:00，用户需在此前确认分数达标。对于正在冲刺SBT资格的Alpha参与者而言，本次公告提供了明确的积分目标与截止时限，后续需持续关注门槛变化並把握快照前的冲刺窗口。",
+          "bullets": [
+            "对照自身分数与三级门槛（170/930/4900点）评估达成可能性",
+            "快照时间为台湾时间4月27日凌晨3:00，须在快照前完成积分佈局",
+            "留意官方后续公告，因门槛为动态设定可能随参与人数调整"
+          ],
+          "published_at": "2026-04-23T06:38:27+00:00",
+          "confidence": 0.95,
+          "card_type": "announcement",
+          "layout": "poster",
+          "tags": [
+            "SBT",
+            "门槛公告",
+            "快照"
+          ],
+          "raw_text": "SuperLiquid Beta 2.0 SBT Threshold Update ⚡️ 🥉 Top 40%: 170 points 🥈 Top 10%: 930 points 👑 Top 1%: 4900 points These are live reference thresholds, not fixed final cutoffs. As more users join and scores move higher, the bar can keep climbing. ⏰ Snapshot: 27 Apr, 3:00 AM https://t.co/WGyruWucCD",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGkgilib0AAS0m8.jpg",
+          "metrics": {},
+          "importance": 9.6,
+          "template_id": "announcement_timeline",
+          "glance": "官方公告 SBT 与积分机制，请以原文作为最终版本。",
+          "timeline_date": "2026-04-27T00:00:00+00:00",
+          "urgency": "high",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "official",
+            "sbt",
+            "alpha",
+            "events"
+          ],
+          "detail_summary": "Renaiss 官方 这則是 SBT 门槛更新：前 40%：170 分、前 10%：930 分、前 1%：4900 分。快照时间为 27 Apr, 3:00 AM。门槛为动态参考值，会随参与人数与分数变化而上调。重点是快照前的冲分策略与快照后的最终分位确认。",
+          "detail_lines": [
+            "更新主轴：SBT 分位门槛与快照时间更新",
+            "本次门槛：前 40%：170 分、前 10%：930 分、前 1%：4900 分",
+            "快照时间：27 Apr, 3:00 AM",
+            "规則说明：门槛为动态参考值，会随参与人数与分数变化而上调",
+            "SBT 取得方式：快照时达到 前 40%：170 分、前 10%：930 分、前 1%：4900 分，快照时间 27 Apr, 3:00 AM",
+            "影响对象：Beta 参与者（依分位对应等级）。"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2046853533778186405",
+          "account": "davidcheang99",
+          "url": "https://x.com/davidcheang99/status/2046853533778186405",
+          "title": "Superliquid Beta 2.0 尾声与 2FA 功能上线",
+          "summary": "Renaiss 的 Superliquid Beta 2.0 正在进行最后冲刺阶段，可能于近日结束。Beta 排名将直接决定用户能获得的 Superliquid SBT 种类，而这些 SBT 具备乘数效果，可放大积分获得。此外，2FA 双重认证功能已正式上线，提升帐户安全性。此更新影响所有参与 Beta 的用户，建议关注排名结算时间並启用 2FA。",
+          "bullets": [
+            "Beta 2.0 进入最后冲刺，排名将影响可获得的 SBT 种类与数量",
+            "SBT 具备乘数效果，可放大 Beta 2.0 积分，影响最终领取",
+            "2FA 双重认证已上线，建议尽早启用以保障帐户安全"
+          ],
+          "published_at": "2026-04-22T07:28:05+00:00",
+          "confidence": 0.85,
+          "card_type": "feature",
+          "layout": "timeline",
+          "tags": [
+            "Renaiss",
+            "Superliquid",
+            "Beta"
+          ],
+          "raw_text": "浅谈 Renaiss 最近两个更新✨ 🌊 Superliquid Beta 2.0 进入最后阶段了 可能这几天就结束，现在就是最后冲刺了！ - 排名会直接影响你拿到的 Superliquid SBT种类 - 而且 SBT 还有 multiplier，会放大我们在 SBT 2.0 积分 🔥 另外 🔐 2FA认证终于上线了！ https://t.co/ch7XAKRK1z",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGfib0jbQAAH4-J.jpg",
+          "metrics": {},
+          "importance": 5.0,
+          "template_id": "announcement_timeline",
+          "glance": "功能进度 帐号安全与 MFA，留意下一則官方公告。",
+          "timeline_date": "",
+          "urgency": "normal",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "official",
+            "sbt",
+            "alpha"
+          ],
+          "detail_summary": "@davidcheang99 这則更新重点是 MFA 登入保护。启用后会在登入流程增加验证器动态码步骤，可降低帐号被盗风险，但使用流程会多一次验证。",
+          "detail_lines": [
+            "更新主轴：帐号安全验证升级",
+            "机制重点：新增验证器动态码步骤",
+            "适用对象：目前使用 Privy 登入的使用者",
+            "SBT 取得方式：SBT种类 - 而且 SBT 还有 multiplier，会放大我们在 SBT 2.0 积分 🔥 另外 🔐 2FA认证终于上线了",
+            "影响：安全性提升，但登入流程增加一次验证",
+            "下一步：完成 MFA 设定並测试备援流程"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2046816267122680172",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2046816267122680172",
+          "title": "Renaiss 开放 MFA 帐户安全验证功能",
+          "summary": "Renaiss 官方宣布 MFA（多因素认证）功能正式上线，现已支援透过 Privy 登入的用户。启用后需使用验证器 App 产生 6 位数验证码才能完成登入，大幅提升帐户安全性。尚未启用的用户可前往设定页面自行开通。",
+          "bullets": [
+            "Privy 登入方式之帐户可至设定页面启用 MFA 验证",
+            "需先安装验证器 App（如 Google Authenticator）备用",
+            "启用后每次登入皆须输入验证器产生的 6 位数验证码"
+          ],
+          "published_at": "2026-04-22T05:11:14+00:00",
+          "confidence": 0.92,
+          "card_type": "announcement",
+          "layout": "timeline",
+          "tags": [
+            "帐户安全",
+            "功能上线",
+            "MFA"
+          ],
+          "raw_text": "🔐 MFA (Multi-Factor Authentication) is now live on Renaiss. Users logging in via Privy can now enable MFA with a 6-digit verification code from an authenticator app for an extra layer of account protection. Secure your account now. https://t.co/wnxuuc1h0f\n\nYou can now enable your MFA in your setting page https://t.co/xpmRRNDpMf",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGfAgeVaoAAaxIN.jpg",
+          "metrics": {
+            "likes": 0,
+            "retweets": 0,
+            "replies": 0,
+            "quotes": 0,
+            "views": 0
+          },
+          "importance": 9.6,
+          "template_id": "announcement_timeline",
+          "glance": "官方公告 帐号安全与 MFA，请以原文作为最终版本。",
+          "timeline_date": "",
+          "urgency": "medium",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "official",
+            "alpha"
+          ],
+          "detail_summary": "Renaiss 官方 这則更新重点是 MFA 登入保护。启用后会在登入流程增加验证器动态码步骤，可降低帐号被盗风险，但使用流程会多一次验证。",
+          "detail_lines": [
+            "更新主轴：帐号安全验证升级",
+            "机制重点：新增验证器动态码步骤",
+            "适用对象：目前使用 Privy 登入的使用者",
+            "影响：安全性提升，但登入流程增加一次验证",
+            "下一步：完成 MFA 设定並测试备援流程"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2046560299466346710",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2046560299466346710",
+          "title": "Superliquid Beta 2.0 阶段性结束，SBT 资格依排名决定",
+          "summary": "Superliquid Beta 2.0 即将进入尾声，现有积分将于下一轮重置，参与者本阶段排名将直接决定可领取的 SBT 等级。官方公布三级 SBT 的资格门槛分别是积分排名前百分之四十、百分之十与百分之一，对应普通版、Prime 版与最高级 Apex 版。此公告影响所有 Beta 参与者的策略方向，建议密切关注下轮 Beta 的具体开放时间与积分计算规則。",
+          "bullets": [
+            "本轮 Beta 积分将在下一轮重置，排名影响 SBT 领取资格",
+            "Top 40% 可得普通 Elite SBT，Top 10% 升级为 Prime SBT",
+            "Top 1% 最高可得 Apex SBT，需持续维持领先排名"
+          ],
+          "published_at": "2026-04-21T12:02:53+00:00",
+          "confidence": 0.92,
+          "card_type": "feature",
+          "layout": "timeline",
+          "tags": [
+            "beta",
+            "sbt",
+            "ranking"
+          ],
+          "raw_text": "🌊 Superliquid Beta 2.0 is ending soon. Points will be reset for the next round. Your ranking in this phase will determine your SBT: 🎖 Top 40% - Superliquid 2.0 Elite SBT 🏆 Top 10% - Superliquid 2.0 Prime SBT 👑 Top 1% - Superliquid 2.0 Apex SBT And this is more than just a https://t.co/XvOxtBUNH7",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGbXvUYacAAJOCP.jpg",
+          "metrics": {},
+          "importance": 10.0,
+          "template_id": "announcement_timeline",
+          "glance": "功能进度 SBT 与积分机制，留意下一則官方公告。",
+          "timeline_date": "",
+          "urgency": "high",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "sbt",
+            "alpha",
+            "official"
+          ],
+          "detail_summary": "Renaiss 官方 这則属于功能更新，核心为「SBT 分位门槛与快照时间更新」。对使用者的直接影响是：这会直接影响 Beta 参与者在快照前的冲分策略与 SBT 等级判定",
+          "detail_lines": [
+            "更新主轴：SBT 分位门槛与快照时间更新",
+            "时间节点：待官方公告",
+            "SBT 取得方式：依官方贴文的参与条件完成任务后领取。",
+            "影响：这会直接影响 Beta 参与者在快照前的冲分策略与 SBT 等级判定",
+            "下一步：追踪官方下一則公告确认最终规則。"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2046538344990179655",
+          "account": "TCGRWA",
+          "url": "https://x.com/TCGRWA/status/2046538344990179655",
+          "title": "TCGRWA社群晒卡分享：OP、球星卡与S级卡片开箱",
+          "summary": "TCGRWA社群成员发文分享开卡包乐趣，提到自己今天运气不错，开出One Piece SEC卡片、球星卡编号卡，还抽到一张S级卡。纯粹是社群互动晒卡贴文，无官方资讯或活动讯号。",
+          "bullets": [
+            "TCGRWA成员于社群分享个人开包经验与运气",
+            "开出One Piece SEC与球星卡编号卡等品项",
+            "另抽出S级稀有卡一张作为额外惊喜"
+          ],
+          "published_at": "2026-04-21T10:35:38+00:00",
+          "confidence": 0.92,
+          "card_type": "insight",
+          "layout": "brief",
+          "tags": [
+            "sbt",
+            "other"
+          ],
+          "raw_text": "大家在一起拆包才是最好玩的！ 今天好像有点欧了 op开了sec 球星卡开了编号卡 抽卡还出S🥳 https://t.co/qz0yVScnkk",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGbDqRPb0AAfjDA.jpg",
+          "metrics": {},
+          "importance": 3.5,
+          "template_id": "community_brief",
+          "glance": "TCGRWA成员于社群分享个人开包经验与运气",
+          "timeline_date": "",
+          "urgency": "normal",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "other",
+            "pokemon",
+            "tools"
+          ],
+          "detail_summary": "@tcgrwa 这則社群内容的核心是「今天好像有点欧了 op开了sec 球星卡开了编号卡 抽卡还出S🥳」。判读建议：这則贴文提供社群现场脉络，可用来补齐讨论背景",
+          "detail_lines": [
+            "社群主轴：今天好像有点欧了 op开了sec 球星卡开了编号卡 抽卡还出S🥳",
+            "时间参考：以原文更新为准",
+            "场景：线上社群讨论",
+            "影响：这則贴文提供社群现场脉络，可用来补齐讨论背景",
+            "下一步：持续追踪官方或同帐号后续补充。",
+            "补充脉络：大家在一起拆包才是最好玩的"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2046504247131533601",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2046504247131533601",
+          "title": "香港TCG Tour首站开放抽卡 多牌同步进行",
+          "summary": "Renaiss官方直播香港TCG Tour首站实况，由@Plus_Ultra_715提供One Piece、宝可梦与Digimon卡盒供与会者现场拆封。活动集结多个卡牌品牌爱好者共同参与，官方同步于X平台更新现场动态。建议追踪官方帐号以掌握后续场次资讯。",
+          "bullets": [
+            "持续关注@renaissxyz取得香港TCG Tour后续场次动态",
+            "如有兴趣主办或合作，可透过官方帐号联系咨询细节",
+            "追踪@Plus_Ultra_715查看本场次抽卡实况与好运瞬间"
+          ],
+          "published_at": "2026-04-21T08:20:09+00:00",
+          "confidence": 0.56,
+          "card_type": "event",
+          "layout": "poster",
+          "tags": [
+            "events",
+            "sbt",
+            "pokemon"
+          ],
+          "raw_text": "Live from the first card shop of today’s Hong Kong TCG Tour 👀 @Plus_Ultra_715 just treated everyone on the tour to a big stack of boxes – One Piece, Pokémon, Digimon and more. Packs are flying open everywhere right now. Good hits, good vibes, and a lot of shared fun around https://t.co/CO9WpaeVvy",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGaknhXbAAA6tWw.jpg",
+          "metrics": {},
+          "importance": 11.2,
+          "template_id": "event_poster",
+          "glance": "活动 卡包与抽卡表现，时间 today，建议提前安排参与。",
+          "timeline_date": "2026-04-21T00:00:00+00:00",
+          "urgency": "high",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {
+            "participation": "直播",
+            "location": "香港",
+            "schedule": "today"
+          },
+          "topic_labels": [
+            "events",
+            "pokemon",
+            "official",
+            "alpha"
+          ],
+          "detail_summary": "Renaiss 官方 这則活动主轴是「香港 TCG Tour 首站卡店现场更新」，时间在 today，地点在 香港，参与方式为 直播。这是社群动员型资讯，重点是把人导向直播或现场互动",
+          "detail_lines": [
+            "活动主轴：香港 TCG Tour 首站卡店现场更新",
+            "时间与地点：today／香港",
+            "奖励重点：请以原文奖励说明为准",
+            "参与方式：直播",
+            "影响：这是社群动员型资讯，重点是把人导向直播或现场互动"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2046222225016250739",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2046222225016250739",
+          "title": "Renaiss 韩国團队出席 RWA 活动 首抽 M4 包即开出 SAR McDonald's Pikachu",
+          "summary": "Renaiss 官方韩国社群團队现身 Entertainment RWA Night 活动现场，当场拆开 M4 卡包。第一包即开出 SAR 等级的 McDonald's Pikachu 卡，这张卡在 Renaiss 生态中属于高稀有度卡牌，创下令人瞩目的开卡纪录。此事件展现官方團队参与外部区块链活动的姿态，同时透过幸运开卡激励社群讨论热度，粉丝可关注后续是否有限定卡片曝光或相关庆祝活动。",
+          "bullets": [
+            "Renaiss 韩国 CM 團队已抵达 Entertainment RWA Night 活动现场",
+            "社群成员 legendmascot 首抽 M4 包即开出 SAR 级 McDonald's Pikachu",
+            "官方帐号发布现场拆卡实况，建议追踪后续是否有相关庆祝或奖励"
+          ],
+          "published_at": "2026-04-20T13:39:30+00:00",
+          "confidence": 0.92,
+          "card_type": "insight",
+          "layout": "brief",
+          "tags": [
+            "现场实况",
+            "开卡成就",
+            "社群互动"
+          ],
+          "raw_text": "KR gang @RenaissKrCM showed up at Entertainment RWA Night and started ripping packs together. @legendmascot wasted absolutely no time – first M4 pack, straight into a SAR, straight into the McDonald’s Pikachu card. Huge W. 🔥 https://t.co/x0uhSZzdTX",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/amplify_video_thumb/2046221934069956608/img/EHWyE7qU42xfqiEd.jpg",
+          "metrics": {},
+          "importance": 7.3,
+          "template_id": "community_brief",
+          "glance": "Renaiss 韩国 CM 團队已抵达 Entertainment RWA Night 活动现场",
+          "timeline_date": "",
+          "urgency": "medium",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "events",
+            "alpha",
+            "official",
+            "pokemon"
+          ],
+          "detail_summary": "Renaiss 官方 这則社群内容的核心是「Entertainment RWA Night 现场活动进行中」。判读建议：这則贴文提供社群现场脉络，可用来补齐讨论背景",
+          "detail_lines": [
+            "社群主轴：Entertainment RWA Night 现场活动进行中",
+            "时间参考：以原文更新为准",
+            "场景：线上社群讨论",
+            "影响：这則贴文提供社群现场脉络，可用来补齐讨论背景",
+            "下一步：持续追踪官方或同帐号后续补充。"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2045311039340970340",
+          "account": "davidcheang99",
+          "url": "https://x.com/davidcheang99/status/2045311039340970340",
+          "title": "社区开包活动获第二名，意外获得 PSA 10 皮卡丘卡",
+          "summary": "@davidcheang99发布「那天的社区开包活动，我有幸拿了第二名 ✨ 也拿到了这张 PSA 10 的皮卡丘鉴定卡 ❤️...」市场讯号。重点是 那天的社区开包活动；我有幸拿了第二名 ✨ 也拿到了这张 PSA 10 的皮卡丘鉴定卡 ❤️ 本来活动奖励其实是有区分的 🥇 第一名大概 70+ 🥈 第二名（我）50+。这則内容反映当前市场讨论方向，建议搭配原文脉络判读。",
+          "bullets": [
+            "市场重点：那天的社区开包活动；我有幸拿了第二名 ✨ 也拿到了这张 PSA 10 的皮卡丘鉴定卡 ❤️ 本来活动奖励其实是有区分的 🥇 第一名大概 70+ 🥈 第二名（我）50+",
+            "数字脉络：此贴文以市场观察为主",
+            "可能影响：这則内容反映当前市场讨论方向，建议搭配原文脉络判读。"
+          ],
+          "published_at": "2026-04-18T01:18:46+00:00",
+          "confidence": 0.85,
+          "card_type": "market",
+          "layout": "data",
+          "tags": [
+            "社区活动",
+            "宝可梦",
+            "alpha"
+          ],
+          "raw_text": "那天的社区开包活动，我有幸拿了第二名 ✨ 也拿到了这张 PSA 10 的皮卡丘鉴定卡 ❤️ 本来活动奖励其实是有区分的 🥇 第一名大概 70+ 🥈 第二名（我）50+ 🥉 第三名 20+ 结果刚好遇上皮卡丘牛市 🤣 这张卡直接涨到和第一名奖励差不多了 意外惊喜！ 感谢 Brian @bryantToTheMoon 的赞助 ❤️ https://t.co/7DQuNDWRNj",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGJni_7awAAhRtW.jpg",
+          "metrics": {},
+          "importance": 4.2,
+          "template_id": "market_signal",
+          "glance": "这則在谈 社区开包活动获第二名，意外获得 PSA 10 皮卡丘卡，可作为市场热度与价格走势的观测参考。",
+          "timeline_date": "",
+          "urgency": "normal",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "events",
+            "pokemon",
+            "alpha"
+          ],
+          "detail_summary": "@davidcheang99 这則市场更新主轴是「那天的社区开包活动；我有幸拿了第二名 ✨ 也拿到了这张 PSA 10 的皮卡丘鉴定卡 ❤️ 本来活动奖励其实是有区分的 🥇 第一名大概 70+ 🥈 第二名（我）50+ 🥉 第三名」。此則以市场风向观测为主。影响面：这則内容反映当前市场讨论方向，建议搭配原文脉络判读。",
+          "detail_lines": [
+            "市场主轴：那天的社区开包活动；我有幸拿了第二名 ✨ 也拿到了这张 PSA 10 的皮卡丘鉴定卡 ❤️ 本来活动奖励其实是有区分的 🥇 第一名大概 70+ 🥈 第二名（我）50+ 🥉 第三名",
+            "数字解读：请搭配原文上下文理解数字用途。",
+            "补充：留意是否有后续供给、价格或成交更新。",
+            "影响：这則内容反映当前市场讨论方向，建议搭配原文脉络判读。",
+            "下一步：比对至少两个来源后再做判断。",
+            "补充脉络：感谢 Brian 的赞助 ❤️"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2045080953324962220",
+          "account": "davidcheang99",
+          "url": "https://x.com/davidcheang99/status/2045080953324962220",
+          "title": "活动重点｜✨ -假货泛滥；真卡买到假的概率不低 -交易慢",
+          "summary": "@davidcheang99释出「社群直播与互动」活动资讯。时间为 4 月 17 日、21:00、UTC+8。地点在 线上（Discord / Live）。主要诱因是 SBT、积分、周边。SBT 取得方式：完成「Discord」並符合活动条件后领取。这类活动有明确诱因，通常会提高参与率与社群扩散。",
+          "bullets": [
+            "SBT 取得方式：完成「Discord」並符合活动条件后领取。",
+            "活动重点：✨ -假货泛滥；真卡买到假的概率不低 -交易慢",
+            "时间与地点：4 月 17 日、21:00、UTC+8／线上（Discord / Live）"
+          ],
+          "published_at": "2026-04-17T10:08:14+00:00",
+          "confidence": 0.56,
+          "card_type": "event",
+          "layout": "poster",
+          "tags": [
+            "分析",
+            "内容",
+            "活动"
+          ],
+          "raw_text": "很高兴看见@gate_ventures提及 renaiss ， 细谈下传统宝可梦 TCG 二级市场到底有多痛苦？✨ -假货泛滥，肉眼难辨，真卡买到假的概率不低 -交易慢：线下见面or平台寄售结算要 7-14 天 -手续费+运费+仲裁费超 13% -流动性差，想卖的时候经常卡在手里 最烦的就是假货，花大钱买的 PSA10 https://t.co/4FoIx2HOiY\n\n🎤 Renaiss Plaza 提醒 — 今晚见 🕘 4 月 17 日 21:00（UTC+8） 📍 Renaiss Discord 本次 Renaiss 将分享： • 项目数据更新 • SBT 2.0、积分与周边 • 社区增长激励活动 • 活动赞助体系 • One Piece 抽卡机 本次还将邀请特别嘉宾：Ricky —— 知名 One Piece TCG 收藏玩家 将和他聊聊： • https://t.co/hNka6Yh1kv",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGGWSMJbkAAO065.jpg",
+          "metrics": {
+            "likes": 0,
+            "retweets": 0,
+            "replies": 0,
+            "quotes": 0,
+            "views": 0
+          },
+          "importance": 7.4,
+          "template_id": "event_poster",
+          "glance": "活动 活动重点｜✨ -假货泛滥；真卡买到假的概率不低 -交易慢，时间 4 月 17 日、21:00、UTC+8，重点奖励 SBT、积分、周边。",
+          "timeline_date": "2026-04-17T00:00:00+00:00",
+          "urgency": "medium",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {
+            "reward": "SBT、积分、周边",
+            "participation": "Discord",
+            "location": "线上（Discord / Live）",
+            "schedule": "4 月 17 日、21:00、UTC+8"
+          },
+          "topic_labels": [
+            "events",
+            "sbt",
+            "pokemon",
+            "tools"
+          ],
+          "detail_summary": "@davidcheang99 这則活动主轴是「✨ -假货泛滥；真卡买到假的概率不低 -交易慢」，时间在 4 月 17 日、21:00、UTC+8，地点在 线上（Discord / Live），主要诱因是 SBT、积分、周边，参与方式为 Discord。这类活动有明确诱因，通常会提高参与率与社群扩散",
+          "detail_lines": [
+            "活动主轴：✨ -假货泛滥；真卡买到假的概率不低 -交易慢",
+            "时间与地点：4 月 17 日、21:00、UTC+8／线上（Discord / Live）",
+            "奖励重点：SBT、积分、周边",
+            "SBT 取得方式：完成「Discord」並符合活动条件后领取。",
+            "参与方式：Discord",
+            "影响：这类活动有明确诱因，通常会提高参与率与社群扩散"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2045040877790429526",
+          "account": "TCGRWA",
+          "url": "https://x.com/TCGRWA/status/2045040877790429526",
+          "title": "社群玩家开出裂空座VMAX A卡，市价460美元创永赚鸡成就",
+          "summary": "一名社群成员在 Renaiss 平台开出裂空座VMAX A卡，该卡在市场中属于同系列最高单价，根据 FMV460 美元定价创下「永赚鸡」成就。此张卡片的高价值反映特定稀有度的市场行情，吸引收藏家与投资者关注同类型卡牌的价格趋势。",
+          "bullets": [
+            "追踪 Renaiss 平台同系列 A 卡的开卡记录与市价波动",
+            "留意 FMV460 美元作为稀有 A 卡地板价的市场参考",
+            "「永赚鸡」成就代表平台内持续盈利的社群称号"
+          ],
+          "published_at": "2026-04-17T07:25:14+00:00",
+          "confidence": 0.92,
+          "card_type": "market",
+          "layout": "data",
+          "tags": [
+            "开箱",
+            "市场行情",
+            "成就"
+          ],
+          "raw_text": "这次终于到我出A了！ 还是张裂空座VMAX A卡里面差不多最贵的了 FMV460 继续达成永赚鸡成就 太爱 @renaissxyz 了 https://t.co/GeyKceJdlH",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGFwa52bsAAW4We.jpg",
+          "metrics": {},
+          "importance": 4.2,
+          "template_id": "market_signal",
+          "glance": "市场重点：社群玩家开出裂空座VMAX A卡，市价460美元创永赚鸡成就。460 代表单笔交易收益或利润规模。",
+          "timeline_date": "",
+          "urgency": "normal",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "pokemon",
+            "other"
+          ],
+          "detail_summary": "@tcgrwa 这則市场更新主轴是「还是张裂空座VMAX A卡里面差不多最贵的了 FMV460 继续达成永赚鸡成就 太爱 了」。贴文数字代表：460 代表单笔交易收益或利润规模。影响面：这則内容反映当前市场讨论方向，建议搭配原文脉络判读。",
+          "detail_lines": [
+            "市场主轴：还是张裂空座VMAX A卡里面差不多最贵的了 FMV460 继续达成永赚鸡成就 太爱 了",
+            "数字解读：460 代表单笔交易收益或利润规模。",
+            "补充：留意是否有后续供给、价格或成交更新。",
+            "影响：这則内容反映当前市场讨论方向，建议搭配原文脉络判读。",
+            "下一步：比对至少两个来源后再做判断。",
+            "补充脉络：这次终于到我出A了"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2044381540067803312",
+          "account": "chenyichiao",
+          "url": "https://x.com/chenyichiao/status/2044381540067803312",
+          "title": "美国集运回台湾省快递费攻略：三家集运商比较与使用技巧",
+          "summary": "针对台湾用户分享如何透过集运降低从美国转寄包裹回台的成本，解决直送台湾运费与税金过高的痛点。内容比较三家集运商（buy and ship、星球集运、好运集运）的美国仓库包税方案，包含每磅包税价格（170-175元新台币）与各家最低使用门槛。提醒用户在集运平台填写地址时，务必填上收件人编号以确保配送。",
+          "bullets": [
+            "三家集运商美国仓库包税方案：buy and ship 170元/磅、星球集运 170元/磅、好运集运 175元/磅",
+            "注意各家限制：星球集运未满20磅加收150元宅配费、好运集运单独1磅需300元",
+            "Renaiss 填写集运地址时，务必填上个人会员编号，否則无法顺利收件"
+          ],
+          "published_at": "2026-04-16T04:10:01+00:00",
+          "confidence": 0.95,
+          "card_type": "feature",
+          "layout": "timeline",
+          "tags": [
+            "tools",
+            "sbt",
+            "official"
+          ],
+          "raw_text": "Show translation 最近的好消息是 要准备开放领卡了，不过直送台湾运费+税金应该是大家在意的点，所以来介绍一下另外一个方法，也就是集运，以下分享的价格都是美国仓包税一磅的价格！ 三个我用过的集运： 1. buy and ship: 价格: 包税170NTD 优点: 大间、价格合理、一磅一磅算、可以多国运回 缺点: 因为可以多国集中运回，所以或是会先到香港，再送回台湾，需要等14~28天 2. 星球集运: 价格: 包税170NTD 优点: 速度快，跟bns一样有许多国家都可以集运 缺点: 未满 20 磅需多加 150NTD 宅配费用 3. 好运集运: 价格: 包税175NTD 优点: 速度快，单笔出货10磅以上有折扣 缺点: 目前只有大陆以及美国仓，並且如果只运1磅运费为300 使用方式(以BNS为例): 注册过后进入会员中心，点击海外仓库地址，会看到下面图片的地址，把这个收件人跟地址填到renaiss就可以了，这边要注意一定要填上自己的编号喔！ 基本上每一家的使用方式都一样，相信大家可以举一反三！ 大致上这样就可以了，如果还有什么问题可以再问我，我有空都会回答，希望有帮到大家，另外还没加入renaiss的也欢迎使用我的邀请码~ · 6 3 20 5 Read 6 replies",
+          "provider": "r.jina.ai",
+          "cover_image": "https://pbs.twimg.com/media/HF8Y11FaAAA_7I6?format=png&name=small",
+          "metrics": {},
+          "importance": 5.0,
+          "template_id": "announcement_timeline",
+          "glance": "功能进度 美国集运回台湾省快递费攻略：三家集运商比较与使用技巧，留意下一則官方公告。",
+          "timeline_date": "",
+          "urgency": "normal",
+          "manual_pick": true,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "tools",
+            "official",
+            "alpha"
+          ],
+          "detail_summary": "@chenyichiao 这則属于功能更新，核心为「三个我用过的集运；1. buy and ship」。对使用者的直接影响是：这代表产品进度往下一个节点前进，需留意正式开放时间与条件",
+          "detail_lines": [
+            "更新主轴：三个我用过的集运；1. buy and ship",
+            "时间节点：待官方公告",
+            "影响：这代表产品进度往下一个节点前进，需留意正式开放时间与条件",
+            "下一步：追踪官方下一則公告确认最终规則。",
+            "补充脉络：最近的好消息是 要准备开放领卡了；不过直送台湾运费+税金应该是大家在意的点"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2044391196605513949",
+          "account": "TCGRWA",
+          "url": "https://x.com/TCGRWA/status/2044391196605513949",
+          "title": "麦当劳皮卡丘飙至100U市场观察",
+          "summary": "@TCGRWA 分享麦当劳宝可梦卡片二级市场近况。皮卡丘卡已涨至约100美元，麦当劳P10放量达25万张，偵探皮卡丘則升至8万日圆（500美元）。他以自身200多美元出售偵探皮为例，感叹错过涨幅。分析指出低POP老卡少量成交即可拉价，但超大量卡片因流动性强、供给充足，价格不易持续上涨，属于高流通性资产。",
+          "bullets": [
+            "追踪麦当劳系列P10/P25供应量是否持续放大",
+            "观察偵探皮卡丘站稳500U后的支撑与回调区间",
+            "留意低POP老卡成交频率与价格波动作为市场情绪指标"
+          ],
+          "published_at": "2026-04-15T12:23:38+00:00",
+          "confidence": 0.85,
+          "card_type": "market",
+          "layout": "brief",
+          "tags": [
+            "宝可梦",
+            "二级市场",
+            "麦当劳卡"
+          ],
+          "raw_text": "麦当劳🍔皮卡丘上涨到了100U左右 麦皮的P10数量有恐怖的25万张 侦探皮也涨到8万日元，500U了（我200多就卖了🥲） 这张卡p10，有4万张 一些老卡和pop量少的卡几笔成交价格就上去了 但是这种超级大量，并且每日成交数量很多的卡，价格上涨并不容易 本质上是流动性极强 + 供给极大的资产 https://t.co/mSh8Lejc9r",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HF8i9K3aoAA6NhO.jpg",
+          "metrics": {},
+          "importance": 4.2,
+          "template_id": "market_signal",
+          "glance": "市场重点：麦当劳皮卡丘飙至100U市场观察。100 代表成交金额或价格里程碑。",
+          "timeline_date": "",
+          "urgency": "normal",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "pokemon",
+            "tools"
+          ],
+          "detail_summary": "@tcgrwa 这則市场更新主轴是「麦当劳🍔皮卡丘上涨到了100U左右 麦皮的P10数量有恐怖的25万张 侦探皮也涨到8万日元；500U了（我200多就卖了🥲） 这张卡p10」。贴文数字代表：100 代表成交金额或价格里程碑；500 代表成交金额或价格里程碑。影响面：这則内容会把讨论焦点拉到高价成交与估值区间。",
+          "detail_lines": [
+            "市场主轴：麦当劳🍔皮卡丘上涨到了100U左右 麦皮的P10数量有恐怖的25万张 侦探皮也涨到8万日元；500U了（我200多就卖了🥲） 这张卡p10",
+            "数字解读：100 代表成交金额或价格里程碑。",
+            "补充：500 代表成交金额或价格里程碑。",
+            "影响：这則内容会把讨论焦点拉到高价成交与估值区间。",
+            "下一步：比对至少两个来源后再做判断。"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2040786743721644522",
+          "account": "ChenYichiao",
+          "url": "https://x.com/ChenYichiao/status/2040786743721644522",
+          "title": "市场观察：Alpha超梦卡价升至380u，实体卡开放动态受关注",
+          "summary": "@chenyichiao发布「今天又在 收了一张超梦 目前已经涨到380u左右了，希望能赶快开放领取实体卡...」市场讯号。重点是 今天又在 收了一张超梦 目前已经涨到380u左右了；希望能赶快开放领取实体卡 之前线下领的两张都涨翻了。数字意义：380 是贴文提到的市场参考数据；299（序号） 代表限量编号或稀有度门槛。这則内容反映当前市场讨论方向，建议搭配原文脉络判读。",
+          "bullets": [
+            "市场重点：今天又在 收了一张超梦 目前已经涨到380u左右了；希望能赶快开放领取实体卡 之前线下领的两张都涨翻了",
+            "数字解读：380 是贴文提到的市场参考数据。",
+            "可能影响：这則内容反映当前市场讨论方向，建议搭配原文脉络判读。"
+          ],
+          "published_at": "2026-04-05T13:40:50+00:00",
+          "confidence": 0.85,
+          "card_type": "market",
+          "layout": "poster",
+          "tags": [
+            "market",
+            "pokemon",
+            "alpha"
+          ],
+          "raw_text": "今天又在@renaissxyz 收了一张超梦 目前已经涨到380u左右了，希望能赶快开放领取实体卡 之前线下领的两张都涨翻了，运气不好的尝试看看从二级市场切入找机会吧！ 还没注册过的也可以点下面连结注册 https://t.co/sgCstfLCWQ https://t.co/299CEnE1UW",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HFJUuVla0AAwo-P.jpg",
+          "metrics": {},
+          "importance": 5.4,
+          "template_id": "market_signal",
+          "glance": "市场重点：市场观察：Alpha超梦卡价升至380u，实体卡开放动态受关注。380 是贴文提到的市场参考数据。",
+          "timeline_date": "2026-04-05T00:00:00+00:00",
+          "urgency": "normal",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "pokemon",
+            "alpha",
+            "events"
+          ],
+          "detail_summary": "@chenyichiao 这則市场更新主轴是「今天又在 收了一张超梦 目前已经涨到380u左右了；希望能赶快开放领取实体卡 之前线下领的两张都涨翻了」。贴文数字代表：380 是贴文提到的市场参考数据；299（序号） 代表限量编号或稀有度门槛。影响面：这則内容反映当前市场讨论方向，建议搭配原文脉络判读。",
+          "detail_lines": [
+            "市场主轴：今天又在 收了一张超梦 目前已经涨到380u左右了；希望能赶快开放领取实体卡 之前线下领的两张都涨翻了",
+            "数字解读：380 是贴文提到的市场参考数据。",
+            "补充：299（序号） 代表限量编号或稀有度门槛。",
+            "影响：这則内容反映当前市场讨论方向，建议搭配原文脉络判读。",
+            "下一步：比对至少两个来源后再做判断。",
+            "补充脉络：还没注册过的也可以点下面连结注册"
+          ],
+          "reply_to_id": ""
+        }
+      ],
+      "raw_total_cards": 36,
+      "excluded_cards": 0,
+      "excluded_by_selection": 0,
+      "excluded_by_feedback": 1,
+      "excluded_by_source_preference": 0,
+      "key_terms": [
+        "pack",
+        "hong",
+        "kong",
+        "tour",
+        "superliquid",
+        "your",
+        "more",
+        "local",
+        "community",
+        "packs",
+        "omega",
+        "utc+8",
+        "live",
+        "card"
+      ],
+      "intel_sections": {
+        "official_updates": [
+          {
+            "headline": "Renaiss 亚洲邀请赛预告 涵盖台湾与东南亚五国",
+            "point": "官方公告 Renaiss 亚洲邀请赛预告 涵盖台湾与东南亚五国，请以原文作为最终版本。",
+            "when": "2026-04-25T10:45:57+00:00",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047990492592537885",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 9.6,
+            "urgency": "medium"
+          },
+          {
+            "headline": "Omega Pack 将于4月26日补货 新增逾10张S级卡牌",
+            "point": "功能进度 卡包与抽卡表现，时间节点 3PM，留意开放条件。",
+            "when": "2026-04-24T10:00:01+00:00",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047616545090859207",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 10.0,
+            "urgency": "high"
+          },
+          {
+            "headline": "Legacy Pack 8.0 即将推出",
+            "point": "官方公告 卡包与抽卡表现，请以原文作为最终版本。",
+            "when": "2026-04-24T06:00:01+00:00",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047556145347195181",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 9.6,
+            "urgency": "medium"
+          },
+          {
+            "headline": "Renaiss 回顾香港 Web3 Festival 参与 並开放活动 SBT 领取",
+            "point": "官方公告 香港 Web3 Festival 行程，请以原文作为最终版本。",
+            "when": "2026-04-24T04:00:00+00:00",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047525941434572836",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 9.6,
+            "urgency": "medium"
+          },
+          {
+            "headline": "Renaiss 香港TCG Tour 落幕 Web3 Festival期间走访卡店与庙宇",
+            "point": "官方公告 香港 Web3 Festival 行程，请以原文作为最终版本。",
+            "when": "2026-04-23T14:07:13+00:00",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047316344258130405",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 9.6,
+            "urgency": "medium"
+          }
+        ],
+        "upcoming_events": [
+          {
+            "headline": "活动重点｜✨ -假货泛滥；真卡买到假的概率不低 -交易慢",
+            "point": "活动 活动重点｜✨ -假货泛滥；真卡买到假的概率不低 -交易慢，时间 4 月 17 日、21:00、UTC+8，重点奖励 SBT、积分、周边。",
+            "when": "2026-04-17T10:08:14+00:00",
+            "account": "davidcheang99",
+            "url": "https://x.com/davidcheang99/status/2045080953324962220",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 7.4,
+            "urgency": "medium"
+          },
+          {
+            "headline": "香港TCG Tour首站开放抽卡 多牌同步进行",
+            "point": "活动 卡包与抽卡表现，时间 today，建议提前安排参与。",
+            "when": "2026-04-21T08:20:09+00:00",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2046504247131533601",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 11.2,
+            "urgency": "high"
+          },
+          {
+            "headline": "Renaiss × Portaldot 扑克之夜今晚8点开赛",
+            "point": "活动 Renaiss × Portaldot 扑克之夜今晚8点开赛，时间 今晚，重点奖励 活动奖励。",
+            "when": "2026-04-24T10:16:39+00:00",
+            "account": "TCGRWA",
+            "url": "https://x.com/TCGRWA/status/2047620731115065582",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 7.4,
+            "urgency": "medium"
+          }
+        ],
+        "upcoming_features": [
+          {
+            "headline": "Omega Pack 将于4月26日补货 新增逾10张S级卡牌",
+            "point": "功能进度 卡包与抽卡表现，时间节点 3PM，留意开放条件。",
+            "when": "2026-04-24T10:00:01+00:00",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047616545090859207",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 10.0,
+            "urgency": "high"
+          }
+        ],
+        "community_highlights": [
+          {
+            "headline": "Renaiss × Portaldot 扑克之夜今晚8点开赛",
+            "point": "活动 Renaiss × Portaldot 扑克之夜今晚8点开赛，时间 今晚，重点奖励 活动奖励。",
+            "when": "2026-04-24T10:16:39+00:00",
+            "account": "TCGRWA",
+            "url": "https://x.com/TCGRWA/status/2047620731115065582",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 7.4,
+            "urgency": "medium"
+          },
+          {
+            "headline": "Legacy Pack 卡池市场分析出炉 固拉多/盖歐卡EX成交价差500U",
+            "point": "市场重点：交易量与市场成长。1597 代表成交金额或价格里程碑。",
+            "when": "2026-04-24T06:35:55+00:00",
+            "account": "TCGRWA",
+            "url": "https://x.com/TCGRWA/status/2047565179693777294",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 4.2,
+            "urgency": "normal"
+          },
+          {
+            "headline": "TCGRWA社群晒卡分享：OP、球星卡与S级卡片开箱",
+            "point": "TCGRWA成员于社群分享个人开包经验与运气",
+            "when": "2026-04-21T10:35:38+00:00",
+            "account": "TCGRWA",
+            "url": "https://x.com/TCGRWA/status/2046538344990179655",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 3.5,
+            "urgency": "normal"
+          },
+          {
+            "headline": "社区开包活动获第二名，意外获得 PSA 10 皮卡丘卡",
+            "point": "这則在谈 社区开包活动获第二名，意外获得 PSA 10 皮卡丘卡，可作为市场热度与价格走势的观测参考。",
+            "when": "2026-04-18T01:18:46+00:00",
+            "account": "davidcheang99",
+            "url": "https://x.com/davidcheang99/status/2045311039340970340",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 4.2,
+            "urgency": "normal"
+          },
+          {
+            "headline": "活动重点｜✨ -假货泛滥；真卡买到假的概率不低 -交易慢",
+            "point": "活动 活动重点｜✨ -假货泛滥；真卡买到假的概率不低 -交易慢，时间 4 月 17 日、21:00、UTC+8，重点奖励 SBT、积分、周边。",
+            "when": "2026-04-17T10:08:14+00:00",
+            "account": "davidcheang99",
+            "url": "https://x.com/davidcheang99/status/2045080953324962220",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 7.4,
+            "urgency": "medium"
+          }
+        ]
+      },
+      "intel_agenda": {
+        "event_timeline_future": [],
+        "event_timeline_past": [
+          {
+            "id": "2047620731115065582",
+            "label": "04/24",
+            "days_left": -2,
+            "headline": "Renaiss × Portaldot 扑克之夜今晚8点开赛",
+            "glance": "活动 Renaiss × Portaldot 扑克之夜今晚8点开赛，时间 今晚，重点奖励 活动奖励。",
+            "account": "TCGRWA",
+            "url": "https://x.com/TCGRWA/status/2047620731115065582",
+            "type": "event",
+            "urgency": "medium",
+            "published_at": "2026-04-24T10:16:39+00:00"
+          },
+          {
+            "id": "2046504247131533601",
+            "label": "04/21",
+            "days_left": -5,
+            "headline": "香港TCG Tour首站开放抽卡 多牌同步进行",
+            "glance": "活动 卡包与抽卡表现，时间 today，建议提前安排参与。",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2046504247131533601",
+            "type": "event",
+            "urgency": "high",
+            "published_at": "2026-04-21T08:20:09+00:00"
+          },
+          {
+            "id": "2045080953324962220",
+            "label": "04/17",
+            "days_left": -9,
+            "headline": "活动重点｜✨ -假货泛滥；真卡买到假的概率不低 -交易慢",
+            "glance": "活动 活动重点｜✨ -假货泛滥；真卡买到假的概率不低 -交易慢，时间 4 月 17 日、21:00、UTC+8，重点奖励 SBT、积分、周边。",
+            "account": "davidcheang99",
+            "url": "https://x.com/davidcheang99/status/2045080953324962220",
+            "type": "event",
+            "urgency": "medium",
+            "published_at": "2026-04-17T10:08:14+00:00"
+          }
+        ],
+        "upcoming_timeline": [],
+        "growth_signals": [
+          {
+            "id": "2040786743721644522",
+            "label": "04/05",
+            "days_left": -21,
+            "headline": "市场观察：Alpha超梦卡价升至380u，实体卡开放动态受关注",
+            "glance": "市场重点：市场观察：Alpha超梦卡价升至380u，实体卡开放动态受关注。380 是贴文提到的市场参考数据。",
+            "account": "ChenYichiao",
+            "url": "https://x.com/ChenYichiao/status/2040786743721644522",
+            "type": "market",
+            "urgency": "normal",
+            "published_at": "2026-04-05T13:40:50+00:00"
+          },
+          {
+            "id": "2047565179693777294",
+            "label": "--",
+            "days_left": null,
+            "headline": "Legacy Pack 卡池市场分析出炉 固拉多/盖歐卡EX成交价差500U",
+            "glance": "市场重点：交易量与市场成长。1597 代表成交金额或价格里程碑。",
+            "account": "TCGRWA",
+            "url": "https://x.com/TCGRWA/status/2047565179693777294",
+            "type": "market",
+            "urgency": "normal",
+            "published_at": "2026-04-24T06:35:55+00:00"
+          },
+          {
+            "id": "2045311039340970340",
+            "label": "--",
+            "days_left": null,
+            "headline": "社区开包活动获第二名，意外获得 PSA 10 皮卡丘卡",
+            "glance": "这則在谈 社区开包活动获第二名，意外获得 PSA 10 皮卡丘卡，可作为市场热度与价格走势的观测参考。",
+            "account": "davidcheang99",
+            "url": "https://x.com/davidcheang99/status/2045311039340970340",
+            "type": "market",
+            "urgency": "normal",
+            "published_at": "2026-04-18T01:18:46+00:00"
+          },
+          {
+            "id": "2045040877790429526",
+            "label": "--",
+            "days_left": null,
+            "headline": "社群玩家开出裂空座VMAX A卡，市价460美元创永赚鸡成就",
+            "glance": "市场重点：社群玩家开出裂空座VMAX A卡，市价460美元创永赚鸡成就。460 代表单笔交易收益或利润规模。",
+            "account": "TCGRWA",
+            "url": "https://x.com/TCGRWA/status/2045040877790429526",
+            "type": "market",
+            "urgency": "normal",
+            "published_at": "2026-04-17T07:25:14+00:00"
+          },
+          {
+            "id": "2044391196605513949",
+            "label": "--",
+            "days_left": null,
+            "headline": "麦当劳皮卡丘飙至100U市场观察",
+            "glance": "市场重点：麦当劳皮卡丘飙至100U市场观察。100 代表成交金额或价格里程碑。",
+            "account": "TCGRWA",
+            "url": "https://x.com/TCGRWA/status/2044391196605513949",
+            "type": "market",
+            "urgency": "normal",
+            "published_at": "2026-04-15T12:23:38+00:00"
+          }
+        ],
+        "future_watch": [
+          {
+            "id": "2047616545090859207",
+            "label": "04/26",
+            "days_left": 0,
+            "headline": "Omega Pack 将于4月26日补货 新增逾10张S级卡牌",
+            "glance": "功能进度 卡包与抽卡表现，时间节点 3PM，留意开放条件。",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047616545090859207",
+            "type": "feature",
+            "urgency": "high",
+            "published_at": "2026-04-24T10:00:01+00:00"
+          },
+          {
+            "id": "2046560299466346710",
+            "label": "--",
+            "days_left": null,
+            "headline": "Superliquid Beta 2.0 阶段性结束，SBT 资格依排名决定",
+            "glance": "功能进度 SBT 与积分机制，留意下一則官方公告。",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2046560299466346710",
+            "type": "feature",
+            "urgency": "high",
+            "published_at": "2026-04-21T12:02:53+00:00"
+          },
+          {
+            "id": "2047990492592537885",
+            "label": "--",
+            "days_left": null,
+            "headline": "Renaiss 亚洲邀请赛预告 涵盖台湾与东南亚五国",
+            "glance": "官方公告 Renaiss 亚洲邀请赛预告 涵盖台湾与东南亚五国，请以原文作为最终版本。",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047990492592537885",
+            "type": "announcement",
+            "urgency": "medium",
+            "published_at": "2026-04-25T10:45:57+00:00"
+          },
+          {
+            "id": "2047556145347195181",
+            "label": "04/24",
+            "days_left": -2,
+            "headline": "Legacy Pack 8.0 即将推出",
+            "glance": "官方公告 卡包与抽卡表现，请以原文作为最终版本。",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047556145347195181",
+            "type": "announcement",
+            "urgency": "medium",
+            "published_at": "2026-04-24T06:00:01+00:00"
+          },
+          {
+            "id": "2047525941434572836",
+            "label": "--",
+            "days_left": null,
+            "headline": "Renaiss 回顾香港 Web3 Festival 参与 並开放活动 SBT 领取",
+            "glance": "官方公告 香港 Web3 Festival 行程，请以原文作为最终版本。",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047525941434572836",
+            "type": "announcement",
+            "urgency": "medium",
+            "published_at": "2026-04-24T04:00:00+00:00"
+          },
+          {
+            "id": "2047316344258130405",
+            "label": "--",
+            "days_left": null,
+            "headline": "Renaiss 香港TCG Tour 落幕 Web3 Festival期间走访卡店与庙宇",
+            "glance": "官方公告 香港 Web3 Festival 行程，请以原文作为最终版本。",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047316344258130405",
+            "type": "announcement",
+            "urgency": "medium",
+            "published_at": "2026-04-23T14:07:13+00:00"
+          }
+        ],
+        "recent_updates": [
+          {
+            "id": "2047990492592537885",
+            "label": "--",
+            "days_left": null,
+            "headline": "Renaiss 亚洲邀请赛预告 涵盖台湾与东南亚五国",
+            "glance": "官方公告 Renaiss 亚洲邀请赛预告 涵盖台湾与东南亚五国，请以原文作为最终版本。",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047990492592537885",
+            "type": "announcement",
+            "urgency": "medium",
+            "published_at": "2026-04-25T10:45:57+00:00"
+          },
+          {
+            "id": "2047616545090859207",
+            "label": "04/26",
+            "days_left": 0,
+            "headline": "Omega Pack 将于4月26日补货 新增逾10张S级卡牌",
+            "glance": "功能进度 卡包与抽卡表现，时间节点 3PM，留意开放条件。",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047616545090859207",
+            "type": "feature",
+            "urgency": "high",
+            "published_at": "2026-04-24T10:00:01+00:00"
+          },
+          {
+            "id": "2047556145347195181",
+            "label": "04/24",
+            "days_left": -2,
+            "headline": "Legacy Pack 8.0 即将推出",
+            "glance": "官方公告 卡包与抽卡表现，请以原文作为最终版本。",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047556145347195181",
+            "type": "announcement",
+            "urgency": "medium",
+            "published_at": "2026-04-24T06:00:01+00:00"
+          },
+          {
+            "id": "2047525941434572836",
+            "label": "--",
+            "days_left": null,
+            "headline": "Renaiss 回顾香港 Web3 Festival 参与 並开放活动 SBT 领取",
+            "glance": "官方公告 香港 Web3 Festival 行程，请以原文作为最终版本。",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047525941434572836",
+            "type": "announcement",
+            "urgency": "medium",
+            "published_at": "2026-04-24T04:00:00+00:00"
+          },
+          {
+            "id": "2047316344258130405",
+            "label": "--",
+            "days_left": null,
+            "headline": "Renaiss 香港TCG Tour 落幕 Web3 Festival期间走访卡店与庙宇",
+            "glance": "官方公告 香港 Web3 Festival 行程，请以原文作为最终版本。",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047316344258130405",
+            "type": "announcement",
+            "urgency": "medium",
+            "published_at": "2026-04-23T14:07:13+00:00"
+          },
+          {
+            "id": "2047239060704399578",
+            "label": "04/24",
+            "days_left": -2,
+            "headline": "Legacy Pack 8.0 限量发售：1000包、每包100美元、单卡价值最高2850美元",
+            "glance": "官方公告 卡包与抽卡表现，请以原文作为最终版本。",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047239060704399578",
+            "type": "announcement",
+            "urgency": "medium",
+            "published_at": "2026-04-23T09:00:02+00:00"
+          }
+        ],
+        "attention_watch": [
+          {
+            "id": "2044381540067803312",
+            "label": "--",
+            "days_left": null,
+            "headline": "美国集运回台湾省快递费攻略：三家集运商比较与使用技巧",
+            "glance": "功能进度 美国集运回台湾省快递费攻略：三家集运商比较与使用技巧，留意下一則官方公告。",
+            "account": "chenyichiao",
+            "url": "https://x.com/chenyichiao/status/2044381540067803312",
+            "type": "feature",
+            "urgency": "normal",
+            "published_at": "2026-04-16T04:10:01+00:00"
+          }
+        ]
+      },
+      "official_overview": {
+        "title": "近 7 天官方重点整理",
+        "summary": "近 7 天官方重点集中在 香港 Web3 Festival 行程、卡包与抽卡表现、SBT 快照门槛更新，更新型态以 公告 7、功能 2、活动 1、社群 1 为主。整体看起来，官方目前同时在推活动参与与功能节奏，对玩家最直接的影响是：需要同时关注活动时程、参与门槛与后续功能开放条件。",
+        "bullets": [
+          "Renaiss 官方在 04/25 释出「Renaiss 亚洲邀请赛预告 涵盖台湾与东南亚五国」，场域在 待官方补充；核心事件是 社群线下聚会，会影响玩家后续操作节奏，需提早确认开放条件与时间。",
+          "Renaiss 官方在 04/26 释出「Omega Pack 将于4月26日补货 新增逾10张S级卡牌」，场域在 待官方补充；核心事件是 SBT 与积分机制，会影响玩家后续操作节奏，需提早确认开放条件与时间。",
+          "Renaiss 官方在 04/24 释出「Legacy Pack 8.0 即将推出」，场域在 线上社群；核心事件是 卡包与抽卡表现，会影响玩家后续操作节奏，需提早确认开放条件与时间。",
+          "Renaiss 官方在 04/24 释出「Renaiss 回顾香港 Web3 Festival 参与 並开放活动 SBT 领取」，场域在 香港；核心事件是 香港 Web3 Festival 行程，会影响玩家后续操作节奏，需提早确认开放条件与时间。"
+        ]
+      },
+      "format_templates": [
+        {
+          "id": "event_poster",
+          "name": "活动海報型",
+          "for": "活动、直播、线下聚会",
+          "blocks": [
+            "活动主轴",
+            "时间线索",
+            "参与方式",
+            "原文入口"
+          ]
+        },
+        {
+          "id": "market_signal",
+          "name": "市场讯号型",
+          "for": "数据、成交量、价格变化",
+          "blocks": [
+            "这則在说什么",
+            "提到哪些数据",
+            "可能影响",
+            "下一步要看什么"
+          ]
+        },
+        {
+          "id": "announcement_timeline",
+          "name": "公告时间线型",
+          "for": "功能开放、版本进度、官方更新",
+          "blocks": [
+            "更新主题",
+            "目前进度",
+            "下一步",
+            "时间节点"
+          ]
+        },
+        {
+          "id": "community_brief",
+          "name": "社群观点型",
+          "for": "社群讨论与经验分享",
+          "blocks": [
+            "观点摘要",
+            "可采用做法",
+            "风险提醒",
+            "延伸阅读"
+          ]
+        }
+      ],
+      "template_counts": {
+        "event_poster": 3,
+        "market_signal": 5,
+        "announcement_timeline": 12,
+        "community_brief": 2
+      },
+      "image_cards": 22,
+      "manual_picks": {
+        "include_ids": [
+          "2044381540067803312",
+          "2047616545090859207"
+        ],
+        "exclude_ids": [
+          "2041834983468495186",
+          "2046187488532889934",
+          "2047674412221280632"
+        ],
+        "pin_ids": [],
+        "bottom_ids": [],
+        "include_count": 2,
+        "exclude_count": 3,
+        "pin_count": 0,
+        "bottom_count": 0
+      },
+      "feedback_stats": {
+        "override_count": 1,
+        "excluded_count": 1
+      },
+      "dedupe_stats": {
+        "ai_removed": 0,
+        "local_removed": 2
+      },
+      "source_stats": {
+        "TCGRWA": 9,
+        "ChenYichiao": 2,
+        "renaissxyz": 13,
+        "davidcheang99": 13,
+        "discord:1478788250687766796": 0
+      },
+      "source_quality": {
+        "TCGRWA": "tweet-result",
+        "ChenYichiao": "mixed",
+        "renaissxyz": "tweet-result",
+        "davidcheang99": "tweet-result"
+      },
+      "discord_monitor": {
+        "enabled": true,
+        "configured": true,
+        "channel_ids": [
+          "1478788250687766796"
+        ],
+        "limit_per_channel": 80,
+        "cards_total": 0,
+        "channel_stats": {
+          "1478788250687766796": 0
+        },
+        "errors": [
+          "1478788250687766796: HTTP 401 {\"message\": \"401: Unauthorized\", \"code\": 0}"
+        ]
+      },
+      "notes": {
+        "fallback": "若某帐号无法公开抓取，系统会保留该帐号並等待后续可读资料。",
+        "provider": "twitter-cli (若可用) / tweet-result / r.jina.ai / nitter-rss fallback / discord-rest(可選)",
+        "twitter_cli_ready": false,
+        "discord_monitor_enabled": true
+      },
+      "lang": "zh-Hans"
+    },
+    "en": {
+      "generated_at": "2026-04-26T05:55:08.211632+00:00",
+      "window_days": 30,
+      "accounts": [
+        "TCGRWA",
+        "ChenYichiao",
+        "renaissxyz",
+        "davidcheang99"
+      ],
+      "total_cards": 22,
+      "layout_counts": {
+        "poster": 7,
+        "brief": 5,
+        "data": 4,
+        "timeline": 6
+      },
+      "digest": {
+        "headline": "Renaiss Spring Information Brief: Asian Invitational Launch, Omega Pack Restock, Legacy Pack 8.0 Limited Release",
+        "conclusion": "This season's focus is on the expansion of the Asian Invitational to Taiwan and five Southeast Asian countries, the Omega Pack restock offering over ten S‑grade cards, and the limited release of Legacy Pack 8.0 (1000 packs, $100 per pack, highest single‑card value $2850). At the same time, Hong Kong TCG Tour and Renaiss × Portaldot poker night will be held consecutively, heating up the market. Remind players to watch out for counterfeit card risks and transaction delays to ensure they obtain genuine products.",
+        "takeaways": [
+          "The Asian Invitational preview is out, covering Taiwan and five Southeast Asian countries, officially kicking off the spring season.",
+          "Omega Pack will be restocked on April 26, adding over 10 S‑level cards, increasing the chance to obtain rare cards.",
+          "Legacy Pack 8.0 will be released in limited quantities (1000 packs, $100 per pack, with a maximum single‑card value of $2850), attracting market attention, and also reminding players to beware of counterfeit cards and trading delay risks."
+        ],
+        "accounts_active": [
+          "ChenYichiao",
+          "TCGRWA",
+          "chenyichiao",
+          "davidcheang99",
+          "renaissxyz"
+        ],
+        "key_terms": [
+          "pack",
+          "hong",
+          "kong",
+          "tour",
+          "superliquid",
+          "your",
+          "more",
+          "local",
+          "community",
+          "packs",
+          "omega",
+          "utc+8"
+        ]
+      },
+      "cards": [
+        {
+          "id": "2047990492592537885",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2047990492592537885",
+          "title": "Renaiss Asian Invitational preview covers Taiwan and five Southeast Asian countries.",
+          "summary": "Renaiss announces the upcoming \"Region Royale: Invite Battle\", with participating regions including South Korea, Thailand, Malaysia, Singapore, and Taiwan. This event focuses on growth in the Asian market and strengthening local communities; officials have prepared rewards and call on each region to prepare. This is a targeted invitation tournament for Asian players and communities, serving as a benchmark for players seeking to compete at the regional level; follow official announcements for registration and schedule details.",
+          "bullets": [
+            "Five countries participate: South Korea, Thailand, Malaysia, Singapore, and Taiwan",
+            "Event focuses on growth and a targeted invitation tournament for local communities",
+            "The official has prepared the rewards, awaiting further registration and schedule announcement."
+          ],
+          "published_at": "2026-04-25T10:45:57+00:00",
+          "confidence": 0.85,
+          "card_type": "announcement",
+          "layout": "timeline",
+          "tags": [
+            "Asian tournament",
+            "Community activity",
+            "Invitational"
+          ],
+          "raw_text": "Region Royale: Invite Battle is coming. ⚔️ Korea, Thailand, Malaysia, Singapore, and Taiwan are entering the arena. This round is about growth, new users, and stronger local communities across Asia. Rewards are prepared. Pride is on the line. Get your region ready. Region https://t.co/HmnUvPrwTN",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGvsfIRbUAACDgf.jpg",
+          "metrics": {},
+          "importance": 9.6,
+          "template_id": "announcement_timeline",
+          "glance": "Official announcement: Renaiss Asia Invitational Preview covering Taiwan and five Southeast Asian countries; please use the original text as the final version.",
+          "timeline_date": "",
+          "urgency": "medium",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "official",
+            "alpha"
+          ],
+          "detail_summary": "Renaiss Official: This is a feature update, the core of which is \"Feature rules have been updated; please follow the time and conditions listed in the post to operate\". The direct impact on users is: this indicates that the product progress moves to the next stage, and you need to pay attention to the official launch time and conditions.",
+          "detail_lines": [
+            "Main update: functional rules have been updated; please follow the times and conditions listed in the post.",
+            "Timeline: awaiting official announcement.",
+            "Effect: this means the product progress is advancing to the next stage; be mindful of the official launch time and conditions.",
+            "Next step: follow the official next announcement to confirm the final rules."
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2047620731115065582",
+          "account": "TCGRWA",
+          "url": "https://x.com/TCGRWA/status/2047620731115065582",
+          "title": "Renaiss × Portaldot Poker Night starts at 8 PM tonight.",
+          "summary": "Renaiss and Portaldot jointly host the Poker Night event, open for registration at 8 PM tonight. Rewards include a 200 USDT prize pool and exclusive Renaiss M3 card pack (Top 1-10), a community event that combines cryptocurrency and physical card collection.",
+          "bullets": [
+            "The competition starts at 8 PM tonight, registration link: https://t.co/SCqjRMQunr",
+            "The prize pool includes 200 USDT and M3 card packs, top 1‑10 participants can receive card packs.",
+            "You must hold a Renaiss SBT to participate; please verify your wallet status before registering."
+          ],
+          "published_at": "2026-04-24T10:16:39+00:00",
+          "confidence": 0.95,
+          "card_type": "event",
+          "layout": "poster",
+          "tags": [
+            "Poker Night",
+            "Renaiss",
+            "Portaldot"
+          ],
+          "raw_text": "🎴 Renaiss × Portaldot Poker Night is about to start! ⏰ Tonight at 8 PM 🎟 Registration: https://t.co/SCqjRMQunr This event is co-organized by @Renaiss_CN × @PortaldotL0, with more generous rewards waiting for you 👇 💰 Portaldot prize pool — 200 USDT for you to share 🎴 Renaiss exclusive rewards — Pokémon M3 booster pack (Top 1–10) — Community Event https://t.co/L8HHOGWMtY",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGqbz1pbEAAEE5X.jpg",
+          "metrics": {},
+          "importance": 7.4,
+          "template_id": "event_poster",
+          "glance": "Event: Renaiss × Portaldot Poker Night starts at 8 PM tonight, time: tonight, key reward: event reward.",
+          "timeline_date": "2026-04-24T00:00:00+00:00",
+          "urgency": "medium",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {
+            "reward": "Event reward",
+            "participation": "Sign up",
+            "audience": "Community player",
+            "schedule": "Tonight"
+          },
+          "topic_labels": [
+            "events",
+            "pokemon"
+          ],
+          "detail_summary": "@tcgrwa The main theme of this event is ⏰ Tonight at 8pm 🎟 Registration entry; this event is jointly organized by ×, with more abundant rewards for you to claim 👇 💰 Portaldot prize pool — 200 USDT for you to share 🎴 Renaiss exclusive rewards —, time is tonight, main incentive is event rewards, participation method is registration. This is community mobilization information, the focus is to direct people to live streaming or on-site interaction.",
+          "detail_lines": [
+            "Event theme: ⏰ Tonight at 8pm 🎟 Registration entry; this event is jointly organized by ×, with more abundant rewards for you to claim 👇 💰 Portaldot prize pool — 200 USDT for you to share 🎴 Renaiss exclusive rewards —",
+            "Time and location: tonight",
+            "Reward focus: event rewards",
+            "Participation method: registration",
+            "Impact: This is community mobilization information; the focus is to direct people to live streaming or on-site interaction.",
+            "Additional context: Event information has been released, please first confirm the time and location."
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2047616545090859207",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2047616545090859207",
+          "title": "Omega Pack will be restocked on April 26, adding over 10 S-level cards.",
+          "summary": "Renaiss officially announced that the Omega Pack will be restocked at 3 PM Taiwan time on April 26, adding over 10 S-level cards at once. The officials noted that the market value of these top-tier cards exceeds $1000, highlighting the investment appeal of high-rarity cards. Regarding the Omega Restock SBT unlock conditions, the officials explained that players must complete at least one Omega Pack draw before May to be eligible for the claim. Additionally, the brand is about to reach the 10-million-user milestone, indicating the platform's user base continues to expand.",
+          "bullets": [
+            "Omega Pack restocking time is April 26 at 15:00 (UTC+8); it is recommended to set a reminder or view the official livestream.",
+            "Omega Restock SBT unlock condition is to complete one draw before May; you can go to the wallet page to check the claim status.",
+            "The new cards listed this time are mainly S-tier, with top-tier cards valued over 1000 USD; you can track card prices by paying attention to secondary market quotes."
+          ],
+          "published_at": "2026-04-24T10:00:01+00:00",
+          "confidence": 0.92,
+          "card_type": "feature",
+          "layout": "poster",
+          "tags": [
+            "Card Pack Restock",
+            "SBT Unlock",
+            "New Card Listing"
+          ],
+          "raw_text": "🎴 Omega Pack Restocking Soon 🗓 26 Apr, 3PM (UTC+8) Omega Pack is coming back with 10+ new S-Tier cards. 💎 Top hits worth $1,000+ 🎖 Omega Restock SBT Pull Omega Pack once before May to unlock it. And one more thing 👀 We’re getting close to the 10M milestone. If Renaiss https://t.co/UcXUiI14oV",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGp_eGTaAAAc6SX.jpg",
+          "metrics": {},
+          "importance": 10.0,
+          "template_id": "announcement_timeline",
+          "glance": "Feature progress: card packs and draw performance, time node at 3PM, watch for opening conditions.",
+          "timeline_date": "2026-04-26T00:00:00+00:00",
+          "urgency": "high",
+          "manual_pick": true,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "official",
+            "sbt",
+            "alpha",
+            "pokemon"
+          ],
+          "detail_summary": "Renaiss official: This is a feature update, core is \"Feature rules have been updated, please operate according to the time and conditions listed in the post.\" Main time node at 3PM, UTC+8. The direct impact on users: this means the product progress is moving to the next node, and users need to pay attention to the official opening time and conditions.",
+          "detail_lines": [
+            "Main update: functional rules have been updated; please follow the times and conditions listed in the post.",
+            "Time node: 3PM, UTC+8",
+            "SBT acquisition method: Complete 1 \"Omega Pack\" draw before May to unlock.",
+            "Effect: this means the product progress is advancing to the next stage; be mindful of the official launch time and conditions.",
+            "Next step: follow the official next announcement to confirm the final rules."
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2047565179693777294",
+          "account": "TCGRWA",
+          "url": "https://x.com/TCGRWA/status/2047565179693777294",
+          "title": "Legacy Pack #8 card pool market analysis released: Groudon/Kyogre EX transaction price difference 500U.",
+          "summary": "TCGRWA analyzes Legacy Pack #8 card pool, reviewing the market data for the Lava Team Groudon EX and Ocean Team Kyogre EX. POP 10 total amount 1597 cards, sneaker store average price 2500U, eBay average price 3000U, showing stable demand for classic old cards. This analysis also includes the Simplified Chinese exclusive Pikachu, providing value reference for pack investors.",
+          "bullets": [
+            "Groudon/Kyogre EX POP 10 total 1597 cards, investors can track subsequent supply-demand changes.",
+            "The same set of cards at the shoe store has an average price of 2500U, EBAY average price 3000U, price difference of 500U reflects channel premium.",
+            "Simplified Chinese exclusive Pikachu is included in this card pool; its secondary market liquidity can be continuously monitored."
+          ],
+          "published_at": "2026-04-24T06:35:55+00:00",
+          "confidence": 0.92,
+          "card_type": "market",
+          "layout": "data",
+          "tags": [
+            "Legacy Pack",
+            "Market Data",
+            "Classic Old Cards"
+          ],
+          "raw_text": "Legacy Pack #8 | Card pool details ⏰ time is 3 PM 1⃣ Magma team's Groudon EX This card is from the 2015 CP1 pack, and there is another Kyogre EX from the Ocean Team that forms a set, very classic old card, stable value, POP 10, quantity 1597 cards shoe store transaction price about 2500U EBAY transaction price 3000U 2⃣ Simplified Chinese exclusive Pikachu https://t.co/cE544OvhRj",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGpphA7aAAA1xLq.png",
+          "metrics": {},
+          "importance": 4.2,
+          "template_id": "market_signal",
+          "glance": "Market focus: trading volume and market growth. 1597 represents a transaction amount or price milestone.",
+          "timeline_date": "",
+          "urgency": "normal",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "pokemon"
+          ],
+          "detail_summary": "@tcgrwa This market update's main theme is \"Legacy Pack; Card pool details ⏰ time is 3 PM 1⃣ Magma team's Groudon EX This card is from the 2015 CP1 pack\". The numbers in the post represent: 1597 represents a transaction amount or price milestone; 2500 represents a transaction amount or price milestone. Impact: This content will shift the discussion focus to high-price transactions and valuation ranges.",
+          "detail_lines": [
+            "Market focus: Legacy Pack; card pool detailed explanation ⏰ Time at 3 PM 1⃣ Lava team's Groudon EX This card is from the 2015 CP1 pack.",
+            "Number interpretation: 1597 represents a transaction amount or price milestone.",
+            "Supplement: 2500 represents a transaction amount or price milestone.",
+            "Impact: This content will bring the discussion focus to high-price transactions and valuation range.",
+            "Next step: Compare at least two sources before making a judgment."
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2047556145347195181",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2047556145347195181",
+          "title": "Legacy Pack 8.0 is about to be released.",
+          "summary": "Renaiss official account announces that Legacy Pack 8.0 will go live in 1 hour, with the release scheduled for today at 3 PM (UTC+8). This is a card‑pack product version update for the Renaiss platform; users should pay attention to official announcements or platform wallet upgrades. Alpha players and collectors can follow the new pack updates to get early insight into card compositions and rarity distribution.",
+          "bullets": [
+            "Before 3 PM, make sure your wallet is connected to the Renaiss platform to avoid missing the unlock timing.",
+            "Follow the Renaiss official account to get the new pack’s detailed information as soon as possible.",
+            "Alpha players can preview the official documentation to master the card pack 8.0 update highlights"
+          ],
+          "published_at": "2026-04-24T06:00:01+00:00",
+          "confidence": 0.92,
+          "card_type": "announcement",
+          "layout": "poster",
+          "tags": [
+            "official",
+            "sbt",
+            "alpha"
+          ],
+          "raw_text": "🎴 Legacy Pack 8.0 goes live in 1 hours Today, 3PM (UTC+8). Get ready. https://t.co/V5lemhnP0z",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/amplify_video_thumb/2047537995864211456/img/dysXEb_xpIupphuK.jpg",
+          "metrics": {},
+          "importance": 9.6,
+          "template_id": "announcement_timeline",
+          "glance": "Official announcement: Pack and draw performance, please use the original text as the final version.",
+          "timeline_date": "2026-04-24T00:00:00+00:00",
+          "urgency": "medium",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "official",
+            "alpha",
+            "events",
+            "pokemon"
+          ],
+          "detail_summary": "Renaiss Official: This is an official announcement, the core of which is \"Legacy Pack\" card pack release and price range update. Main time node at 3PM, UTC+8, Today. The direct impact on users is that this update will affect subsequent usage flow, and you need to follow up on the next official details.",
+          "detail_lines": [
+            "Update main focus: Legacy Pack card pack new release and price range update",
+            "Time point: 3PM, UTC+8, Today",
+            "Impact: This update will affect the subsequent usage process, and the next official details need to be tracked",
+            "Next step: follow the official next announcement to confirm the final rules."
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2047525941434572836",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2047525941434572836",
+          "title": "Renaiss reviews its participation in Hong Kong Web3 Festival and opens event SBT claim",
+          "summary": "Renaiss team released a thank-you announcement for last week's Hong Kong Web3 Festival series events (including BNB Chain Super Meetup, RWA Night and HK TCG Tour), and announced the opening of the event SBT claim mechanism. Among them, the \"Catch the CEO SBT\" requires participants to take a photo with the CEO and post the photo on Twitter to complete the claim process. This information is mainly for blockchain players and TCG enthusiasts who attended the Hong Kong event in person. The next step is to check whether your personal wallet has received the SBT claim notification, or follow the instructions to complete the photo posting process.",
+          "bullets": [
+            "Participants who attended the Hong Kong Web3 Festival series events can now claim the event-exclusive SBT according to instructions.",
+            "To obtain the Catch the CEO SBT, you need to take a photo with the CEO and post it on Twitter.",
+            "Participants whose wallets have not yet received the SBT are advised to verify the wallet connection is correct and refresh the page."
+          ],
+          "published_at": "2026-04-24T04:00:00+00:00",
+          "confidence": 0.88,
+          "card_type": "announcement",
+          "layout": "brief",
+          "tags": [
+            "Web3 Festival",
+            "SBT Claim",
+            "Hong Kong Offline Event"
+          ],
+          "raw_text": "🇭🇰 Thank you for joining Renaiss at Web3 Festival Hong Kong From the BNB Chain Super Meetup to RWA Night and the HK TCG Tour, thank you for being part of the journey and spending the week with us in Hong Kong. 🎖 Event SBTs • Catch the CEO SBT — snap a photo with our CEO, post https://t.co/UWDsI1uN28",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGo-auObIAAiWgJ.jpg",
+          "metrics": {},
+          "importance": 9.6,
+          "template_id": "announcement_timeline",
+          "glance": "Official announcement: Hong Kong Web3 Festival itinerary, please use the original text as the final version.",
+          "timeline_date": "",
+          "urgency": "medium",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "events",
+            "sbt",
+            "official",
+            "pokemon",
+            "alpha"
+          ],
+          "detail_summary": "Renaiss Official: The core of this community content is 'Web3 Festival Community Schedule Update'. The primary location is Hong Kong. Interpretation suggestion: This post provides on-site community context and can be used to supplement the discussion background.",
+          "detail_lines": [
+            "Community main theme: Web3 Festival Community Schedule Update",
+            "Time reference: subject to the original update",
+            "Scene: Hong Kong",
+            "SBT acquisition method: After completing the \"Participation Activity\" and meeting the activity conditions, you can claim it.",
+            "Impact: This post provides community on-site context and can be used to fill in the discussion background.",
+            "Next step: continue to follow up with official or the same account for further updates."
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2047316344258130405",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2047316344258130405",
+          "title": "Renaiss Hong Kong TCG Tour concludes; visits card shops and temples during Web3 Festival.",
+          "summary": "Renaiss completed a two-day Hong Kong TCG Tour during the Web3 Festival, leading the community to visit local card distribution hubs such as Mong Kok Sino Centre, and held a \"God Pack\" blessing ceremony at Wong Tai Sin Temple. CEO Winchman gave away Pokémon and One Piece booster boxes on site, while participants engaged in cross-language exchanges and shared market observations. This event demonstrates how physical collectible culture can be combined with on-chain mechanisms, expanding liquidity and participant base for future tokenized collectibles.",
+          "bullets": [
+            "The Hong Kong TCG Tour has ended; follow the official account for information on how to register for the next event.",
+            "The on-chain collectibles project continues to progress; for tokenization details, follow the latest Renaiss updates.",
+            "The official Twitter has on-site photos and subsequent content; click the original post for more details."
+          ],
+          "published_at": "2026-04-23T14:07:13+00:00",
+          "confidence": 0.56,
+          "card_type": "announcement",
+          "layout": "brief",
+          "tags": [
+            "TCG",
+            "offline event",
+            "on-chain collection"
+          ],
+          "raw_text": "That’s a wrap on Hong Kong TCG Tour 🇭🇰 Over two days during Web3 Festival, the Renaiss community moved through local card shops, collector hubs, local food spots, and one very Hong Kong kind of blessing stop. It was a community experience shaped by the city’s TCG culture – and https://t.co/4yy4T9GzBx\n\n1/ 1/ One of the most distinctive moments of the tour was our stop at Wong Tai Sin Temple. With unopened packs in hand, the group visited one of Hong Kong’s most iconic temples for a local-style blessing before the day continued. The “God Pack” blessing added a playful touch, https://t.co/aIkuMwy3wO\n\n2/ 2/ From Smiling Plaza and Sino Centre to other local trading hubs across the city, the route gave people a real feel for how dense and layered Hong Kong’s TCG scene is. Different neighborhoods, different shop styles, different collector energy – all part of one living market https://t.co/tDLIWnh3q1\n\n3/ 3/ Inside the shops, the tour kept turning into shared collecting moments. Our CEO @Plus_Ultra_715 Winchman treated the group to boxes and packs across Pokémon, One Piece, and more, and before long the tables were full of reactions, comparisons, collector talk, and people https://t.co/oRl7dlivJ2\n\n4/ 4/ Another part that made the tour special was how naturally the community came together. Small groups, mixed languages, local meals, street snacks, card talk, market talk, and plenty of side conversations in between. People were sharing knowledge, helping each other navigate https://t.co/iSoscpUj4W\n\n🔚 Thanks to everyone who joined us in Hong Kong. TCGs have always carried culture, community, and real-world context around them. Renaiss is bringing collectibles on-chain in ways that connect more people to that world while expanding liquidity and participation around it.",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/amplify_video_thumb/2047313410917031936/img/CUp9P7EVjbb4I1Uy.jpg",
+          "metrics": {
+            "likes": 0,
+            "retweets": 0,
+            "replies": 0,
+            "quotes": 0,
+            "views": 0
+          },
+          "importance": 9.6,
+          "template_id": "announcement_timeline",
+          "glance": "Official announcement: Hong Kong Web3 Festival itinerary, please use the original text as the final version.",
+          "timeline_date": "",
+          "urgency": "medium",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "events",
+            "official",
+            "pokemon",
+            "alpha"
+          ],
+          "detail_summary": "Renaiss Official: The core of this community content is \"Community Live Stream and Interaction Preview\". Main scene in Hong Kong. Interpretation suggestion: This post provides on-site community context and can be used to supplement discussion background.",
+          "detail_lines": [
+            "Community main theme: Community Live Stream and Interaction Preview",
+            "Time reference: subject to the original update",
+            "Scene: Hong Kong",
+            "Impact: This post provides community on-site context and can be used to fill in the discussion background.",
+            "Next step: continue to follow up with official or the same account for further updates."
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2047239060704399578",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2047239060704399578",
+          "title": "Legacy Pack 8.0 limited sale: 1000 packs, $100 per pack, maximum single card value $2850",
+          "summary": "Renaiss officially announced that Legacy Pack 8.0 will officially go on sale at 3 PM (UTC+8) on April 24, releasing a total of 1000 limited card packs, each priced at $100, with the highest‑value card reaching $2,850. This is the first time the official has disclosed the series’ specific pricing and supply information; collectors who intend to purchase should prepare their wallets and complete account verification in advance. It is recommended to follow the official account for real‑time sale notifications and possible restocking updates.",
+          "bullets": [
+            "Purchase opens at 3 PM on 4/24 (UTC+8), limited to 1000 packs.",
+            "Each pack is priced at $100, and the highest single card is valued at $2,850 (in USD).",
+            "Collectors should confirm their accounts and payment methods in advance to snap up the popular series."
+          ],
+          "published_at": "2026-04-23T09:00:02+00:00",
+          "confidence": 0.92,
+          "card_type": "announcement",
+          "layout": "data",
+          "tags": [
+            "renaiss",
+            "Official announcement",
+            "Limited Release"
+          ],
+          "raw_text": "🎴 Legacy Pack 8.0 Top cards to pull Top value up to $2850 💵 $100 per pull 📦 1000 packs 🗓 24 Apr, 3PM (UTC+8) Get ready. https://t.co/rdWU1qQXCI",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/amplify_video_thumb/2047201855793692672/img/dlLjmA16S2-aY6OE.jpg",
+          "metrics": {},
+          "importance": 9.6,
+          "template_id": "announcement_timeline",
+          "glance": "Official announcement: Pack and draw performance, please use the original text as the final version.",
+          "timeline_date": "2026-04-24T00:00:00+00:00",
+          "urgency": "medium",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "official",
+            "pokemon",
+            "alpha"
+          ],
+          "detail_summary": "Renaiss Official The main focus of this market update is \"Legacy Pack card pack new release and price range update\". The numbers in the post represent: 8.0 (version) here is the version number, not a price; $2850 (USD) represents the product's selling price or value range. Impact: This content directly affects players' judgment on entry timing and opening strategy.",
+          "detail_lines": [
+            "Market focus: Legacy Pack card pack new release and price range update.",
+            "Number interpretation: 8.0 (version) is the version number here, not a price.",
+            "Supplement: $2850 (USD) represents the product price or value range.",
+            "Impact: This content directly influences players' judgment on entry timing and opening strategy.",
+            "Next step: Compare at least two sources before making a judgment."
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2047234754274041978",
+          "account": "davidcheang99",
+          "url": "https://x.com/davidcheang99/status/2047234754274041978",
+          "title": "A player recounts the process of their card collection getting out of control after joining Renaiss.",
+          "summary": "A community member shares how their card collection spiraled out of control after joining Renaiss. Initially not a collector, they obtained packs, PKed, and won cards through offline community events, and also organized online events to open boxes themselves, leading to a gradual loss of control. They originally intended to wait for the official card binder to be released before sorting, but due to the excessive quantity they decided to start organizing themselves. This case shows that Renaiss's online and offline community activities effectively boost member participation and build collections.",
+          "bullets": [
+            "The official Renaiss card binder has not been released yet; members in need can first set up their own organization system.",
+            "Offline community events provide opening packs, PK, winning cards and other interactive opportunities, helping to expand your collection.",
+            "Renaiss members can gain extra opening box opportunities by hosting their own online events."
+          ],
+          "published_at": "2026-04-23T08:42:55+00:00",
+          "confidence": 0.82,
+          "card_type": "announcement",
+          "layout": "timeline",
+          "tags": [
+            "renaiss",
+            "community",
+            "cards"
+          ],
+          "raw_text": "From the day I joined Renaiss, I, who never collected cards before, started to lose control of my card collection...🫠 At first I only received a few scattered ones. Later, I participated in offline community events to open packs, PK, and win cards. Recently, I opened several boxes because I organized an online community event myself. I originally planned to wait for Renaiss to release an official card binder before organizing, but I just couldn't wait any longer... There are too many cards!🤣🤣 Time to tidy them up myself! @Mark_Memelord https://t.co/bv1dtl8MAR",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGk8ix-bEAAgPPv.jpg",
+          "metrics": {},
+          "importance": 4.6,
+          "template_id": "announcement_timeline",
+          "glance": "Official announcement: The player's account of the process of losing control of the card collection after joining Renaiss, please use the original text as the final version.",
+          "timeline_date": "",
+          "urgency": "normal",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "alpha",
+            "other",
+            "pokemon"
+          ],
+          "detail_summary": "@davidcheang99 This is an official announcement, the core of which is 'From the day I joined Renaiss, I, who originally didn't collect cards, have gradually lost control of my card collection...🫠 At first I only received a few scattered ones. Later, I participated in offline community events to open packs, PK, and win cards'. The direct impact on users is: this update will affect subsequent usage processes, and further official details need to be tracked.",
+          "detail_lines": [
+            "Main update focus: From the day I joined Renaiss, I, who originally didn't collect cards, have gradually lost control of my card collection...🫠 At first I only received a few scattered ones. Later, I participated in offline community events to open packs, PK, and win cards.",
+            "Timeline: awaiting official announcement.",
+            "Impact: This update will affect the subsequent usage process, and the next official details need to be tracked",
+            "Next step: follow the official next announcement to confirm the final rules."
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2047203430989783437",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2047203430989783437",
+          "title": "SuperLiquid Beta 2.0 SBT Threshold Announcement - Snapshot time is scheduled for early morning on the 27th.",
+          "summary": "Renaiss officially announced the SuperLiquid Beta 2.0 SBT qualification thresholds, with three levels: Top 40% requires 170 points, Top 10% requires 930 points, Top 1% requires 4900 points. The officials emphasized that these are dynamic reference values that will fluctuate as user participation increases. The snapshot is scheduled for 3:00 AM on April 27 (Taiwan time), and users must ensure their scores meet the target before that. For Alpha participants who are racing for SBT qualification, this announcement provides clear point goals and a deadline; they need to continuously monitor threshold changes and seize the sprint window before the snapshot.",
+          "bullets": [
+            "Compare your own score with the three‑tier thresholds (170/930/4900 points) to assess the likelihood of achievement.",
+            "The snapshot time is 3:00 AM on April 27 (Taiwan time), and you must complete your point allocation before the snapshot.",
+            "Pay attention to the official follow-up announcements, as the threshold is dynamically set and may be adjusted based on the number of participants."
+          ],
+          "published_at": "2026-04-23T06:38:27+00:00",
+          "confidence": 0.95,
+          "card_type": "announcement",
+          "layout": "poster",
+          "tags": [
+            "SBT",
+            "Threshold announcement",
+            "Snapshot"
+          ],
+          "raw_text": "SuperLiquid Beta 2.0 SBT Threshold Update ⚡️ 🥉 Top 40%: 170 points 🥈 Top 10%: 930 points 👑 Top 1%: 4900 points These are live reference thresholds, not fixed final cutoffs. As more users join and scores move higher, the bar can keep climbing. ⏰ Snapshot: 27 Apr, 3:00 AM https://t.co/WGyruWucCD",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGkgilib0AAS0m8.jpg",
+          "metrics": {},
+          "importance": 9.6,
+          "template_id": "announcement_timeline",
+          "glance": "Official announcement SBT and points mechanism, please use the original text as the final version.",
+          "timeline_date": "2026-04-27T00:00:00+00:00",
+          "urgency": "high",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "official",
+            "sbt",
+            "alpha",
+            "events"
+          ],
+          "detail_summary": "Renaiss official: This is the SBT threshold update: top 40%: 170 points, top 10%: 930 points, top 1%: 4900 points. Snapshot time is 27 Apr, 3:00 AM. The thresholds are dynamic reference values that will increase with the number of participants and changes in scores. The key is the strategy to boost points before the snapshot and the final ranking confirmation after the snapshot.",
+          "detail_lines": [
+            "Update main: SBT percentile thresholds and snapshot time update",
+            "Current thresholds: top 40%: 170 points, top 10%: 930 points, top 1%: 4900 points",
+            "Snapshot time: 27 Apr, 3:00 AM",
+            "Rule description: The threshold is a dynamic reference value that will increase with the number of participants and score changes.",
+            "SBT acquisition method: At snapshot, achieving top 40%: 170 points, top 10%: 930 points, top 1%: 4900 points, snapshot time 27 Apr, 3:00 AM",
+            "Affected audience: Beta participants (according to percentile-based levels)."
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2046853533778186405",
+          "account": "davidcheang99",
+          "url": "https://x.com/davidcheang99/status/2046853533778186405",
+          "title": "Superliquid Beta 2.0 Endgame and 2FA Feature Launch",
+          "summary": "Renaiss's Superliquid Beta 2.0 is in its final sprint phase and may end soon. Beta rankings will directly determine the types of Superliquid SBTs users can obtain, and these SBTs have a multiplier effect, amplifying point acquisition. Additionally, the 2FA two-factor authentication feature is now officially live, enhancing account security. This update affects all users participating in the Beta; it is recommended to monitor the ranking settlement time and enable 2FA.",
+          "bullets": [
+            "Beta 2.0 has entered its final sprint; rankings will affect the types and quantities of SBTs that can be obtained.",
+            "SBT has a multiplier effect, which can amplify Beta 2.0 points, affecting the final claim.",
+            "2FA two-factor authentication is now online; it is recommended to enable it early to ensure account security."
+          ],
+          "published_at": "2026-04-22T07:28:05+00:00",
+          "confidence": 0.85,
+          "card_type": "feature",
+          "layout": "timeline",
+          "tags": [
+            "Renaiss",
+            "Superliquid",
+            "Beta"
+          ],
+          "raw_text": "A brief discussion on the latest two Renaiss updates✨ 🌊 Superliquid Beta 2.0 has entered the final stage. It may end in the next few days, now it's the final sprint! - Ranking will directly affect the type of Superliquid SBT you receive - Moreover, SBT has a multiplier, which will amplify our points in SBT 2.0 🔥 Additionally, 🔐 2FA authentication is finally online! https://t.co/ch7XAKRK1z",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGfib0jbQAAH4-J.jpg",
+          "metrics": {},
+          "importance": 5.0,
+          "template_id": "announcement_timeline",
+          "glance": "Feature progress: account security and MFA; watch for the next official announcement.",
+          "timeline_date": "",
+          "urgency": "normal",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "official",
+            "sbt",
+            "alpha"
+          ],
+          "detail_summary": "@davidcheang99 This update focuses on MFA login protection. Once enabled, a dynamic code step from the authenticator will be added to the login process, which can reduce the risk of account theft, but the usage flow will require an extra verification step.",
+          "detail_lines": [
+            "Main update focus: Account security verification upgrade.",
+            "Key mechanism: New authenticator dynamic code step.",
+            "Target audience: Users currently logging in using Privy",
+            "SBT acquisition method: SBT types - and SBT also has a multiplier, which will amplify our points in SBT 2.0 🔥 Additionally 🔐 2FA authentication is finally live",
+            "Impact: Security enhanced, but the login process adds one verification step",
+            "Next step: Complete the MFA setup and test the backup process"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2046816267122680172",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2046816267122680172",
+          "title": "Renaiss launches MFA account security verification feature",
+          "summary": "Renaiss officially announces that the MFA (multi-factor authentication) feature is now officially launched, currently supporting users logging in via Privy. After enabling, users must use an authenticator app to generate a 6-digit verification code to complete login, greatly enhancing account security. Users who have not yet enabled it can go to the settings page to activate it themselves.",
+          "bullets": [
+            "Privy login accounts can enable MFA verification on the Settings page.",
+            "An authenticator app (e.g., Google Authenticator) must be installed beforehand as a backup.",
+            "After enabling, each login requires entering the 6-digit verification code generated by the authenticator."
+          ],
+          "published_at": "2026-04-22T05:11:14+00:00",
+          "confidence": 0.92,
+          "card_type": "announcement",
+          "layout": "timeline",
+          "tags": [
+            "Account Security",
+            "Feature Launch",
+            "MFA"
+          ],
+          "raw_text": "🔐 MFA (Multi-Factor Authentication) is now live on Renaiss. Users logging in via Privy can now enable MFA with a 6-digit verification code from an authenticator app for an extra layer of account protection. Secure your account now. https://t.co/wnxuuc1h0f\n\nYou can now enable your MFA in your setting page https://t.co/xpmRRNDpMf",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGfAgeVaoAAaxIN.jpg",
+          "metrics": {
+            "likes": 0,
+            "retweets": 0,
+            "replies": 0,
+            "quotes": 0,
+            "views": 0
+          },
+          "importance": 9.6,
+          "template_id": "announcement_timeline",
+          "glance": "Official announcement: account security and MFA, please use the original text as the final version.",
+          "timeline_date": "",
+          "urgency": "medium",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "official",
+            "alpha"
+          ],
+          "detail_summary": "Renaiss official: this update focuses on MFA login protection. Once enabled, the login process will add a dynamic authenticator code step, which can reduce the risk of account theft, but the usage flow will include an additional verification step.",
+          "detail_lines": [
+            "Main update focus: Account security verification upgrade.",
+            "Key mechanism: New authenticator dynamic code step.",
+            "Target audience: Users currently logging in using Privy",
+            "Impact: Security enhanced, but the login process adds one verification step",
+            "Next step: Complete the MFA setup and test the backup process"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2046560299466346710",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2046560299466346710",
+          "title": "Superliquid Beta 2.0 has entered a phased conclusion; SBT eligibility is determined by ranking.",
+          "summary": "Superliquid Beta 2.0 is about to enter its final stage, the current points will be reset in the next round, and participants' ranking in this phase will directly determine the SBT tier they can claim. The official announcement lists three SBT qualification thresholds: the top 40%, the top 10%, and the top 1%, corresponding to the standard version, the Prime version, and the highest Apex version. This announcement impacts the strategic direction of all Beta participants, and it is recommended to closely follow the specific launch time and point calculation rules for the next Beta round.",
+          "bullets": [
+            "The points from this round will be reset in the next round, and the ranking will affect SBT claim eligibility.",
+            "Top 40% can obtain a regular Elite SBT, and Top 10% will be upgraded to Prime SBT.",
+            "Top 1% can obtain up to Apex SBT, need to continuously maintain the leading rank"
+          ],
+          "published_at": "2026-04-21T12:02:53+00:00",
+          "confidence": 0.92,
+          "card_type": "feature",
+          "layout": "timeline",
+          "tags": [
+            "beta",
+            "sbt",
+            "ranking"
+          ],
+          "raw_text": "🌊 Superliquid Beta 2.0 is ending soon. Points will be reset for the next round. Your ranking in this phase will determine your SBT: 🎖 Top 40% - Superliquid 2.0 Elite SBT 🏆 Top 10% - Superliquid 2.0 Prime SBT 👑 Top 1% - Superliquid 2.0 Apex SBT And this is more than just a https://t.co/XvOxtBUNH7",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGbXvUYacAAJOCP.jpg",
+          "metrics": {},
+          "importance": 10.0,
+          "template_id": "announcement_timeline",
+          "glance": "Feature progress SBT and points mechanism; stay tuned for the next official announcement.",
+          "timeline_date": "",
+          "urgency": "high",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "sbt",
+            "alpha",
+            "official"
+          ],
+          "detail_summary": "Renaiss official: this is a feature update, with the core being \"SBT percentile threshold and snapshot time update\". The direct impact on users is: this will directly affect Beta participants' pre-snapshot point-boosting strategy and SBT level determination.",
+          "detail_lines": [
+            "Update main: SBT percentile thresholds and snapshot time update",
+            "Timeline: awaiting official announcement.",
+            "SBT acquisition method: complete the task according to the participation conditions in the official post, then claim.",
+            "Impact: This will directly affect Beta participants' point-push strategy and SBT level determination before the snapshot.",
+            "Next step: follow the official next announcement to confirm the final rules."
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2046538344990179655",
+          "account": "TCGRWA",
+          "url": "https://x.com/TCGRWA/status/2046538344990179655",
+          "title": "TCGRWA community card sharing: OP, player cards, and S-level card unboxing.",
+          "summary": "TCGRWA community members posted to share the fun of opening card packs, mentioning that they were lucky today, opening a One Piece SEC card, a numbered player card, and also drew an S-level card. Purely a community interaction card-sharing post, with no official information or activity signals.",
+          "bullets": [
+            "TCGRWA members share their personal pack‑opening experiences and luck in the community.",
+            "They opened One Piece SEC and numbered player cards among other items.",
+            "Additionally, a single S‑rank rare card was drawn as an extra surprise."
+          ],
+          "published_at": "2026-04-21T10:35:38+00:00",
+          "confidence": 0.92,
+          "card_type": "insight",
+          "layout": "brief",
+          "tags": [
+            "sbt",
+            "other"
+          ],
+          "raw_text": "Unpacking together is the most fun! Today seems a bit lucky, OP opened SEC, player cards opened numbered cards, and the draw also gave an S🥳 https://t.co/qz0yVScnkk",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGbDqRPb0AAfjDA.jpg",
+          "metrics": {},
+          "importance": 3.5,
+          "template_id": "community_brief",
+          "glance": "TCGRWA members share their personal pack‑opening experiences and luck in the community.",
+          "timeline_date": "",
+          "urgency": "normal",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "other",
+            "pokemon",
+            "tools"
+          ],
+          "detail_summary": "@tcgrwa The core of this social media post is \"Today seems a bit lucky, OP opened SEC, player cards opened numbered cards, and the draw also gave an S🥳\". Interpretation suggestion: This post provides on-site community context and can be used to supplement the discussion background.",
+          "detail_lines": [
+            "Community main focus: Today feels a bit lucky; OP opened sec; basketball cards opened numbered cards; drawing cards also got an S🥳",
+            "Time reference: subject to the original update",
+            "Scene: Online community discussion",
+            "Impact: This post provides community on-site context and can be used to fill in the discussion background.",
+            "Next step: continue to follow up with official or the same account for further updates.",
+            "Supplementary context: Opening packs together is the most fun"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2046504247131533601",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2046504247131533601",
+          "title": "Hong Kong TCG Tour first stop opens card draws with multiple brands running simultaneously.",
+          "summary": "Renaiss official livestream covers the Hong Kong TCG Tour first stop, with @Plus_Ultra_715 providing One Piece, Pokémon, and Digimon booster boxes for participants to open on-site. The event brings together enthusiasts of multiple card brands, and the official updates live on X platform. Follow the official account for updates on upcoming stops.",
+          "bullets": [
+            "Keep following @renaissxyz for updates on upcoming Hong Kong TCG Tour stops.",
+            "If you are interested in hosting or collaborating, you can contact the official account for details",
+            "Follow @Plus_Ultra_715 to view the live card draw and lucky moments of this session"
+          ],
+          "published_at": "2026-04-21T08:20:09+00:00",
+          "confidence": 0.56,
+          "card_type": "event",
+          "layout": "poster",
+          "tags": [
+            "events",
+            "sbt",
+            "pokemon"
+          ],
+          "raw_text": "Live from the first card shop of today’s Hong Kong TCG Tour 👀 @Plus_Ultra_715 just treated everyone on the tour to a big stack of boxes – One Piece, Pokémon, Digimon and more. Packs are flying open everywhere right now. Good hits, good vibes, and a lot of shared fun around https://t.co/CO9WpaeVvy",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGaknhXbAAA6tWw.jpg",
+          "metrics": {},
+          "importance": 11.2,
+          "template_id": "event_poster",
+          "glance": "Event: Card packs and draw performance, time today, recommend planning participation in advance.",
+          "timeline_date": "2026-04-21T00:00:00+00:00",
+          "urgency": "high",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {
+            "participation": "Live stream",
+            "location": "Hong Kong",
+            "schedule": "today"
+          },
+          "topic_labels": [
+            "events",
+            "pokemon",
+            "official",
+            "alpha"
+          ],
+          "detail_summary": "Renaiss official The main theme of this event is \"Hong Kong TCG Tour first stop card shop live update\", time is today, location is Hong Kong, participation method is live stream. This is community mobilization information, with the focus on directing people to the live stream or on-site interaction.",
+          "detail_lines": [
+            "Event theme: Hong Kong TCG Tour first stop card shop live update",
+            "Time and location: today / Hong Kong",
+            "Reward focus: Please refer to the original reward description as standard",
+            "Participation method: Live stream",
+            "Impact: This is community mobilization information; the focus is to direct people to live streaming or on-site interaction."
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2046222225016250739",
+          "account": "renaissxyz",
+          "url": "https://x.com/renaissxyz/status/2046222225016250739",
+          "title": "Renaiss Korean team attends RWA event; the first draw from an M4 pack reveals an SAR McDonald's Pikachu",
+          "summary": "Renaiss official Korean community team appears at the Entertainment RWA Night event, opening the M4 card pack on the spot. The first pack immediately reveals an SAR‑level McDonald's Pikachu card, a high‑rarity card in the Renaiss ecosystem that sets an impressive opening record. This event demonstrates the official team’s participation in external blockchain activities, while also boosting community discussion through the lucky card opening; fans can follow up for any subsequent limited‑card reveals or related celebration activities.",
+          "bullets": [
+            "Renaiss Korean CM team has arrived at the Entertainment RWA Night event venue",
+            "Community member legendmascot opened an M4 pack for the first time and obtained a SAR-ranked McDonald's Pikachu",
+            "The official account posted a live card-opening broadcast, recommending to follow up for any related celebrations or rewards"
+          ],
+          "published_at": "2026-04-20T13:39:30+00:00",
+          "confidence": 0.92,
+          "card_type": "insight",
+          "layout": "brief",
+          "tags": [
+            "Live Event",
+            "Card Unlock Achievement",
+            "Community Interaction"
+          ],
+          "raw_text": "KR gang @RenaissKrCM showed up at Entertainment RWA Night and started ripping packs together. @legendmascot wasted absolutely no time – first M4 pack, straight into a SAR, straight into the McDonald’s Pikachu card. Huge W. 🔥 https://t.co/x0uhSZzdTX",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/amplify_video_thumb/2046221934069956608/img/EHWyE7qU42xfqiEd.jpg",
+          "metrics": {},
+          "importance": 7.3,
+          "template_id": "community_brief",
+          "glance": "Renaiss Korean CM team has arrived at the Entertainment RWA Night event venue",
+          "timeline_date": "",
+          "urgency": "medium",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "events",
+            "alpha",
+            "official",
+            "pokemon"
+          ],
+          "detail_summary": "Renaiss Official: The core of this community post is \"Entertainment RWA Night live event is currently underway\". Interpretation suggestion: This post provides on‑site community context, which can be used to fill out the discussion background.",
+          "detail_lines": [
+            "Community main focus: Entertainment RWA Night live event is currently underway.",
+            "Time reference: subject to the original update",
+            "Scene: Online community discussion",
+            "Impact: This post provides community on-site context and can be used to fill in the discussion background.",
+            "Next step: continue to follow up with official or the same account for further updates."
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2045311039340970340",
+          "account": "davidcheang99",
+          "url": "https://x.com/davidcheang99/status/2045311039340970340",
+          "title": "In the community pack‑opening activity I got second place and unexpectedly obtained a PSA 10 Pikachu card.",
+          "summary": "@davidcheang99 posted \"On that day’s community pack opening event, I was fortunate to get second place ✨ and also obtained this PSA 10 graded Pikachu card ❤️...\" Market signal. The focus is on that day’s community pack opening event; I was fortunate to get second place ✨ and also obtained this PSA 10 graded Pikachu card ❤️ The original activity rewards were actually differentiated 🥇 First place roughly 70+ 🥈 Second place (me) 50+. This content reflects the current market discussion direction; it is recommended to interpret it in conjunction with the original context.",
+          "bullets": [
+            "Market focus: that day’s community pack opening event; I was fortunate to get second place ✨ and also obtained this PSA 10 graded Pikachu card ❤️ The original activity rewards were actually differentiated 🥇 First place roughly 70+ 🥈 Second place (me) 50+",
+            "Numeric context: this post is primarily a market observation.",
+            "Possible impact: This content reflects the current market discussion direction; it is recommended to interpret it in conjunction with the original context."
+          ],
+          "published_at": "2026-04-18T01:18:46+00:00",
+          "confidence": 0.85,
+          "card_type": "market",
+          "layout": "data",
+          "tags": [
+            "Community activities",
+            "Pokemon",
+            "alpha"
+          ],
+          "raw_text": "The community pack opening event that day, I was fortunate enough to take second place ✨ and also obtained this PSA 10 graded Pikachu card ❤️ Originally, the event rewards actually had distinctions 🥇 First place roughly 70+ 🥈 Second place (me) 50+ 🥉 Third place 20+ As a result, we just happened to encounter a Pikachu bull market 🤣 This card directly rose to almost the same value as the first place reward. A pleasant surprise! Thanks to Brian @bryantToTheMoon's sponsorship ❤️ https://t.co/7DQuNDWRNj",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGJni_7awAAhRtW.jpg",
+          "metrics": {},
+          "importance": 4.2,
+          "template_id": "market_signal",
+          "glance": "This post talks about getting second place in the community pack opening event and unexpectedly obtaining a PSA 10 Pikachu card, which can serve as a reference for observing market heat and price trends.",
+          "timeline_date": "",
+          "urgency": "normal",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "events",
+            "pokemon",
+            "alpha"
+          ],
+          "detail_summary": "@davidcheang99 This market update's main theme is: \"The community pack opening event that day; I was fortunate enough to take second place ✨ and also obtained this PSA 10 graded Pikachu card ❤️ Originally, the event rewards actually had distinctions 🥇 First place roughly 70+ 🥈 Second place (me) 50+ 🥉 Third place 20+\". This post focuses on market direction observation. Impact: This content reflects the current market discussion direction, and it is advised to interpret it in conjunction with the original context.",
+          "detail_lines": [
+            "Market Focus: the community opening event that day; I was lucky enough to take second place ✨ and also obtained this PSA 10 Pikachu grading card ❤️ The original event rewards actually had a distinction 🥇 First place roughly 70+ 🥈 Second place (me) 50+ 🥉 Third place",
+            "Number interpretation: Please understand the usage of the numbers in context.",
+            "Additional note: Watch for any subsequent supply, price, or transaction updates.",
+            "Impact: This content reflects the current market discussion direction, and it is recommended to interpret it in conjunction with the original context.",
+            "Next step: Compare at least two sources before making a judgment.",
+            "Additional context: Thank you Brian for the sponsorship ❤️"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2045080953324962220",
+          "account": "davidcheang99",
+          "url": "https://x.com/davidcheang99/status/2045080953324962220",
+          "title": "Event highlights | ✨ -Counterfeit goods are rampant; the probability of buying a fake even with a genuine card is not low - Slow transactions",
+          "summary": "@davidcheang99 releases the \"Community Live Stream & Interaction\" event information. Time: April 17, 21:00, UTC+8. Location: online (Discord / Live). Main incentives: SBT, points, and peripheral items. SBT acquisition method: complete \"Discord\" and meet the event conditions to claim. Such events have clear incentives, typically increasing participation rates and community spread.",
+          "bullets": [
+            "SBT acquisition method: complete \"Discord\" and meet the event conditions to claim.",
+            "Event highlights: ✨ - fake goods are rampant; the chance of buying a fake even when purchasing a genuine card is high - transactions are slow.",
+            "Time and location: April 17, 21:00, UTC+8 / Online (Discord / Live)"
+          ],
+          "published_at": "2026-04-17T10:08:14+00:00",
+          "confidence": 0.56,
+          "card_type": "event",
+          "layout": "poster",
+          "tags": [
+            "Analysis",
+            "Content",
+            "Activity"
+          ],
+          "raw_text": "Great to see @gate_ventures mention Renaiss, and let's delve into just how painful the traditional Pokémon TCG secondary market is? ✨\n- Counterfeit goods are rampant, hard to distinguish with the naked eye, the probability of buying a fake authentic card is not low.\n- Transactions are slow: meeting in person or platform consignment settlement takes 7-14 days.\n- Fees + shipping + arbitration fees exceed 13%.\n- Poor liquidity, when you want to sell you often end up stuck with the cards.\nThe most annoying thing is counterfeit goods, bought at a high price for PSA10 https://t.co/4FoIx2HOiY\n\n🎤 Renaiss Plaza Reminder — See you tonight 🕘 April 17, 21:00 (UTC+8) 📍 Renaiss Discord. This time, Renaiss will share:\n• Project data updates\n• SBT 2.0, points & merchandise\n• Community growth incentive activities\n• Event sponsorship system\n• One Piece booster machine\n\nThis time we also have a special guest: Ricky —— a well‑known One Piece TCG collector, and we will chat with him:\n• https://t.co/hNka6Yh1kv",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGGWSMJbkAAO065.jpg",
+          "metrics": {
+            "likes": 0,
+            "retweets": 0,
+            "replies": 0,
+            "quotes": 0,
+            "views": 0
+          },
+          "importance": 7.4,
+          "template_id": "event_poster",
+          "glance": "Event Key Points｜✨ -Fake goods are rampant; the chance of buying a counterfeit when purchasing a genuine card is high -Transactions are slow, time: April 17, 21:00, UTC+8, key rewards: SBT, points, peripherals.",
+          "timeline_date": "2026-04-17T00:00:00+00:00",
+          "urgency": "medium",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {
+            "reward": "SBT, points, peripherals",
+            "participation": "Discord",
+            "location": "Online (Discord / Live)",
+            "schedule": "April 17, 21:00, UTC+8"
+          },
+          "topic_labels": [
+            "events",
+            "sbt",
+            "pokemon",
+            "tools"
+          ],
+          "detail_summary": "@davidcheang99 The main theme of this event is 「✨ -counterfeit goods are widespread; the probability of buying a fake real card is not low -slow transactions」, the time is on April 17, 21:00, UTC+8, the location is online (Discord / Live), the main incentives are SBT, points, peripherals, the participation method is Discord. This type of event has clear incentives, usually increasing participation rates and community spread.",
+          "detail_lines": [
+            "Event theme: ✨ -counterfeit goods are widespread; the probability of buying a fake real card is not low -slow transactions",
+            "Time and location: April 17, 21:00, UTC+8 / Online (Discord / Live)",
+            "Reward focus: SBT, points, peripherals",
+            "SBT acquisition method: complete \"Discord\" and meet the event conditions to claim.",
+            "Participation method: Discord",
+            "Impact: Such activities have clear incentives, usually increasing participation rates and community spread"
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2045040877790429526",
+          "account": "TCGRWA",
+          "url": "https://x.com/TCGRWA/status/2045040877790429526",
+          "title": "Community player pulls a 裂空座 VMAX A card, market price $460, creating the Eternal Profit Chicken achievement.",
+          "summary": "A community member on the Renaiss platform opened a Liekongzuo VMAX A-card, which is the highest-priced card of its series on the market. Based on the FMV460 USD valuation, it achieved the Eternal Profit Chicken feat. The high value of this card reflects the market conditions for a specific rarity, drawing the attention of collectors and investors to the price trends of similar cards.",
+          "bullets": [
+            "Track the opening records and market price fluctuations of A-cards of the same series on the Renaiss platform.",
+            "Pay attention to the FMV460 USD as a market reference for the floor price of rare A-cards.",
+            "The \"Eternal Profit Chicken\" achievement represents a community title for ongoing profitability within the platform."
+          ],
+          "published_at": "2026-04-17T07:25:14+00:00",
+          "confidence": 0.92,
+          "card_type": "market",
+          "layout": "data",
+          "tags": [
+            "Unboxing",
+            "Market trends",
+            "Achievement"
+          ],
+          "raw_text": "This time it's finally my turn to draw an A! Still the most expensive among the VMAX A cards. FMV460 Continue to achieve the Eternal Profit Chicken achievement. Love @renaissxyz so much. https://t.co/GeyKceJdlH",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HGFwa52bsAAW4We.jpg",
+          "metrics": {},
+          "importance": 4.2,
+          "template_id": "market_signal",
+          "glance": "Market Highlights: Community player pulled a Rayquaza VMAX A card, market price $460, creating an Eternal Profit Chicken achievement. 460 represents the single transaction profit or profit scale.",
+          "timeline_date": "",
+          "urgency": "normal",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "pokemon",
+            "other"
+          ],
+          "detail_summary": "@tcgrwa This market update's main theme is \"still the Zhang Lie Kong Zuo VMAX A card being almost the most expensive, FMV460 continues to achieve the ever‑profit chicken achievement, love it so much\". The numbers in the post represent: 460 represents the single transaction profit or profit scale. Impact: This content reflects the current market discussion direction; it is advised to interpret it in conjunction with the original context.",
+          "detail_lines": [
+            "Market main focus: still the most expensive among the Zhang Lie Kong Zuo VMAX A card. FMV460 continues to achieve the perpetual profit chicken achievement. Love it so much.",
+            "Number interpretation: 460 represents the scale of profit or earnings from a single transaction.",
+            "Additional note: Watch for any subsequent supply, price, or transaction updates.",
+            "Impact: This content reflects the current market discussion direction, and it is recommended to interpret it in conjunction with the original context.",
+            "Next step: Compare at least two sources before making a judgment.",
+            "Supplement context: this time it's finally my turn to release A."
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2044381540067803312",
+          "account": "chenyichiao",
+          "url": "https://x.com/chenyichiao/status/2044381540067803312",
+          "title": "US Consolidation Shipping to Taiwan Province Cost Guide: Comparison of Three Consolidators and Usage Tips.",
+          "summary": "Targeting Taiwanese users, this article shares how to reduce the cost of shipping packages from the United States back to Taiwan using consolidated shipping, solving the pain point of high direct shipping costs and taxes to Taiwan. The content compares the US warehouse tax-included plans of three consolidated shipping providers (buy and ship, Planet Consolidation, Good Luck Consolidation), including the per-pound tax-included price (170-175元新台幣) and each provider's minimum usage threshold. Users are reminded that when filling in the address on the consolidated shipping platform, they must include the recipient ID to ensure delivery.",
+          "bullets": [
+            "Three consolidators' US warehouse tax-included plan: buy and ship 170元/磅, 星球集運 170元/磅, 好運集運 175元/磅",
+            "Note the restrictions of each carrier: 星球集運 charges an additional 150元 delivery fee for shipments under 20 lb, and 好運集運 charges 300元 for a single 1‑lb package.",
+            "Renaiss: when filling in the consolidation address, be sure to include your personal member ID; otherwise, the shipment cannot be received successfully"
+          ],
+          "published_at": "2026-04-16T04:10:01+00:00",
+          "confidence": 0.95,
+          "card_type": "feature",
+          "layout": "timeline",
+          "tags": [
+            "tools",
+            "sbt",
+            "official"
+          ],
+          "raw_text": "Show translation 最近的好消息是 要準備開放領卡了，不過直送台灣運費+稅金應該是大家在意的點，所以來介紹一下另外一個方法，也就是集運，以下分享的價格都是美國倉包稅一磅的價格！ 三個我用過的集運： 1. buy and ship: 價格: 包稅170NTD 優點: 大間、價格合理、一磅一磅算、可以多國運回 缺點: 因為可以多國集中運回，所以或是會先到香港，再送回台灣，需要等14~28天 2. 星球集運: 價格: 包稅170NTD 優點: 速度快，跟bns一樣有許多國家都可以集運 缺點: 未滿 20 磅需多加 150NTD 宅配費用 3. 好運集運: 價格: 包稅175NTD 優點: 速度快，單筆出貨10磅以上有折扣 缺點: 目前只有大陸以及美國倉，並且如果只運1磅運費為300 使用方式(以BNS為例): 註冊過後進入會員中心，點擊海外倉庫地址，會看到下面圖片的地址，把這個收件人跟地址填到renaiss就可以了，這邊要注意一定要填上自己的編號喔！ 基本上每一家的使用方式都一樣，相信大家可以舉一反三！ 大致上這樣就可以了，如果還有什麼問題可以再問我，我有空都會回答，希望有幫到大家，另外還沒加入renaiss的也歡迎使用我的邀請碼~ · 6 3 20 5 Read 6 replies",
+          "provider": "r.jina.ai",
+          "cover_image": "https://pbs.twimg.com/media/HF8Y11FaAAA_7I6?format=png&name=small",
+          "metrics": {},
+          "importance": 5.0,
+          "template_id": "announcement_timeline",
+          "glance": "Feature progress – US consolidated shipping back to Taiwan province courier fee guide: comparison of three consolidation services and usage tips; stay tuned for the next official announcement.",
+          "timeline_date": "",
+          "urgency": "normal",
+          "manual_pick": true,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "tools",
+            "official",
+            "alpha"
+          ],
+          "detail_summary": "@chenyichiao This is a feature update, with the core being 'the three consolidated shipping services I've used; 1. buy and ship'. The direct impact for users is: this means the product progress moves to the next node, so pay attention to the official launch time and conditions.",
+          "detail_lines": [
+            "Update main theme: the three consolidated shipping services I've used; 1. buy and ship",
+            "Timeline: awaiting official announcement.",
+            "Effect: this means the product progress is advancing to the next stage; be mindful of the official launch time and conditions.",
+            "Next step: follow the official next announcement to confirm the final rules.",
+            "Supplementary context: the recent good news is that they are preparing to open card issuance; however, the direct shipping to Taiwan freight + tax is likely the point of concern for everyone."
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2044391196605513949",
+          "account": "TCGRWA",
+          "url": "https://x.com/TCGRWA/status/2044391196605513949",
+          "title": "McDonald's Pikachu surges to 100U market observation",
+          "summary": "@TCGRWA shares the latest developments in the McDonald's Pokémon card secondary market. The Pikachu card has risen to about $100 USD, the McDonald's P10 issuance has expanded to 250,000 cards, and the Detective Pikachu has climbed to 80,000 JPY (≈ $500 USD). He cites his own sale of a Detective Pikachu for over $200 USD as an example, lamenting missing the price surge. Analysis indicates that low POP old cards can see price spikes with only a few transactions, whereas cards in massive supply, due to high liquidity and ample availability, are less likely to sustain price increases and are considered highly liquid assets.",
+          "bullets": [
+            "Track whether McDonald's series P10/P25 supply continues to expand.",
+            "Observe Detective Pikachu's support and pullback zone after it holds above 500U",
+            "Monitor the trading frequency and price volatility of low POP old cards as a market sentiment indicator"
+          ],
+          "published_at": "2026-04-15T12:23:38+00:00",
+          "confidence": 0.85,
+          "card_type": "market",
+          "layout": "brief",
+          "tags": [
+            "Pokemon",
+            "secondary market",
+            "McDonald's card"
+          ],
+          "raw_text": "McDonald's 🍔 Pikachu has surged to around 100U. The P10 McDonald's (skin) has an alarming 250,000 copies. Detective Pikachu also climbed to 80,000 JPY, 500U (I sold it for over 200 🥲). This card is a P10 with 40,000 copies. Some older cards and low‑pop cards have seen their transaction prices rise on a few trades, but for such super‑high‑volume cards that have many daily transactions, price appreciation is not easy. Essentially, they are highly liquid assets with an enormous supply. https://t.co/mSh8Lejc9r",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HF8i9K3aoAA6NhO.jpg",
+          "metrics": {},
+          "importance": 4.2,
+          "template_id": "market_signal",
+          "glance": "Market focus: McDonald's Pikachu surges to 100U. Market observation: 100 denotes a transaction amount or price milestone.",
+          "timeline_date": "",
+          "urgency": "normal",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "pokemon",
+            "tools"
+          ],
+          "detail_summary": "@tcgrwa The main theme of this market update is \"McDonald's🍔 Pikachu has risen to around 100U, the P10 count of McPikachu is a terrifying 250,000 copies, Detective Pikachu also climbed to 80,000 JPY; 500U now (I sold it at over 200 🥲), this card is P10\". Post numbers indicate: 100 represents a transaction amount or price milestone; 500 represents a transaction amount or price milestone. Impact: This content will shift the discussion focus to high-price transactions and valuation ranges.",
+          "detail_lines": [
+            "Market main theme: McDonald's🍔 Pikachu has risen to around 100U, the P10 count of McPikachu is a terrifying 250,000 copies, Detective Pikachu also climbed to 80,000 JPY; 500U now (I sold at over 200 🥲), this card is P10.",
+            "Number interpretation: 100 represents a transaction amount or price milestone.",
+            "Note: 500 represents a transaction amount or price milestone.",
+            "Impact: This content will bring the discussion focus to high-price transactions and valuation range.",
+            "Next step: Compare at least two sources before making a judgment."
+          ],
+          "reply_to_id": ""
+        },
+        {
+          "id": "2040786743721644522",
+          "account": "ChenYichiao",
+          "url": "https://x.com/ChenYichiao/status/2040786743721644522",
+          "title": "Market watch: Alpha Mewtwo card price rises to 380u; physical card opening dynamics are under attention.",
+          "summary": "@chenyichiao posted \"today again bought a Mewtwo, currently it has risen to around 380u; hoping the physical card can be claimed soon...\" market signal. Key points: today again bought a Mewtwo, currently it has risen to around 380u; hoping the physical card can be claimed soon, the two cards obtained offline previously have all surged. Number significance: 380 is the market reference data mentioned in the post; 299 (serial number) represents a limited number or rarity threshold. This content reflects current market discussion direction; it is recommended to interpret together with the original context.",
+          "bullets": [
+            "Market Highlights: Today I again obtained a Mewtwo; it has already risen to around 380u; hoping to get the physical card soon. The two offline claimed cards have skyrocketed.",
+            "Number interpretation: 380 is the market reference data mentioned in the post.",
+            "Possible impact: This content reflects the current market discussion direction; it is recommended to interpret it in conjunction with the original context."
+          ],
+          "published_at": "2026-04-05T13:40:50+00:00",
+          "confidence": 0.85,
+          "card_type": "market",
+          "layout": "poster",
+          "tags": [
+            "market",
+            "pokemon",
+            "alpha"
+          ],
+          "raw_text": "Today again at @renaissxyz I received an Ultra Dream card; currently it has risen to around 380u, hoping the physical card redemption will open soon. The two cards I claimed offline previously have also skyrocketed; if you're not lucky, try to find opportunities by entering from the secondary market! Those who haven't registered yet can also click the link below to register https://t.co/sgCstfLCWQ https://t.co/299CEnE1UW",
+          "provider": "tweet-result",
+          "cover_image": "https://pbs.twimg.com/media/HFJUuVla0AAwo-P.jpg",
+          "metrics": {},
+          "importance": 5.4,
+          "template_id": "market_signal",
+          "glance": "Market focus: Market observation – Alpha Ultra Dream card price rose to 380u, with the opening of physical cards drawing attention. 380 is the market reference data mentioned in the post.",
+          "timeline_date": "2026-04-05T00:00:00+00:00",
+          "urgency": "normal",
+          "manual_pick": false,
+          "manual_pin": false,
+          "manual_bottom": false,
+          "event_facts": {},
+          "topic_labels": [
+            "pokemon",
+            "alpha",
+            "events"
+          ],
+          "detail_summary": "@chenyichiao This market update's main theme is \"today I again obtained a Mewtwo, currently it has risen to around 380u; I hope the physical card claim opens soon. The two cards I claimed offline earlier have also skyrocketed.\" The numbers in the post represent: 380 is the market reference data mentioned in the post; 299 (serial number) represents the limited number or rarity threshold. Impact: This content reflects the current market discussion direction, and it is recommended to interpret it in conjunction with the original context.",
+          "detail_lines": [
+            "Market focus: Today I again received a Mewtwo, which has already risen to around 380u; hoping the physical card redemption opens soon, the two offline cards I received earlier have skyrocketed.",
+            "Number interpretation: 380 is the market reference data mentioned in the post.",
+            "Note: 299 (serial number) indicates a limited edition number or rarity threshold.",
+            "Impact: This content reflects the current market discussion direction, and it is recommended to interpret it in conjunction with the original context.",
+            "Next step: Compare at least two sources before making a judgment.",
+            "Additional context: Users who haven't registered yet can click the link below to sign up."
+          ],
+          "reply_to_id": ""
+        }
+      ],
+      "raw_total_cards": 36,
+      "excluded_cards": 0,
+      "excluded_by_selection": 0,
+      "excluded_by_feedback": 1,
+      "excluded_by_source_preference": 0,
+      "key_terms": [
+        "pack",
+        "hong",
+        "kong",
+        "tour",
+        "superliquid",
+        "your",
+        "more",
+        "local",
+        "community",
+        "packs",
+        "omega",
+        "utc+8",
+        "live",
+        "card"
+      ],
+      "intel_sections": {
+        "official_updates": [
+          {
+            "headline": "Renaiss Asian Invitational preview covers Taiwan and five Southeast Asian countries.",
+            "point": "Official announcement: Renaiss Asia Invitational Preview covering Taiwan and five Southeast Asian countries; please use the original text as the final version.",
+            "when": "2026-04-25T10:45:57+00:00",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047990492592537885",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 9.6,
+            "urgency": "medium"
+          },
+          {
+            "headline": "Omega Pack will be restocked on April 26, adding over 10 S-level cards.",
+            "point": "Feature progress: card packs and draw performance, time node at 3PM, watch for opening conditions.",
+            "when": "2026-04-24T10:00:01+00:00",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047616545090859207",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 10.0,
+            "urgency": "high"
+          },
+          {
+            "headline": "Legacy Pack 8.0 is about to be released.",
+            "point": "Official announcement: Pack and draw performance, please use the original text as the final version.",
+            "when": "2026-04-24T06:00:01+00:00",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047556145347195181",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 9.6,
+            "urgency": "medium"
+          },
+          {
+            "headline": "Renaiss reviews its participation in Hong Kong Web3 Festival and opens event SBT claim",
+            "point": "Official announcement: Hong Kong Web3 Festival itinerary, please use the original text as the final version.",
+            "when": "2026-04-24T04:00:00+00:00",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047525941434572836",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 9.6,
+            "urgency": "medium"
+          },
+          {
+            "headline": "Renaiss Hong Kong TCG Tour concludes; visits card shops and temples during Web3 Festival.",
+            "point": "Official announcement: Hong Kong Web3 Festival itinerary, please use the original text as the final version.",
+            "when": "2026-04-23T14:07:13+00:00",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047316344258130405",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 9.6,
+            "urgency": "medium"
+          }
+        ],
+        "upcoming_events": [
+          {
+            "headline": "Event highlights | ✨ -Counterfeit goods are rampant; the probability of buying a fake even with a genuine card is not low - Slow transactions",
+            "point": "Event Key Points｜✨ -Fake goods are rampant; the chance of buying a counterfeit when purchasing a genuine card is high -Transactions are slow, time: April 17, 21:00, UTC+8, key rewards: SBT, points, peripherals.",
+            "when": "2026-04-17T10:08:14+00:00",
+            "account": "davidcheang99",
+            "url": "https://x.com/davidcheang99/status/2045080953324962220",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 7.4,
+            "urgency": "medium"
+          },
+          {
+            "headline": "Hong Kong TCG Tour first stop opens card draws with multiple brands running simultaneously.",
+            "point": "Event: Card packs and draw performance, time today, recommend planning participation in advance.",
+            "when": "2026-04-21T08:20:09+00:00",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2046504247131533601",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 11.2,
+            "urgency": "high"
+          },
+          {
+            "headline": "Renaiss × Portaldot Poker Night starts at 8 PM tonight.",
+            "point": "Event: Renaiss × Portaldot Poker Night starts at 8 PM tonight, time: tonight, key reward: event reward.",
+            "when": "2026-04-24T10:16:39+00:00",
+            "account": "TCGRWA",
+            "url": "https://x.com/TCGRWA/status/2047620731115065582",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 7.4,
+            "urgency": "medium"
+          }
+        ],
+        "upcoming_features": [
+          {
+            "headline": "Omega Pack will be restocked on April 26, adding over 10 S-level cards.",
+            "point": "Feature progress: card packs and draw performance, time node at 3PM, watch for opening conditions.",
+            "when": "2026-04-24T10:00:01+00:00",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047616545090859207",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 10.0,
+            "urgency": "high"
+          }
+        ],
+        "community_highlights": [
+          {
+            "headline": "Renaiss × Portaldot Poker Night starts at 8 PM tonight.",
+            "point": "Event: Renaiss × Portaldot Poker Night starts at 8 PM tonight, time: tonight, key reward: event reward.",
+            "when": "2026-04-24T10:16:39+00:00",
+            "account": "TCGRWA",
+            "url": "https://x.com/TCGRWA/status/2047620731115065582",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 7.4,
+            "urgency": "medium"
+          },
+          {
+            "headline": "Legacy Pack Card Pool Market Analysis Released: Groudon/Kyogre EX Transaction Price Difference 500U",
+            "point": "Market focus: trading volume and market growth. 1597 represents a transaction amount or price milestone.",
+            "when": "2026-04-24T06:35:55+00:00",
+            "account": "TCGRWA",
+            "url": "https://x.com/TCGRWA/status/2047565179693777294",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 4.2,
+            "urgency": "normal"
+          },
+          {
+            "headline": "TCGRWA community card sharing: OP, player cards, and S-level card unboxing.",
+            "point": "TCGRWA members share their personal pack‑opening experiences and luck in the community.",
+            "when": "2026-04-21T10:35:38+00:00",
+            "account": "TCGRWA",
+            "url": "https://x.com/TCGRWA/status/2046538344990179655",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 3.5,
+            "urgency": "normal"
+          },
+          {
+            "headline": "In the community pack‑opening activity I got second place and unexpectedly obtained a PSA 10 Pikachu card.",
+            "point": "This post talks about getting second place in the community pack opening event and unexpectedly obtaining a PSA 10 Pikachu card, which can serve as a reference for observing market heat and price trends.",
+            "when": "2026-04-18T01:18:46+00:00",
+            "account": "davidcheang99",
+            "url": "https://x.com/davidcheang99/status/2045311039340970340",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 4.2,
+            "urgency": "normal"
+          },
+          {
+            "headline": "Event highlights | ✨ -Counterfeit goods are rampant; the probability of buying a fake even with a genuine card is not low - Slow transactions",
+            "point": "Event Key Points｜✨ -Fake goods are rampant; the chance of buying a counterfeit when purchasing a genuine card is high -Transactions are slow, time: April 17, 21:00, UTC+8, key rewards: SBT, points, peripherals.",
+            "when": "2026-04-17T10:08:14+00:00",
+            "account": "davidcheang99",
+            "url": "https://x.com/davidcheang99/status/2045080953324962220",
+            "engagement": "❤️0 🔁0 💬0",
+            "importance": 7.4,
+            "urgency": "medium"
+          }
+        ]
+      },
+      "intel_agenda": {
+        "event_timeline_future": [],
+        "event_timeline_past": [
+          {
+            "id": "2047620731115065582",
+            "label": "04/24",
+            "days_left": -2,
+            "headline": "Renaiss × Portaldot Poker Night starts at 8 PM tonight.",
+            "glance": "Event: Renaiss × Portaldot Poker Night starts at 8 PM tonight, time: tonight, key reward: event reward.",
+            "account": "TCGRWA",
+            "url": "https://x.com/TCGRWA/status/2047620731115065582",
+            "type": "event",
+            "urgency": "medium",
+            "published_at": "2026-04-24T10:16:39+00:00"
+          },
+          {
+            "id": "2046504247131533601",
+            "label": "04/21",
+            "days_left": -5,
+            "headline": "Hong Kong TCG Tour first stop opens card draws with multiple brands running simultaneously.",
+            "glance": "Event: Card packs and draw performance, time today, recommend planning participation in advance.",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2046504247131533601",
+            "type": "event",
+            "urgency": "high",
+            "published_at": "2026-04-21T08:20:09+00:00"
+          },
+          {
+            "id": "2045080953324962220",
+            "label": "04/17",
+            "days_left": -9,
+            "headline": "Event highlights | ✨ -Counterfeit goods are rampant; the probability of buying a fake even with a genuine card is not low - Slow transactions",
+            "glance": "Event Key Points｜✨ -Fake goods are rampant; the chance of buying a counterfeit when purchasing a genuine card is high -Transactions are slow, time: April 17, 21:00, UTC+8, key rewards: SBT, points, peripherals.",
+            "account": "davidcheang99",
+            "url": "https://x.com/davidcheang99/status/2045080953324962220",
+            "type": "event",
+            "urgency": "medium",
+            "published_at": "2026-04-17T10:08:14+00:00"
+          }
+        ],
+        "upcoming_timeline": [],
+        "growth_signals": [
+          {
+            "id": "2040786743721644522",
+            "label": "04/05",
+            "days_left": -21,
+            "headline": "Market watch: Alpha Mewtwo card price rises to 380u; physical card opening dynamics are under attention.",
+            "glance": "Market focus: Market observation – Alpha Ultra Dream card price rose to 380u, with the opening of physical cards drawing attention. 380 is the market reference data mentioned in the post.",
+            "account": "ChenYichiao",
+            "url": "https://x.com/ChenYichiao/status/2040786743721644522",
+            "type": "market",
+            "urgency": "normal",
+            "published_at": "2026-04-05T13:40:50+00:00"
+          },
+          {
+            "id": "2047565179693777294",
+            "label": "--",
+            "days_left": null,
+            "headline": "Legacy Pack Card Pool Market Analysis Released: Groudon/Kyogre EX Transaction Price Difference 500U",
+            "glance": "Market focus: trading volume and market growth. 1597 represents a transaction amount or price milestone.",
+            "account": "TCGRWA",
+            "url": "https://x.com/TCGRWA/status/2047565179693777294",
+            "type": "market",
+            "urgency": "normal",
+            "published_at": "2026-04-24T06:35:55+00:00"
+          },
+          {
+            "id": "2045311039340970340",
+            "label": "--",
+            "days_left": null,
+            "headline": "In the community pack‑opening activity I got second place and unexpectedly obtained a PSA 10 Pikachu card.",
+            "glance": "This post talks about getting second place in the community pack opening event and unexpectedly obtaining a PSA 10 Pikachu card, which can serve as a reference for observing market heat and price trends.",
+            "account": "davidcheang99",
+            "url": "https://x.com/davidcheang99/status/2045311039340970340",
+            "type": "market",
+            "urgency": "normal",
+            "published_at": "2026-04-18T01:18:46+00:00"
+          },
+          {
+            "id": "2045040877790429526",
+            "label": "--",
+            "days_left": null,
+            "headline": "Community player pulls a 裂空座 VMAX A card, market price $460, creating the Eternal Profit Chicken achievement.",
+            "glance": "Market Highlights: Community player pulled a Rayquaza VMAX A card, market price $460, creating an Eternal Profit Chicken achievement. 460 represents the single transaction profit or profit scale.",
+            "account": "TCGRWA",
+            "url": "https://x.com/TCGRWA/status/2045040877790429526",
+            "type": "market",
+            "urgency": "normal",
+            "published_at": "2026-04-17T07:25:14+00:00"
+          },
+          {
+            "id": "2044391196605513949",
+            "label": "--",
+            "days_left": null,
+            "headline": "McDonald's Pikachu surges to 100U market observation",
+            "glance": "Market focus: McDonald's Pikachu surges to 100U. Market observation: 100 denotes a transaction amount or price milestone.",
+            "account": "TCGRWA",
+            "url": "https://x.com/TCGRWA/status/2044391196605513949",
+            "type": "market",
+            "urgency": "normal",
+            "published_at": "2026-04-15T12:23:38+00:00"
+          }
+        ],
+        "future_watch": [
+          {
+            "id": "2047616545090859207",
+            "label": "04/26",
+            "days_left": 0,
+            "headline": "Omega Pack will be restocked on April 26, adding over 10 S-level cards.",
+            "glance": "Feature progress: card packs and draw performance, time node at 3PM, watch for opening conditions.",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047616545090859207",
+            "type": "feature",
+            "urgency": "high",
+            "published_at": "2026-04-24T10:00:01+00:00"
+          },
+          {
+            "id": "2046560299466346710",
+            "label": "--",
+            "days_left": null,
+            "headline": "Superliquid Beta 2.0 has entered a phased conclusion; SBT eligibility is determined by ranking.",
+            "glance": "Feature progress SBT and points mechanism; stay tuned for the next official announcement.",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2046560299466346710",
+            "type": "feature",
+            "urgency": "high",
+            "published_at": "2026-04-21T12:02:53+00:00"
+          },
+          {
+            "id": "2047990492592537885",
+            "label": "--",
+            "days_left": null,
+            "headline": "Renaiss Asian Invitational preview covers Taiwan and five Southeast Asian countries.",
+            "glance": "Official announcement: Renaiss Asia Invitational Preview covering Taiwan and five Southeast Asian countries; please use the original text as the final version.",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047990492592537885",
+            "type": "announcement",
+            "urgency": "medium",
+            "published_at": "2026-04-25T10:45:57+00:00"
+          },
+          {
+            "id": "2047556145347195181",
+            "label": "04/24",
+            "days_left": -2,
+            "headline": "Legacy Pack 8.0 is about to be released.",
+            "glance": "Official announcement: Pack and draw performance, please use the original text as the final version.",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047556145347195181",
+            "type": "announcement",
+            "urgency": "medium",
+            "published_at": "2026-04-24T06:00:01+00:00"
+          },
+          {
+            "id": "2047525941434572836",
+            "label": "--",
+            "days_left": null,
+            "headline": "Renaiss reviews its participation in Hong Kong Web3 Festival and opens event SBT claim",
+            "glance": "Official announcement: Hong Kong Web3 Festival itinerary, please use the original text as the final version.",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047525941434572836",
+            "type": "announcement",
+            "urgency": "medium",
+            "published_at": "2026-04-24T04:00:00+00:00"
+          },
+          {
+            "id": "2047316344258130405",
+            "label": "--",
+            "days_left": null,
+            "headline": "Renaiss Hong Kong TCG Tour concludes; visits card shops and temples during Web3 Festival.",
+            "glance": "Official announcement: Hong Kong Web3 Festival itinerary, please use the original text as the final version.",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047316344258130405",
+            "type": "announcement",
+            "urgency": "medium",
+            "published_at": "2026-04-23T14:07:13+00:00"
+          }
+        ],
+        "recent_updates": [
+          {
+            "id": "2047990492592537885",
+            "label": "--",
+            "days_left": null,
+            "headline": "Renaiss Asian Invitational preview covers Taiwan and five Southeast Asian countries.",
+            "glance": "Official announcement: Renaiss Asia Invitational Preview covering Taiwan and five Southeast Asian countries; please use the original text as the final version.",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047990492592537885",
+            "type": "announcement",
+            "urgency": "medium",
+            "published_at": "2026-04-25T10:45:57+00:00"
+          },
+          {
+            "id": "2047616545090859207",
+            "label": "04/26",
+            "days_left": 0,
+            "headline": "Omega Pack will be restocked on April 26, adding over 10 S-level cards.",
+            "glance": "Feature progress: card packs and draw performance, time node at 3PM, watch for opening conditions.",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047616545090859207",
+            "type": "feature",
+            "urgency": "high",
+            "published_at": "2026-04-24T10:00:01+00:00"
+          },
+          {
+            "id": "2047556145347195181",
+            "label": "04/24",
+            "days_left": -2,
+            "headline": "Legacy Pack 8.0 is about to be released.",
+            "glance": "Official announcement: Pack and draw performance, please use the original text as the final version.",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047556145347195181",
+            "type": "announcement",
+            "urgency": "medium",
+            "published_at": "2026-04-24T06:00:01+00:00"
+          },
+          {
+            "id": "2047525941434572836",
+            "label": "--",
+            "days_left": null,
+            "headline": "Renaiss reviews its participation in Hong Kong Web3 Festival and opens event SBT claim",
+            "glance": "Official announcement: Hong Kong Web3 Festival itinerary, please use the original text as the final version.",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047525941434572836",
+            "type": "announcement",
+            "urgency": "medium",
+            "published_at": "2026-04-24T04:00:00+00:00"
+          },
+          {
+            "id": "2047316344258130405",
+            "label": "--",
+            "days_left": null,
+            "headline": "Renaiss Hong Kong TCG Tour concludes; visits card shops and temples during Web3 Festival.",
+            "glance": "Official announcement: Hong Kong Web3 Festival itinerary, please use the original text as the final version.",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047316344258130405",
+            "type": "announcement",
+            "urgency": "medium",
+            "published_at": "2026-04-23T14:07:13+00:00"
+          },
+          {
+            "id": "2047239060704399578",
+            "label": "04/24",
+            "days_left": -2,
+            "headline": "Legacy Pack 8.0 limited sale: 1000 packs, $100 per pack, maximum single card value $2850",
+            "glance": "Official announcement: Pack and draw performance, please use the original text as the final version.",
+            "account": "renaissxyz",
+            "url": "https://x.com/renaissxyz/status/2047239060704399578",
+            "type": "announcement",
+            "urgency": "medium",
+            "published_at": "2026-04-23T09:00:02+00:00"
+          }
+        ],
+        "attention_watch": [
+          {
+            "id": "2044381540067803312",
+            "label": "--",
+            "days_left": null,
+            "headline": "US Consolidation Shipping to Taiwan Province Cost Guide: Comparison of Three Consolidators and Usage Tips.",
+            "glance": "Feature progress – US consolidated shipping back to Taiwan province courier fee guide: comparison of three consolidation services and usage tips; stay tuned for the next official announcement.",
+            "account": "chenyichiao",
+            "url": "https://x.com/chenyichiao/status/2044381540067803312",
+            "type": "feature",
+            "urgency": "normal",
+            "published_at": "2026-04-16T04:10:01+00:00"
+          }
+        ]
+      },
+      "official_overview": {
+        "title": "Recent 7-day Official Highlights Summary",
+        "summary": "In the past 7 days, official focus centered on Hong Kong Web3 Festival itinerary, card pack and draw performance, and SBT snapshot threshold updates. The update types are primarily 7 announcements, 2 features, 1 event, and 1 community. Overall, the officials are currently promoting both event participation and feature rollout cadence. The most direct impact on players is that they need to simultaneously monitor event schedules, participation thresholds, and subsequent feature unlock conditions.",
+        "bullets": [
+          "Renaiss official released \"Renaiss Asia Invitational Preview, covering Taiwan and five Southeast Asian countries\" on 04/25, venue pending official supplement; core event is a community offline gathering, which will affect players' subsequent operation rhythm, and opening conditions and time need to be confirmed early.",
+          "Renaiss official released \"Omega Pack will be restocked on April 26, adding over 10 S-rank cards\" on 04/26, venue pending official supplement; core event is SBT and point mechanism, which will affect players' subsequent operation rhythm, and opening conditions and time need to be confirmed early.",
+          "Renaiss official released \"Legacy Pack 8.0 is coming\" on 04/24, venue online community; core event is pack and draw performance, which will affect players' subsequent operation rhythm, and opening conditions and time need to be confirmed early.",
+          "Renaiss officials released on 04/24 \"Renaiss Recap Hong Kong Web3 Festival Participation and Open SBT Claim\", with the venue in Hong Kong; the core event is the Hong Kong Web3 Festival schedule, which will affect players' subsequent operation rhythm, and participants need to confirm the open conditions and time in advance."
+        ]
+      },
+      "format_templates": [
+        {
+          "id": "event_poster",
+          "name": "Event poster type",
+          "for": "Events, live streams, offline gatherings",
+          "blocks": [
+            "Event Main Theme",
+            "Timeline Clue",
+            "Participation Method",
+            "Original entry"
+          ]
+        },
+        {
+          "id": "market_signal",
+          "name": "Market signal type",
+          "for": "Data, volume, price changes",
+          "blocks": [
+            "What is this about?",
+            "What data is mentioned?",
+            "Possible impact",
+            "What to watch next"
+          ]
+        },
+        {
+          "id": "announcement_timeline",
+          "name": "Announcement timeline type",
+          "for": "Feature release, version progress, official updates",
+          "blocks": [
+            "Update topic",
+            "Current progress",
+            "Next step",
+            "Time Node"
+          ]
+        },
+        {
+          "id": "community_brief",
+          "name": "Community perspective type",
+          "for": "Community discussion and experience sharing",
+          "blocks": [
+            "Viewpoint Summary",
+            "Possible Approach",
+            "Risk Reminder",
+            "Further reading"
+          ]
+        }
+      ],
+      "template_counts": {
+        "event_poster": 3,
+        "market_signal": 5,
+        "announcement_timeline": 12,
+        "community_brief": 2
+      },
+      "image_cards": 22,
+      "manual_picks": {
+        "include_ids": [
+          "2044381540067803312",
+          "2047616545090859207"
+        ],
+        "exclude_ids": [
+          "2041834983468495186",
+          "2046187488532889934",
+          "2047674412221280632"
+        ],
+        "pin_ids": [],
+        "bottom_ids": [],
+        "include_count": 2,
+        "exclude_count": 3,
+        "pin_count": 0,
+        "bottom_count": 0
+      },
+      "feedback_stats": {
+        "override_count": 1,
+        "excluded_count": 1
+      },
+      "dedupe_stats": {
+        "ai_removed": 0,
+        "local_removed": 2
+      },
+      "source_stats": {
+        "TCGRWA": 9,
+        "ChenYichiao": 2,
+        "renaissxyz": 13,
+        "davidcheang99": 13,
+        "discord:1478788250687766796": 0
+      },
+      "source_quality": {
+        "TCGRWA": "tweet-result",
+        "ChenYichiao": "mixed",
+        "renaissxyz": "tweet-result",
+        "davidcheang99": "tweet-result"
+      },
+      "discord_monitor": {
+        "enabled": true,
+        "configured": true,
+        "channel_ids": [
+          "1478788250687766796"
+        ],
+        "limit_per_channel": 80,
+        "cards_total": 0,
+        "channel_stats": {
+          "1478788250687766796": 0
+        },
+        "errors": [
+          "1478788250687766796: HTTP 401 {\"message\": \"401: Unauthorized\", \"code\": 0}"
+        ]
+      },
+      "notes": {
+        "fallback": "If a certain account cannot be publicly scraped, the system will retain that account and wait for subsequent readable data.",
+        "provider": "twitter-cli (若可用) / tweet-result / r.jina.ai / nitter-rss fallback / discord-rest(可選)",
+        "twitter_cli_ready": false,
+        "discord_monitor_enabled": true
+      },
+      "lang": "en"
+    }
+  },
+  "qa": {
+    "zh-Hans": {
+      "lang": "zh-Hans",
+      "total": 335,
+      "pass1_unchanged": 0,
+      "pass2_unchanged": 0,
+      "coverage": 1.0,
+      "mode": "local",
+      "sample_unchanged": []
+    },
+    "en": {
+      "lang": "en",
+      "total": 335,
+      "cached_hits": 0,
+      "pending_count": 335,
+      "pass1_unchanged": 16,
+      "pass2_unchanged": 5,
+      "coverage": 0.9851,
+      "mode": "live",
+      "sample_unchanged": [
+        "社群玩家開出裂空座VMAX A卡，市價460美元創永賺雞成就",
+        "針對台灣用戶分享如何透過集運降低從美國轉寄包裹回台的成本，解決直送台灣運費與稅金過高的痛點。內容比較三家集運商（buy and ship、星球集運、好運集運）的美國倉庫包稅方案，包含每磅包稅價格（170-175元新台幣）與各家最低使用門檻。提醒用戶在集運平台填寫地址時，務必填上收件人編號以確保配送。",
+        "三家集運商美國倉庫包稅方案：buy and ship 170元/磅、星球集運 170元/磅、好運集運 175元/磅",
+        "注意各家限制：星球集運未滿20磅加收150元宅配費、好運集運單獨1磅需300元",
+        "Show translation 最近的好消息是 要準備開放領卡了，不過直送台灣運費+稅金應該是大家在意的點，所以來介紹一下另外一個方法，也就是集運，以下分享的價格都是美國倉包稅一磅的價格！ 三個我用過的集運： 1. buy and ship: 價格: 包稅170NTD 優點: 大間、價格合理、一磅一磅算、可以多國運回 缺點: 因為可以多國集中運回，所以或是會先到香港，再送回台灣，需要等14~28天 2. 星球集運: 價格: 包稅170NTD 優點: 速度快，跟bns一樣有許多國家都可以集運 缺點: 未滿 20 磅需多加 150NTD 宅配費用 3. 好運集運: 價格: 包稅175NTD 優點: 速度快，單筆出貨10磅以上有折扣 缺點: 目前只有大陸以及美國倉，並且如果只運1磅運費為300 使用方式(以BNS為例): 註冊過後進入會員中心，點擊海外倉庫地址，會看到下面圖片的地址，把這個收件人跟地址填到renaiss就可以了，這邊要注意一定要填上自己的編號喔！ 基本上每一家的使用方式都一樣，相信大家可以舉一反三！ 大致上這樣就可以了，如果還有什麼問題可以再問我，我有空都會回答，希望有幫到大家，另外還沒加入renaiss的也歡迎使用我的邀請碼~ · 6 3 20 5 Read 6 replies"
+      ]
+    }
+  },
+  "targets_count": 335
+}

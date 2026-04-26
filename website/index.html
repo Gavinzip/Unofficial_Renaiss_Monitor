@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Renaiss 新手入門指南 | Renaiss Starter Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <script>
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+    (function forceTopOnReload() {
+      const navEntry = (performance.getEntriesByType && performance.getEntriesByType("navigation")[0]) || null;
+      const legacyReload = performance.navigation && performance.navigation.type === 1;
+      const isReload = navEntry ? navEntry.type === "reload" : legacyReload;
+      if (isReload && window.location.hash) {
+        history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+      }
+      window.addEventListener("DOMContentLoaded", () => {
+        if (window.location.hash && window.scrollY > 24) {
+          history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+          window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        }
+      }, { once: true });
+      let userInteracted = false;
+      const markUserInteracted = () => { userInteracted = true; };
+      window.addEventListener("wheel", markUserInteracted, { passive: true, once: true });
+      window.addEventListener("touchstart", markUserInteracted, { passive: true, once: true });
+      window.addEventListener("pointerdown", markUserInteracted, { passive: true, once: true });
+      window.addEventListener("keydown", markUserInteracted, { passive: true, once: true });
+      const hardScrollTop = () => {
+        if (userInteracted) return;
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        document.documentElement.scrollTop = 0;
+        if (document.body) {
+          document.body.scrollTop = 0;
+        }
+      };
+      hardScrollTop();
+      window.addEventListener("beforeunload", hardScrollTop, { capture: true });
+      window.addEventListener("pageshow", () => {
+        hardScrollTop();
+        window.requestAnimationFrame(hardScrollTop);
+      }, { once: true });
+      window.addEventListener("load", () => {
+        hardScrollTop();
+        window.requestAnimationFrame(hardScrollTop);
+      }, { once: true });
+    })();
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="./assets/index-base.css?v=20260426-layout13" />
+  <link rel="stylesheet" href="./assets/index-intel.css?v=20260426-lang7" />
+  <link rel="stylesheet" href="./assets/index-responsive.css?v=20260426-lang7" />
+</head>
+<body>
+  <div class="shell">
+    <header class="nav">
+      <div class="nav-main-row" data-lang-morph="1">
+        <a class="brand" href="#hero">
+          <img class="brand-logo" src="./assets/renaiss-logo-alpha-cropped.png" alt="Renaiss Logo" loading="lazy" />
+          <span class="brand-text">Renaiss Aggregator</span>
+        </a>
+        <nav class="nav-links">
+          <a id="nav-game-link" href="./game.html">Game</a>
+          <a href="#events" data-nav-category="events">活動</a>
+          <a href="#intel" data-nav-category="official">官方更新</a>
+          <a href="#sbt" data-nav-category="sbt">SBT</a>
+          <a href="#pipeline" data-nav-category="pokemon">寶可夢</a>
+          <a href="#timeline" data-nav-category="alpha">未來 Alpha</a>
+          <a href="#ops" data-nav-category="tools">工具</a>
+          <a href="#world" data-nav-category="other">社群精選</a>
+        </nav>
+        <div class="nav-actions">
+          <div id="lang-switcher" class="lang-switcher" aria-label="Language" data-no-i18n="1">
+            <iconify-icon class="lang-icon" icon="lucide:languages"></iconify-icon>
+            <select id="lang-select" class="lang-select" aria-label="語言切換">
+              <option value="zh-Hant">繁體中文</option>
+              <option value="zh-Hans">简体中文</option>
+              <option value="en">English</option>
+              <option value="ko">한국어</option>
+            </select>
+            <span id="lang-build-status" class="lang-build-status" aria-live="polite"></span>
+          </div>
+          <button id="nav-intel-login-btn" type="button" class="nav-auth-btn intel-auth-stealth">管理登入</button>
+          <button id="nav-intel-logout-btn" type="button" class="nav-auth-btn is-logout" style="display:none;">登出</button>
+          <button id="nav-admin-monitor-btn" type="button" class="nav-auth-btn is-monitor" style="display:none;">AI 監控</button>
+          <a class="nav-action" href="https://www.renaiss.xyz" target="_blank" rel="noreferrer">Open Renaiss</a>
+        </div>
+      </div>
+    </header>
+
+    <section id="hero" class="panel hero">
+      <div data-lang-morph="1">
+        <span class="chip observe" style="--delay: 80ms;"><iconify-icon icon="lucide:gem"></iconify-icon>RWA on BNB Chain</span>
+        <h1 class="observe" style="--delay: 140ms;">
+          <span class="line">Renaiss</span>
+          <span class="line"><span class="text-gradient">Aggregator</span></span>
+        </h1>
+        <p class="hero-intro observe" data-i18n-key="home.heroIntro" style="--delay: 220ms;">
+          這裡是 Renaiss 社群的情報入口：把官方更新、活動、SBT 取得方式、寶可夢 / TCG 討論、未來 Alpha 與工具資源整理成可快速判讀的分區。你可以先看活動時間軸掌握近期行程，再切到各分類看重點摘要、完整分析與原始來源。
+        </p>
+
+        <div class="hero-actions observe" style="--delay: 320ms;">
+          <a href="https://www.renaiss.xyz/" target="_blank" rel="noreferrer" class="btn btn-main">
+            <span class="shine"></span>
+            <iconify-icon icon="lucide:rocket"></iconify-icon>
+            <span>馬上開始 | Start Now</span>
+          </a>
+          <a href="https://x.com/renaissxyz" target="_blank" rel="noreferrer" class="btn btn-sub">
+            <iconify-icon icon="lucide:twitter"></iconify-icon>
+            <span>官方 X / Updates</span>
+          </a>
+        </div>
+
+      </div>
+
+      <div class="hero-visual observe" style="--delay: 260ms;">
+        <div class="beam-wrap">
+          <div class="beam-core">
+            <div id="hero-logo-swarm" class="project-logo-card hero-logo-swarm" aria-label="Renaiss Particle Logo"></div>
+          </div>
+          <div class="beam-label">Renaiss Logo | 項目 Logo</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="category-switcher" class="panel observe category-switcher-panel" style="--delay: 34ms;">
+      <article class="category-switcher-card">
+        <div class="category-switcher-head">
+          <h3><iconify-icon icon="lucide:layout-grid"></iconify-icon>主分類導覽</h3>
+          <p>從這裡切換分區，只顯示你要看的類別。</p>
+        </div>
+        <div id="category-tab-row" class="category-tab-row">
+          <button type="button" class="category-tab is-active" data-category-tab="events" data-category-target="events">活動</button>
+          <button type="button" class="category-tab" data-category-tab="official" data-category-target="intel">官方近期更新</button>
+          <button type="button" class="category-tab" data-category-tab="sbt" data-category-target="sbt">SBT</button>
+          <button type="button" class="category-tab" data-category-tab="pokemon" data-category-target="pipeline">寶可夢相關資訊</button>
+          <button type="button" class="category-tab" data-category-tab="alpha" data-category-target="timeline">未來 Alpha</button>
+          <button type="button" class="category-tab" data-category-tab="tools" data-category-target="ops">工具</button>
+          <button type="button" class="category-tab" data-category-tab="other" data-category-target="world">社群精選</button>
+        </div>
+        <p id="category-switcher-hint" class="category-switcher-hint">目前顯示：活動。</p>
+      </article>
+    </section>
+
+    <section id="events" class="panel observe category-panel" data-category-section="events" style="--delay: 36ms;">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">活動主時間軸 / <span class="text-gradient">Events</span></h2>
+          <p class="section-sub">這裡只放活動相關貼文，包含時間、地點、參與方式與獎勵重點。</p>
+        </div>
+        <span class="chip"><iconify-icon icon="lucide:calendar-range"></iconify-icon>Event Radar</span>
+      </div>
+
+      <article class="card observe intel-masterline-card" style="--delay: 70ms;">
+        <div class="intel-masterline-head">
+          <h3><iconify-icon icon="lucide:route"></iconify-icon>活動主時間軸（左右滑動）</h3>
+          <p class="intel-masterline-hint">滑動卡片或點上方時間點，即可快轉查看該日期內容（僅顯示活動，前後 7 天）。<span id="intel-master-today-date"></span></p>
+        </div>
+        <div id="intel-master-rail" class="intel-masterline-rail"></div>
+        <div id="intel-master-stage" class="intel-masterline-stage">
+          <p class="intel-masterline-empty">等待時間軸資料...</p>
+        </div>
+      </article>
+
+      <div class="grid-2 intel-digest-wrap">
+        <article class="card observe" style="--delay: 90ms;">
+          <h3><iconify-icon icon="lucide:calendar-check-2"></iconify-icon>近期活動重點</h3>
+          <ul id="intel-events-list" class="source-list"><li>等待資料...</li></ul>
+        </article>
+        <article class="card observe" style="--delay: 110ms;">
+          <h3><iconify-icon icon="lucide:clock-3"></iconify-icon>即將開放 / 功能追蹤</h3>
+          <ul id="intel-features-list" class="source-list"><li>等待資料...</li></ul>
+        </article>
+      </div>
+
+      <div id="intel-events-cards" class="intel-grid"></div>
+      <p id="intel-events-empty" class="source-empty" style="display:none;">目前沒有可顯示的活動貼文。</p>
+    </section>
+
+    <section id="world" class="panel observe category-panel category-hidden" data-category-section="other" style="--delay: 40ms;">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">社群精選 / <span class="text-gradient">Community Picks</span></h2>
+          <p class="section-sub">這裡只放玩家與社群看得懂的補充內容；遊戲細節請從上方 <strong>Game</strong> 入口查看。</p>
+        </div>
+        <span class="chip"><iconify-icon icon="lucide:users"></iconify-icon>Community Focus</span>
+      </div>
+
+      <article class="card observe" style="--delay: 66ms; margin-bottom: 0.66rem;">
+        <h3><iconify-icon icon="lucide:box"></iconify-icon>社群精選貼文</h3>
+        <div id="intel-other-cards" class="intel-grid"></div>
+        <p id="intel-other-empty" class="source-empty" style="display:none;">目前沒有可顯示的社群精選貼文。</p>
+      </article>
+
+      <div class="grid-2" style="margin-top: 0.72rem;">
+        <article class="card observe" style="--delay: 110ms;">
+          <h3><iconify-icon icon="lucide:gamepad-2"></iconify-icon>Game 專區入口</h3>
+          <ul>
+            <li>遊戲世界觀、玩法與互動展示，統一在獨立的 <strong>Game</strong> 頁面。</li>
+            <li>這個整理頁只負責情報彙整，不混入遊戲開發內容。</li>
+            <li>想看完整遊戲介紹，直接從下方按鈕進入。</li>
+          </ul>
+          <a href="game.html" class="btn btn-sub" style="margin-top: 0.5rem; width: fit-content;">
+            <iconify-icon icon="lucide:arrow-right-circle"></iconify-icon>
+            <span>前往 Game 頁面</span>
+          </a>
+        </article>
+
+        <article class="card observe" style="--delay: 160ms;">
+          <h3><iconify-icon icon="lucide:sparkles"></iconify-icon>如何看這個區塊</h3>
+          <ul>
+            <li>優先看貼文標題、重點摘要與原始來源連結。</li>
+            <li>遇到活動資訊時，先確認時間、獎勵與參與方式。</li>
+            <li>遇到觀點型內容時，建議多來源比對再下判斷。</li>
+            <li>不確定分類可用「保留 / 排除 / 回饋分類 / 頂選 / 置底」手動微調。</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="pipeline" class="panel observe category-panel category-hidden" data-category-section="pokemon" style="--delay: 40ms;">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">寶可夢相關資訊 / TCG Pro Pipeline</h2>
+          <p class="section-sub">這裡整理寶可夢 / TCG 的可讀情報：先看摘要重點，再點開看完整分析與原始連結。</p>
+        </div>
+        <span class="chip"><iconify-icon icon="lucide:factory"></iconify-icon>Production Flow</span>
+      </div>
+
+      <article class="card observe" style="--delay: 66ms; margin-bottom: 0.66rem;">
+        <h3><iconify-icon icon="lucide:target"></iconify-icon>寶可夢 / TCG 貼文整理</h3>
+        <div id="intel-pokemon-cards" class="intel-grid"></div>
+        <p id="intel-pokemon-empty" class="source-empty" style="display:none;">目前沒有寶可夢相關貼文。</p>
+      </article>
+
+      <article class="card observe" style="--delay: 78ms; margin-bottom: 0.66rem;">
+        <div class="pokemon-news-head">
+          <h3><iconify-icon icon="lucide:newspaper"></iconify-icon>最新消息</h3>
+          <button id="pokemon-news-refresh-btn" type="button" class="intel-sync-btn">更新最新消息</button>
+        </div>
+        <div id="pokemon-news-list" class="pokemon-news-grid">
+          <article class="pokemon-news-card"><p class="pokemon-news-summary">等待 AI 最新消息...</p></article>
+        </div>
+        <p id="pokemon-news-meta" class="intel-note">來源：MiniMax NewsAgent</p>
+      </article>
+
+    </section>
+
+    <section id="sbt" class="panel observe category-panel category-hidden" data-category-section="sbt" style="--delay: 40ms;">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title"><span class="text-gradient">SBT</span> 系統整理（可獲取 / 已結束 / 進階）</h2>
+          <p class="section-sub"><strong>SBT = 專案參與度與貢獻的鏈上紀錄</strong>。以下將資料整理成可快速判讀版本。</p>
+        </div>
+        <span class="chip"><iconify-icon icon="lucide:badge-check"></iconify-icon>SBT Matrix</span>
+      </div>
+
+      <article class="card observe" style="--delay: 66ms; margin-bottom: 0.66rem;">
+        <h3><iconify-icon icon="lucide:shield-check"></iconify-icon>SBT 貼文整理</h3>
+        <p class="intel-note">預設顯示前後 14 天內的內容；若要長期保留舊文，請在卡片上按「頂選」，它會同步出現在「社群精選」。</p>
+        <div id="intel-sbt-cards" class="intel-grid"></div>
+        <p id="intel-sbt-empty" class="source-empty" style="display:none;">目前沒有 SBT 相關貼文。</p>
+      </article>
+
+      <div class="grid-2" style="margin-top: 0.2rem;">
+        <article class="card observe" style="--delay: 90ms;">
+          <h3><iconify-icon icon="lucide:lightbulb"></iconify-icon>SBT 實戰建議</h3>
+          <ul>
+            <li><strong>基礎路線</strong>：Link 帳號 → 充值 → 開包 → 交易。</li>
+            <li><strong>內容路線</strong>：X 長文 + DC 活躍互動 + AMA 參與。</li>
+            <li><strong>開發路線</strong>：提交工具或 AI 系統，爭取 Community Developer。</li>
+          </ul>
+        </article>
+
+        <article class="card observe" style="--delay: 120ms;">
+          <h3><iconify-icon icon="lucide:megaphone"></iconify-icon>任務節奏</h3>
+          <p>
+            大部分限時 SBT 都有<strong>「活動窗 + 指定行為」</strong>條件，建議把官方 X、Discord 通知打開（含鈴鐺），避免錯過瞬時任務。
+          </p>
+        </article>
+
+        <article class="card observe" style="--delay: 140ms;">
+          <h3><iconify-icon icon="lucide:sparkles"></iconify-icon>即將改版：積分制</h3>
+          <p>SBT 系統未來將全面升級為<strong>積分制</strong>，現有的 SBT 成就將在改版後轉化為相應的積分累積。</p>
+          <ul style="margin-top: 0.5rem;">
+            <li><strong>積分獲取</strong>：完成各類 SBT 任務即可持續累積積分</li>
+            <li><strong>積分用途</strong>：可兌換豐富獎勵，包括限定抽獎券、官方周邊商品等</li>
+            <li><strong>抽獎券應用</strong>：積分兌換的抽獎券可用於特殊卡機活動</li>
+          </ul>
+          <p style="margin-top: 0.5rem; color: var(--text-soft); font-size: 0.85rem;">
+            建議現在就開始積極完成各項 SBT 任務，為未來的積分時代做好準備！
+          </p>
+        </article>
+      </div>
+
+      <div class="sbt-groups observe" style="--delay: 110ms;">
+        <article class="sbt-group">
+          <div class="sbt-group-head">
+            <h3 class="sbt-group-title">✅ 還能得到 | Available</h3>
+            <span id="sbt-available-count" class="chip"><iconify-icon icon="lucide:clock-3"></iconify-icon>0 items</span>
+          </div>
+          <div id="sbt-available-list" class="sbt-list"></div>
+        </article>
+
+        <article class="sbt-group">
+          <div class="sbt-group-head">
+            <h3 class="sbt-group-title">❌ 目前拿不到 / 邀請制</h3>
+            <span id="sbt-unavailable-count" class="chip"><iconify-icon icon="lucide:archive-x"></iconify-icon>0 items</span>
+          </div>
+          <div id="sbt-unavailable-list" class="sbt-list"></div>
+        </article>
+
+      </div>
+
+      <p class="sbt-caption observe" style="--delay: 135ms;">
+        顯示邏輯：只保留已整理出取得條件的 SBT；<strong>`Invite`、`Closed`、限時活動已結束</strong>歸在「目前拿不到」。未分類圖示不在前台顯示。
+      </p>
+    </section>
+
+    <section id="ops" class="panel observe category-panel category-hidden" data-category-section="tools" style="--delay: 40ms;">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">工具 / <span class="text-gradient">Community Toolbox</span></h2>
+          <p class="section-sub">這區是社群常用工具與功能入口，幫你快速完成查價、整理、貼文分析與追蹤。</p>
+        </div>
+        <span class="chip"><iconify-icon icon="lucide:server-cog"></iconify-icon>Practical Tools</span>
+      </div>
+
+      <article class="card observe" style="--delay: 66ms; margin-bottom: 0.66rem;">
+        <h3><iconify-icon icon="lucide:wrench"></iconify-icon>工具 / 攻略貼文整理</h3>
+        <div id="intel-tools-cards" class="intel-grid"></div>
+        <p id="intel-tools-empty" class="source-empty" style="display:none;">目前沒有工具或攻略貼文。</p>
+      </article>
+
+      <div class="section-head" style="margin-top: 0.72rem; margin-bottom: 0.66rem;">
+        <div>
+          <h3 class="section-title" style="font-size: clamp(1.08rem, 2vw, 1.34rem);">市場研究堆疊 / Research Stack</h3>
+          <p class="section-sub">研究層維持原本實戰工具：<strong>先看成交，再做決策</strong>。</p>
+        </div>
+        <span class="chip"><iconify-icon icon="lucide:search"></iconify-icon>Market Tools</span>
+      </div>
+
+      <div class="tools">
+        <article class="tool observe" style="--delay: 300ms;">
+          <h4><iconify-icon icon="lucide:shoe"></iconify-icon>SNKRDUNK</h4>
+          <p>日版卡價格常用平台，可看近期成交與市場指數曲線。</p>
+          <a href="http://snkrdunk.com" target="_blank" rel="noreferrer">http://snkrdunk.com</a>
+        </article>
+
+        <article class="tool observe" style="--delay: 330ms;">
+          <h4><iconify-icon icon="lucide:chart-no-axes-combined"></iconify-icon>PriceCharting</h4>
+          <p>查 PSA10 / PSA9 / Raw 歷史成交，適合看中長期趨勢。</p>
+          <a href="https://pricecharting.com" target="_blank" rel="noreferrer">https://pricecharting.com</a>
+        </article>
+
+        <article class="tool observe" style="--delay: 360ms;">
+          <h4><iconify-icon icon="lucide:shopping-cart"></iconify-icon>eBay Sold</h4>
+          <p>請切到 <strong>Completed / Sold</strong>，不要只看在售掛單。</p>
+          <a href="https://www.ebay.com" target="_blank" rel="noreferrer">https://www.ebay.com</a>
+        </article>
+      </div>
+
+      <div class="section-head" style="margin-top: 0.72rem; margin-bottom: 0.66rem;">
+        <div>
+          <h3 class="section-title" style="font-size: clamp(1.08rem, 2vw, 1.34rem);">TCG Pro Discord 指令清單</h3>
+          <p class="section-sub">以下只列可在 Discord 直接使用的 slash 指令（<strong>不顯示檔案路徑</strong>）；你後續給圖片我再逐一補到工具卡上。</p>
+        </div>
+        <span class="chip"><iconify-icon icon="lucide:terminal-square"></iconify-icon>Slash Commands</span>
+      </div>
+
+      <div class="tools">
+        <article class="tool observe" style="--delay: 240ms;">
+          <h4><iconify-icon icon="lucide:user-square-2"></iconify-icon>Profile Poster</h4>
+          <p>輸入錢包地址並開啟互動式海報設定面板。</p>
+          <div class="tool-meta">Command: <code>/profile</code></div>
+        </article>
+
+        <article class="tool observe" style="--delay: 270ms;">
+          <h4><iconify-icon icon="lucide:layout-template"></iconify-icon>Flex Pack Poster</h4>
+          <p>指定卡包生成 Flex 海報（剛抽排版 / 天堂地獄）。</p>
+          <div class="tool-meta">Command: <code>/flex_pack</code></div>
+        </article>
+
+        <article class="tool observe" style="--delay: 300ms;">
+          <h4><iconify-icon icon="lucide:scan-search"></iconify-icon>Manual Analyze</h4>
+          <p>手動選擇版本後，生成報告與海報。</p>
+          <div class="tool-meta">Command: <code>/manual_analyze</code></div>
+        </article>
+
+        <article class="tool observe" style="--delay: 330ms;">
+          <h4><iconify-icon icon="lucide:package-search"></iconify-icon>Cardset Report</h4>
+          <p>輸入系列代號（如 op15）生成卡盒 Top10 報告與海報。</p>
+          <div class="tool-meta">Command: <code>/cardset</code></div>
+        </article>
+
+        <article class="tool observe" style="--delay: 390ms;">
+          <h4><iconify-icon icon="lucide:store"></iconify-icon>Market Threads</h4>
+          <p>瀏覽市場討論串（WTS / WTB）與快取資訊。</p>
+          <div class="tool-meta">Command: <code>/market</code></div>
+        </article>
+
+        <article class="tool observe" style="--delay: 480ms;">
+          <h4><iconify-icon icon="lucide:wallet-cards"></iconify-icon>User Settings</h4>
+          <p>設定你的預設錢包地址，方便後續指令直接帶入。</p>
+          <div class="tool-meta">Command: <code>/settings</code></div>
+        </article>
+
+        <article class="tool observe" style="--delay: 510ms;">
+          <h4><iconify-icon icon="lucide:trophy"></iconify-icon>Top Ranking</h4>
+          <p>查看各項排名 Top 10（文字版）。</p>
+          <div class="tool-meta">Command: <code>/ranking</code></div>
+        </article>
+
+        <article class="tool observe" style="--delay: 600ms;">
+          <h4><iconify-icon icon="lucide:chart-column-big"></iconify-icon>Bot Usage</h4>
+          <p>查看機器人使用次數（總次數 + 各指令）。</p>
+          <div class="tool-meta">Command: <code>/bot_usage</code></div>
+        </article>
+      </div>
+
+      <div class="grid-2" style="margin-top: 0.7rem;">
+        <article class="card observe" style="--delay: 240ms;">
+          <h3><iconify-icon icon="lucide:play-circle"></iconify-icon>官方教學 / AMA</h3>
+          <ul>
+            <li>Superliquid 教學（Bid / List / Trade / 積分）：
+              <a href="https://x.com/renaissxyz/status/2011015569546625077" target="_blank" rel="noreferrer">x.com/renaissxyz/status/2011015569546625077</a>
+            </li>
+            <li>One Piece AMA 回顧：
+              <a href="https://x.com/Renaiss_CN/status/2019031940134023597" target="_blank" rel="noreferrer">x.com/Renaiss_CN/status/2019031940134023597</a>
+            </li>
+          </ul>
+        </article>
+
+        <article class="card observe" style="--delay: 280ms;">
+          <h3><iconify-icon icon="lucide:smartphone"></iconify-icon>行動端工具</h3>
+          <ul>
+            <li>Collectr：拍照識別與持倉追蹤方便（部分功能需會員）。</li>
+            <li>集換社：中文玩家常用，查價與社群內容都完整。</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="timeline" class="panel observe category-panel category-hidden" data-category-section="alpha" style="--delay: 40ms;">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">未來 Alpha / <span class="text-gradient">Release Timeline</span></h2>
+          <p class="section-sub">這裡只放玩家會在意的未來更新：上線時間、影響範圍、你該提前準備什麼。</p>
+        </div>
+        <span class="chip"><iconify-icon icon="lucide:history"></iconify-icon>Player-facing Roadmap</span>
+      </div>
+
+      <article class="card observe" style="--delay: 66ms; margin-bottom: 0.66rem;">
+        <h3><iconify-icon icon="lucide:rocket"></iconify-icon>未來 Alpha 貼文整理</h3>
+        <div id="intel-alpha-cards" class="intel-grid"></div>
+        <p id="intel-alpha-empty" class="source-empty" style="display:none;">目前沒有未來功能 / Alpha 相關貼文。</p>
+      </article>
+
+      <div class="grid-2" style="margin-top: 0.72rem;">
+        <article class="card observe" style="--delay: 110ms;">
+          <h3><iconify-icon icon="lucide:list-checks"></iconify-icon>Alpha 卡片會顯示什麼</h3>
+          <ul>
+            <li><strong>預計時間：</strong>預告何時開放，並標示是否接近當前日期。</li>
+            <li><strong>內容重點：</strong>一句話說明這次更新改了什麼。</li>
+            <li><strong>影響範圍：</strong>誰會受影響（新手、持有 SBT、一般玩家等）。</li>
+            <li><strong>行動建議：</strong>要不要提前報名、準備資產或關注公告。</li>
+          </ul>
+        </article>
+
+        <article class="card observe" style="--delay: 160ms;">
+          <h3><iconify-icon icon="lucide:alarm-clock-check"></iconify-icon>如何判斷優先追蹤</h3>
+          <ul>
+            <li>有時間與門檻條件（白名單 / 抽選 / 限時）的更新，優先看。</li>
+            <li>有獎勵（SBT、積分、空投、限量周邊）的更新，優先看。</li>
+            <li>如果貼文偏觀點，請搭配官方來源交叉確認。</li>
+            <li>可點卡片查看完整 AI 整理與原文連結，避免只看標題。</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="intel" class="panel observe category-panel" data-category-section="official" style="--delay: 40ms;">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">官方近期更新 / <span class="text-gradient">X Intel</span></h2>
+          <p class="section-sub">
+            以 <strong>@TCGRWA</strong>、<strong>@ChenYichiao</strong>、<strong>@renaissxyz</strong>、<strong>@davidcheang99</strong> 為核心，
+            自動抓最近 30 天內容後，先過濾低訊號回覆，再統整成「官方新情報 / 近期活動 / 即將開放 / 社群焦點」。
+          </p>
+        </div>
+        <span class="chip"><iconify-icon icon="lucide:sparkles"></iconify-icon>Spring AI Curated</span>
+      </div>
+
+      <div class="intel-meta">
+        Updated: <strong id="intel-generated-at">--</strong> · 最新原文: <strong id="intel-latest-source-at">--</strong> · Cards: <strong id="intel-card-count">0</strong> · Accounts Active: <strong id="intel-account-count">0</strong>
+      </div>
+
+      <div class="card observe intel-control-card" style="--delay: 80ms;">
+        <div class="intel-toolbar">
+          <div class="intel-form">
+            <label for="intel-url-input">手動加入貼文：貼上 X 連結後，會在背景分析並放進精選（可刷新頁面，不影響進度）</label>
+            <div class="intel-input-row">
+              <input id="intel-url-input" type="url" placeholder="https://x.com/username/status/1234567890" />
+              <button id="intel-analyze-btn" type="button">分析並加入</button>
+            </div>
+          </div>
+          <button id="intel-sync-btn" class="intel-sync-btn" type="button">同步最近 30 天</button>
+        </div>
+        <div id="intel-auth-stealth-line" class="intel-auth-bar">
+          <div id="intel-auth-status" class="intel-auth-status">管理模式：檢查登入狀態中...</div>
+          <div class="intel-auth-actions">
+            <button id="intel-login-btn" type="button" class="intel-auth-btn intel-auth-stealth">管理員登入</button>
+            <button id="intel-logout-btn" type="button" class="intel-auth-btn is-logout" style="display:none;">登出</button>
+          </div>
+        </div>
+        <p id="intel-action-message" class="intel-action-msg">提示：送出分析後會在背景執行，可直接刷新頁面；若按鈕沒反應，先執行 `python website/scripts/ai_intel_server.py --port 8787`。</p>
+      </div>
+
+      <article class="card observe" style="--delay: 96ms;">
+        <h3><iconify-icon icon="lucide:newspaper"></iconify-icon><span id="intel-official-overview-title">近 7 天官方總結</span></h3>
+        <p id="intel-official-overview-summary" class="intel-conclusion">等待官方總結資料...</p>
+        <ul id="intel-official-overview-bullets" class="source-list">
+          <li>同步完成後會顯示官方近期重點。</li>
+        </ul>
+      </article>
+
+      <div id="intel-cards" class="intel-grid"></div>
+      <p id="intel-empty" class="source-empty" style="display:none;">尚未取得可顯示的情報卡片。</p>
+
+      <div class="grid-2 intel-digest-wrap">
+        <article class="card observe" style="--delay: 110ms;">
+          <h3><iconify-icon icon="lucide:scroll-text"></iconify-icon><span id="intel-headline">Spring AI 關鍵情報總結</span></h3>
+          <p id="intel-conclusion" class="intel-conclusion">尚未載入內容。</p>
+          <ul id="intel-takeaways" class="source-list">
+            <li>等待資料同步中...</li>
+          </ul>
+          <div id="intel-key-terms" class="source-links" style="margin-top:0.68rem;"></div>
+          <div id="intel-format-templates" class="intel-template-grid" style="margin-top:0.68rem;"></div>
+        </article>
+        <article class="card observe" style="--delay: 140ms;">
+          <h3><iconify-icon icon="lucide:database-zap"></iconify-icon>來源狀態</h3>
+          <div id="intel-source-status" class="source-links"></div>
+          <p class="intel-note">系統會保留原始貼文連結，避免只看 AI 結論。</p>
+        </article>
+      </div>
+
+      <div class="grid-2 intel-digest-wrap">
+        <article class="card observe" style="--delay: 160ms;">
+          <h3><iconify-icon icon="lucide:badge-info"></iconify-icon>官方新情報</h3>
+          <ul id="intel-official-list" class="source-list"><li>等待資料...</li></ul>
+        </article>
+        <article class="card observe" style="--delay: 180ms;">
+          <h3><iconify-icon icon="lucide:users"></iconify-icon>社群焦點</h3>
+          <ul id="intel-community-list" class="source-list"><li>等待資料...</li></ul>
+        </article>
+      </div>
+
+      <div class="grid-2 intel-agenda-grid">
+        <article class="card observe" style="--delay: 240ms;">
+          <h3><iconify-icon icon="lucide:trending-up"></iconify-icon>近期增長訊號</h3>
+          <ul id="intel-growth-list" class="intel-agenda-list"><li class="source-empty">等待資料...</li></ul>
+        </article>
+        <article class="card observe" style="--delay: 260ms;">
+          <h3><iconify-icon icon="lucide:clock-3"></iconify-icon>最近官方更新</h3>
+          <ul id="intel-recent-list" class="intel-agenda-list"><li class="source-empty">等待資料...</li></ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="community" class="panel observe category-panel category-hidden" data-category-section="other" style="--delay: 40ms;">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">其他 / Community</h2>
+          <p class="section-sub">把通知打開，任務和活動通常更新很快。想拿 SBT，最重要是<strong>持續參與並保持輸出</strong>。</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <article class="card observe" style="--delay: 90ms;">
+          <h3><iconify-icon icon="lucide:link"></iconify-icon>官方入口</h3>
+          <div class="official-links">
+            <a class="official-link" href="https://www.renaiss.xyz/" target="_blank" rel="noreferrer" aria-label="Renaiss Website">
+              <iconify-icon icon="lucide:globe"></iconify-icon>
+              <span class="label">Website</span>
+            </a>
+            <a class="official-link" href="https://x.com/renaissxyz" target="_blank" rel="noreferrer" aria-label="Renaiss X">
+              <iconify-icon icon="simple-icons:x"></iconify-icon>
+              <span class="label">X</span>
+            </a>
+            <a class="official-link" href="https://discord.gg/renaiss" target="_blank" rel="noreferrer" aria-label="Renaiss Discord">
+              <iconify-icon icon="simple-icons:discord"></iconify-icon>
+              <span class="label">Discord</span>
+            </a>
+          </div>
+        </article>
+
+        <article class="card observe" style="--delay: 130ms;">
+          <h3><iconify-icon icon="lucide:users"></iconify-icon>本頁資料來源</h3>
+          <p>
+            根據「Renaiss 新手入門資料包」重整，包含<strong>玩法、SBT、查價工具與近期市場觀察</strong>。
+            內容可持續迭代成社群知識庫版本。
+          </p>
+        </article>
+      </div>
+
+      <div class="hero-actions" style="margin-top:0.8rem;">
+        <a href="#hero" class="btn btn-main">
+          <span class="shine"></span>
+          <iconify-icon icon="lucide:arrow-up"></iconify-icon>
+          <span>回到頂部 | Back to Top</span>
+        </a>
+        <a href="https://www.renaiss.xyz" target="_blank" rel="noreferrer" class="btn btn-sub">
+          <iconify-icon icon="lucide:external-link"></iconify-icon>
+          <span>前往官網 | Visit Official Site</span>
+        </a>
+      </div>
+
+      <div class="foot">
+        Renaiss Starter Guide • Poster Edition • Built for fast onboarding and high-context decisions.
+      </div>
+    </section>
+  </div>
+
+  <div id="intel-detail-modal" class="intel-detail-modal" aria-hidden="true">
+    <div class="intel-detail-dialog" role="dialog" aria-modal="true" aria-label="貼文詳細內容">
+      <button type="button" class="intel-detail-close" data-intel-detail-close>關閉</button>
+      <div id="intel-detail-content" class="intel-detail-content"></div>
+    </div>
+  </div>
+
+  <div id="intel-auth-modal" class="intel-auth-modal" aria-hidden="true">
+    <div class="intel-auth-dialog" role="dialog" aria-modal="true" aria-label="管理員登入">
+      <button type="button" class="intel-detail-close" data-intel-auth-close>關閉</button>
+      <div class="intel-auth-title">管理員登入</div>
+      <p class="intel-auth-sub">登入後才可使用保留 / 排除 / 回饋分類 / 頂選 / 置底 / 同步等修改操作。</p>
+      <form id="intel-auth-form" class="intel-auth-form">
+        <div class="intel-auth-field">
+          <label for="intel-auth-username">帳號</label>
+          <input id="intel-auth-username" type="text" autocomplete="username" placeholder="admin" required />
+        </div>
+        <div class="intel-auth-field">
+          <label for="intel-auth-password">密碼</label>
+          <input id="intel-auth-password" type="password" autocomplete="current-password" placeholder="••••••••" required />
+        </div>
+        <div class="intel-auth-form-actions">
+          <button type="submit" id="intel-auth-submit" class="intel-auth-btn">登入</button>
+        </div>
+      </form>
+      <p class="intel-auth-sub">登入後可從 Header 的「AI 監控」按鈕開啟監控面板。</p>
+    </div>
+  </div>
+
+  <div id="intel-admin-modal" class="intel-auth-modal" aria-hidden="true">
+    <div class="intel-auth-dialog" role="dialog" aria-modal="true" aria-label="AI Agent 監控面板">
+      <button type="button" class="intel-detail-close" data-intel-admin-close>關閉</button>
+      <div class="intel-auth-title">AI Agent 監控面板</div>
+      <section id="intel-admin-monitor" class="intel-admin-monitor" style="display:none;">
+        <div class="intel-admin-head">
+          <div class="intel-auth-sub" style="margin:0;">登入後可查看各工作狀態、同步進度與新貼文整理情況。</div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button id="intel-admin-sync-now" type="button" class="intel-auth-btn">立即掃描（30 天）</button>
+            <button id="intel-admin-refresh" type="button" class="intel-auth-btn">刷新看板</button>
+          </div>
+        </div>
+        <p id="intel-admin-updated-at" class="intel-auth-sub">最後更新：--</p>
+        <div class="intel-admin-grid">
+          <article class="intel-admin-card">
+            <div class="intel-admin-label">同步狀態</div>
+            <div id="intel-admin-sync-status" class="intel-admin-value">--</div>
+            <div id="intel-admin-sync-meta" class="intel-admin-meta">--</div>
+          </article>
+          <article class="intel-admin-card">
+            <div class="intel-admin-label">新貼文狀態</div>
+            <div id="intel-admin-new-posts" class="intel-admin-value">--</div>
+            <div id="intel-admin-new-meta" class="intel-admin-meta">--</div>
+          </article>
+          <article class="intel-admin-card">
+            <div class="intel-admin-label">背景整理任務（貼文分析）</div>
+            <div id="intel-admin-jobs" class="intel-admin-value">--</div>
+            <div id="intel-admin-jobs-meta" class="intel-admin-meta">--</div>
+          </article>
+          <article class="intel-admin-card">
+            <div class="intel-admin-label">新聞刷新</div>
+            <div id="intel-admin-news" class="intel-admin-value">--</div>
+            <div id="intel-admin-news-meta" class="intel-admin-meta">--</div>
+          </article>
+          <article class="intel-admin-card">
+            <div class="intel-admin-label">卡片翻譯進度（I18N）</div>
+            <div id="intel-admin-i18n" class="intel-admin-value">--</div>
+            <div id="intel-admin-i18n-meta" class="intel-admin-meta">--</div>
+          </article>
+          <article class="intel-admin-card">
+            <div class="intel-admin-label">資料儲存</div>
+            <div id="intel-admin-storage" class="intel-admin-value">--</div>
+            <div id="intel-admin-storage-meta" class="intel-admin-meta">--</div>
+          </article>
+          <article class="intel-admin-card">
+            <div class="intel-admin-label">資料 Repo 連線</div>
+            <div id="intel-admin-data-repo" class="intel-admin-value">--</div>
+            <div id="intel-admin-data-repo-meta" class="intel-admin-meta">--</div>
+          </article>
+          <article class="intel-admin-card">
+            <div class="intel-admin-label">備份上傳</div>
+            <div id="intel-admin-backup" class="intel-admin-value">--</div>
+            <div id="intel-admin-backup-meta" class="intel-admin-meta">--</div>
+          </article>
+        </div>
+        <div class="intel-admin-actions-row">
+          <div class="intel-admin-actions-copy">
+            手動備份會把目前資料資料夾上傳到設定的 Git 備份 repo。若 repo / PAT 未設定，只會回報缺少設定，不會上傳。
+          </div>
+          <button id="intel-admin-backup-run" type="button" class="intel-auth-btn">手動備份上傳</button>
+        </div>
+        <div class="intel-admin-list-wrap">
+          <div class="intel-admin-label">最近整理任務</div>
+          <ul id="intel-admin-job-list" class="intel-admin-list"><li>等待資料...</li></ul>
+        </div>
+        <div class="intel-admin-list-wrap">
+          <div class="intel-admin-label">備份與儲存細節</div>
+          <ul id="intel-admin-backup-list" class="intel-admin-list"><li>等待資料...</li></ul>
+        </div>
+        <div class="intel-admin-list-wrap">
+          <div class="intel-admin-label">監控來源狀態</div>
+          <ul id="intel-admin-monitor-list" class="intel-admin-list"><li>等待資料...</li></ul>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div id="intel-feedback-modal" class="intel-auth-modal" aria-hidden="true">
+    <div class="intel-auth-dialog" role="dialog" aria-modal="true" aria-label="管理回饋">
+      <button type="button" class="intel-detail-close" data-intel-feedback-close>關閉</button>
+      <div id="intel-feedback-title" class="intel-auth-title">管理回饋</div>
+      <p id="intel-feedback-sub" class="intel-auth-sub">請寫清楚為什麼要這樣處理，這會被存進 AI 分類記憶。</p>
+      <form id="intel-feedback-form" class="intel-auth-form">
+        <div id="intel-feedback-label-field" class="intel-auth-field">
+          <label for="intel-feedback-label">分類</label>
+          <select id="intel-feedback-label">
+            <option value="event">活動</option>
+            <option value="feature">功能</option>
+            <option value="announcement">公告</option>
+            <option value="market">市場</option>
+            <option value="report">報告</option>
+            <option value="insight">觀點</option>
+            <option value="official">官方近期更新</option>
+            <option value="sbt">SBT 分區</option>
+            <option value="pokemon">寶可夢分區</option>
+            <option value="alpha">未來 Alpha 分區</option>
+            <option value="tools">工具分區</option>
+            <option value="other">社群精選</option>
+            <option value="exclude">排除</option>
+          </select>
+        </div>
+        <div class="intel-auth-field">
+          <label for="intel-feedback-reason">原因</label>
+          <textarea id="intel-feedback-reason" placeholder="例：這只是 Omegapack 更新，不是需要放在活動主時間軸的活動；之後類似卡包更新不要放進活動。"></textarea>
+        </div>
+        <div class="intel-auth-form-actions">
+          <button type="button" class="intel-auth-btn is-logout" data-intel-feedback-cancel>取消</button>
+          <button type="submit" id="intel-feedback-submit" class="intel-auth-btn">送出</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { ParticlesSwarm } from "./assets/base_basic_shaded.js";
+
+    const heroLogoSwarm = document.getElementById("hero-logo-swarm");
+    if (heroLogoSwarm) {
+      try {
+        new ParticlesSwarm(heroLogoSwarm, 18000);
+      } catch (error) {
+        console.error("Failed to init hero particle logo:", error);
+      }
+    }
+  </script>
+
+  <script src="./assets/index-i18n.js?v=20260426-i18n1"></script>
+  <script src="./assets/index-data.js?v=20260426-i18n1"></script>
+  <script src="./assets/index-render.js?v=20260426-i18n4"></script>
+  <script src="./assets/index-actions.js?v=20260426-lang7"></script>
+</body>
+</html>
