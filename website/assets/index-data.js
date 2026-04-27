@@ -282,6 +282,7 @@
       pollTimer: null,
       jobId: "",
     };
+    const INTEL_API_BASE_STORAGE_KEY = "intel_api_base";
     let intelFeedCache = null;
     const intelFeedLangCache = new Map();
     const intelAuthState = {
@@ -310,8 +311,33 @@
     let pokemonNewsPollTimer = null;
     let pokemonNewsItemsState = [];
     const DEFAULT_INTEL_API_BASE = "https://gavinx.zeabur.app";
-    // Force production remote API only.
-    const INTEL_API_BASE = DEFAULT_INTEL_API_BASE;
+    const INTEL_API_BASE = (() => {
+      const normalize = (raw) => String(raw || "").trim().replace(/\/+$/g, "");
+      const fromWindow = normalize(window.INTEL_API_BASE || window.__INTEL_API_BASE || "");
+      const fromData = normalize(document.body?.dataset?.intelApiBase || "");
+      const search = new URLSearchParams(window.location.search || "");
+      const fromQuery = normalize(search.get("intel_api_base") || "");
+      let fromStorage = "";
+      try {
+        fromStorage = normalize(localStorage.getItem(INTEL_API_BASE_STORAGE_KEY) || "");
+      } catch (_error) {
+        fromStorage = "";
+      }
+      const localHost = /^(127\.0\.0\.1|localhost|::1)$/i.test(String(window.location.hostname || ""));
+      const safeStorage = localHost && !fromQuery && !fromWindow && !fromData ? "" : fromStorage;
+      const resolved = fromQuery
+        || fromWindow
+        || fromData
+        || safeStorage
+        || DEFAULT_INTEL_API_BASE;
+      if (fromQuery) {
+        try {
+          localStorage.setItem(INTEL_API_BASE_STORAGE_KEY, fromQuery);
+        } catch (_error) {
+        }
+      }
+      return resolved;
+    })();
 
     function clampMasterIndex(index, len) {
       if (!len) return 0;
@@ -1326,12 +1352,8 @@
         return `<button class="intel-masterline-chip ${i === idx ? "is-active" : ""}" data-master-index="${i}" type="button"><span class="intel-masterline-date-row"><span class="intel-masterline-date">${escapeHtml(label)}</span>${today}</span><span class="intel-masterline-topic">${escapeHtml(topic)}</span></button>`;
       }).join("");
       const activeChip = rail.querySelector(".intel-masterline-chip.is-active");
-      if (activeChip && typeof rail.scrollTo === "function") {
-        const targetLeft = Math.max(
-          0,
-          activeChip.offsetLeft - ((rail.clientWidth - activeChip.offsetWidth) / 2)
-        );
-        rail.scrollTo({ left: targetLeft, behavior: "smooth" });
+      if (activeChip && typeof activeChip.scrollIntoView === "function") {
+        activeChip.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
       }
     }
 
