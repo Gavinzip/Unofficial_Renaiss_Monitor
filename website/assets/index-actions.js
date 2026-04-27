@@ -19,7 +19,9 @@
       const authSubmit = document.getElementById("intel-auth-submit");
       const adminRefreshBtn = document.getElementById("intel-admin-refresh");
       const adminSyncNowBtn = document.getElementById("intel-admin-sync-now");
+      const adminRetranslateBtn = document.getElementById("intel-admin-retranslate");
       const adminBackupRunBtn = document.getElementById("intel-admin-backup-run");
+      const adminRestoreRunBtn = document.getElementById("intel-admin-restore-run");
       const secretLine = document.getElementById("intel-auth-stealth-line");
       const cardWraps = Array.from(document.querySelectorAll(".intel-grid"));
       const masterStage = document.getElementById("intel-master-stage");
@@ -241,6 +243,33 @@
         });
       }
 
+      if (adminRetranslateBtn && !adminRetranslateBtn.dataset.boundRetranslate) {
+        adminRetranslateBtn.dataset.boundRetranslate = "1";
+        adminRetranslateBtn.addEventListener("click", async () => {
+          if (!intelCanEdit()) {
+            openIntelAuthModal();
+            setIntelMessage("請先登入管理員帳號後再執行全部重新翻譯。", "error");
+            return;
+          }
+          const targetLang = "all";
+          const targetLabel = "EN / KO / 簡中";
+          if (!window.confirm(`確定要全部重新翻譯 ${targetLabel} 嗎？只會重翻目前已上牆的卡片與摘要區塊。`)) return;
+          adminRetranslateBtn.disabled = true;
+          adminRetranslateBtn.textContent = "全部重翻中...";
+          try {
+            await postIntel("/api/intel/retranslate", { lang: targetLang });
+            setIntelMessage(`已啟動 ${targetLabel} 全部重新翻譯（背景處理中）。`, "ok");
+            await refreshIntelAdminStatus();
+            await refreshIntelFeedForCurrentLang();
+          } catch (error) {
+            setIntelMessage(`全部重新翻譯失敗：${error.message}`, "error");
+          } finally {
+            adminRetranslateBtn.disabled = false;
+            adminRetranslateBtn.textContent = "全部重新翻譯";
+          }
+        });
+      }
+
       if (adminBackupRunBtn && !adminBackupRunBtn.dataset.boundBackupRun) {
         adminBackupRunBtn.dataset.boundBackupRun = "1";
         adminBackupRunBtn.addEventListener("click", async () => {
@@ -261,6 +290,30 @@
           } finally {
             adminBackupRunBtn.disabled = false;
             adminBackupRunBtn.textContent = "手動備份上傳";
+          }
+        });
+      }
+
+      if (adminRestoreRunBtn && !adminRestoreRunBtn.dataset.boundRestoreRun) {
+        adminRestoreRunBtn.dataset.boundRestoreRun = "1";
+        adminRestoreRunBtn.addEventListener("click", async () => {
+          if (!intelCanEdit()) {
+            openIntelAuthModal();
+            setIntelMessage("請先登入管理員帳號後再執行還原。", "error");
+            return;
+          }
+          if (!window.confirm("確定要從 Git 抓資料並覆蓋目前伺服器 data 嗎？這會直接覆蓋現有檔案。")) return;
+          adminRestoreRunBtn.disabled = true;
+          adminRestoreRunBtn.textContent = "還原啟動中...";
+          try {
+            await triggerWebsiteRestore(true);
+            setIntelMessage("已啟動背景還原，請在 AI 監控面板查看進度。", "ok");
+            await refreshIntelAdminStatus();
+          } catch (error) {
+            setIntelMessage(`還原啟動失敗：${error.message}`, "error");
+          } finally {
+            adminRestoreRunBtn.disabled = false;
+            adminRestoreRunBtn.textContent = "從 Git 還原覆蓋";
           }
         });
       }
@@ -581,6 +634,48 @@
       other: "社群精選",
     };
 
+    function normalizeLangTag(raw) {
+      const tag = String(raw || "").trim().toLowerCase();
+      if (tag === "zh-hans" || tag === "zh-cn" || tag === "zh-sg") return "zh-Hans";
+      if (tag === "en" || tag.startsWith("en-")) return "en";
+      if (tag === "ko" || tag.startsWith("ko-")) return "ko";
+      return "zh-Hant";
+    }
+
+    function getUiLangTag() {
+      const select = document.getElementById("lang-select");
+      if (select && select.value) return normalizeLangTag(select.value);
+      const htmlLang = document.documentElement?.lang || "";
+      if (htmlLang) return normalizeLangTag(htmlLang);
+      return "zh-Hant";
+    }
+
+    function getStaticI18nByKey(key, fallback = "") {
+      const rows = window.INTEL_UI_STATIC_TRANSLATIONS && window.INTEL_UI_STATIC_TRANSLATIONS[key];
+      if (!rows || typeof rows !== "object") return String(fallback || "");
+      const lang = getUiLangTag();
+      return String(rows[lang] || rows["zh-Hant"] || fallback || "");
+    }
+
+    function renderCategoryHint(category) {
+      const labelKeyMap = {
+        events: "category.events",
+        official: "category.official",
+        sbt: "category.sbt",
+        pokemon: "category.pokemon",
+        alpha: "category.alpha",
+        tools: "category.tools",
+        other: "category.other",
+      };
+      const prefix = getStaticI18nByKey("category.hintPrefix", "目前顯示：");
+      const suffix = getStaticI18nByKey("category.hintSuffix", "。");
+      const labelKey = labelKeyMap[category] || "";
+      const label = labelKey
+        ? getStaticI18nByKey(labelKey, categoryLabels[category] || category)
+        : (categoryLabels[category] || category);
+      return `${prefix}${label}${suffix}`;
+    }
+
     const categoryTargets = {
       events: "events",
       official: "intel",
@@ -644,13 +739,10 @@
         link.classList.toggle("is-active", link.dataset.navCategory === nextCategory);
       });
       if (categoryHint) {
-        categoryHint.textContent = `目前顯示：${categoryLabels[nextCategory] || nextCategory}。`;
+        categoryHint.textContent = renderCategoryHint(nextCategory);
       }
       if (opts.updateHash) {
-        const targetId = categoryTargets[nextCategory];
-        if (targetId) {
-          history.replaceState(null, "", `#${targetId}`);
-        }
+        history.replaceState(null, "", `#cat-${nextCategory}`);
       }
       if (opts.smooth) {
         const targetId = categoryTargets[nextCategory];
@@ -686,17 +778,15 @@
       window.addEventListener("hashchange", () => {
         const fromHash = resolveCategoryFromHash(window.location.hash);
         if (fromHash && fromHash !== activeCategory) {
-          setActiveCategory(fromHash, { updateHash: false, smooth: false });
+          setActiveCategory(fromHash, { updateHash: true, smooth: false });
         }
       });
-      const initialCategory = resolveCategoryFromHash(window.location.hash) || "events";
-      setActiveCategory(initialCategory, { updateHash: false, smooth: false });
-      window.requestAnimationFrame(() => {
-        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-      });
-      window.addEventListener("load", () => {
-        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-      }, { once: true });
+      const initialFromHash = resolveCategoryFromHash(window.location.hash);
+      if (initialFromHash) {
+        setActiveCategory(initialFromHash, { updateHash: true, smooth: false });
+      } else {
+        setActiveCategory("events", { updateHash: false, smooth: false });
+      }
     }
 
     function setupDirectGameLink() {

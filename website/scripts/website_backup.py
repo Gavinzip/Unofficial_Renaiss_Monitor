@@ -100,6 +100,16 @@ def _copytree_clean(source: Path, target: Path, include_volatile: bool) -> None:
 
 def _copy_backup_to_data(source: Path, target: Path) -> None:
     target.mkdir(parents=True, exist_ok=True)
+    for item in target.iterdir():
+        if item.name == "__pycache__":
+            continue
+        if item.is_dir():
+            shutil.rmtree(item, ignore_errors=True)
+        else:
+            try:
+                item.unlink()
+            except Exception:
+                pass
     for item in source.iterdir():
         if item.name == "__pycache__":
             continue
@@ -134,22 +144,31 @@ def _ensure_repo(repo_url: str, repo_dir: Path, branch: str, project_root: Path)
     _run_git(["config", "user.email", str(os.getenv("WEBSITE_BACKUP_GIT_EMAIL") or "bot@renaiss.website")], repo_dir)
 
 
-def restore_website_data_from_backup(data_root: Path, project_root: Path) -> dict[str, Any]:
+def restore_website_data_from_backup(
+    data_root: Path,
+    project_root: Path,
+    *,
+    manual: bool = False,
+    force_override: bool | None = None,
+) -> dict[str, Any]:
     """Restore persistent website data from the configured git backup repo.
 
     This runs before bundled data migration. It only copies data when the target
     mounted directory is empty unless WEBSITE_DATA_RESTORE_FORCE=1 is set.
     """
 
-    if not _truthy(os.getenv("WEBSITE_DATA_RESTORE_ON_STARTUP", "1"), default=True):
+    if not manual and not _truthy(os.getenv("WEBSITE_DATA_RESTORE_ON_STARTUP", "1"), default=True):
         return {"ok": True, "restored": False, "reason": "disabled"}
 
     repo_url = _resolve_repo_url()
     if not repo_url:
         return {"ok": True, "restored": False, "reason": "missing_repo"}
-    force = _truthy(os.getenv("WEBSITE_DATA_RESTORE_FORCE", "0"))
-    if data_root.exists() and any(data_root.iterdir()) and not force:
-        return {"ok": True, "restored": False, "reason": "data_root_not_empty"}
+    policy = str(os.getenv("WEBSITE_DATA_RESTORE_POLICY") or "always").strip().lower() or "always"
+    force_env = _truthy(os.getenv("WEBSITE_DATA_RESTORE_FORCE", "0"))
+    force = bool(force_env if force_override is None else force_override)
+    should_require_empty = policy in {"if-empty", "if_empty", "empty-only", "empty_only"}
+    if should_require_empty and data_root.exists() and any(data_root.iterdir()) and not force:
+        return {"ok": True, "restored": False, "reason": "data_root_not_empty", "policy": policy}
 
     branch = _backup_branch()
     repo_dir = _backup_repo_dir(data_root)
@@ -161,7 +180,16 @@ def restore_website_data_from_backup(data_root: Path, project_root: Path) -> dic
             return {"ok": False, "restored": False, "reason": "missing_subdir", "subdir": subdir}
         data_root.mkdir(parents=True, exist_ok=True)
         _copy_backup_to_data(source, data_root)
-        return {"ok": True, "restored": True, "reason": "restored", "branch": branch, "subdir": subdir}
+        return {
+            "ok": True,
+            "restored": True,
+            "reason": "restored",
+            "branch": branch,
+            "subdir": subdir,
+            "policy": policy,
+            "manual": bool(manual),
+            "force": bool(force),
+        }
     except Exception as error:
         return {"ok": False, "restored": False, "reason": "restore_failed", "error": _mask_secret(str(error))}
 

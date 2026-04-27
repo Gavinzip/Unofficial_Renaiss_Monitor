@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI 流程追蹤</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #eef5fb;
+      --card: #ffffff;
+      --line: #c9ddf1;
+      --text: #173754;
+      --soft: #5a7898;
+      --bar-bg: #e3eef9;
+      --bar: #2f82cd;
+      --ok: #12774d;
+      --warn: #986200;
+      --run: #0f5c99;
+      --err: #b92d2d;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "SF Pro Text", "Noto Sans TC", "Noto Sans", sans-serif;
+      background: linear-gradient(180deg, #f6fbff, var(--bg));
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      width: min(1100px, 94vw);
+      margin: 1.2rem auto 2.2rem;
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    .head {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--card);
+      padding: 0.85rem 0.95rem;
+      display: grid;
+      gap: 0.55rem;
+    }
+
+    .head-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .head h1 {
+      margin: 0;
+      font-size: 1.12rem;
+      letter-spacing: 0.01em;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn,
+    .link-btn {
+      appearance: none;
+      border: 1px solid #7fb0df;
+      background: #f4faff;
+      color: #1f4f80;
+      border-radius: 10px;
+      padding: 0.42rem 0.68rem;
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn:hover,
+    .link-btn:hover {
+      background: #e8f4ff;
+    }
+
+    .muted {
+      color: var(--soft);
+      font-size: 0.78rem;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.8rem;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--card);
+      padding: 0.75rem 0.82rem;
+      display: grid;
+      gap: 0.52rem;
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 0.92rem;
+    }
+
+    .stage-row {
+      display: grid;
+      gap: 0.2rem;
+    }
+
+    .stage-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: #365f88;
+      font-weight: 700;
+    }
+
+    .bar {
+      height: 8px;
+      border-radius: 999px;
+      border: 1px solid #c0d8ef;
+      background: var(--bar-bg);
+      overflow: hidden;
+    }
+
+    .bar > i {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #64b2ff, var(--bar));
+      transition: width 150ms ease;
+    }
+
+    .list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0.34rem;
+      max-height: 260px;
+      overflow: auto;
+    }
+
+    .list li {
+      border: 1px solid #d2e4f5;
+      border-radius: 10px;
+      background: #fafdff;
+      padding: 0.4rem 0.5rem;
+      font-size: 0.76rem;
+      line-height: 1.4;
+      color: #2f557a;
+      word-break: break-word;
+    }
+
+    .table-wrap {
+      border: 1px solid #d2e4f5;
+      border-radius: 12px;
+      overflow: auto;
+      background: #fcfeff;
+      max-height: 460px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid #e1edf8;
+      padding: 0.45rem 0.5rem;
+      font-size: 0.75rem;
+      text-align: left;
+      vertical-align: top;
+      color: #2b5175;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: #eef6ff;
+      color: #355f89;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.16rem 0.44rem;
+      border-radius: 999px;
+      border: 1px solid #c8def3;
+      font-size: 0.7rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .chip.ok { color: var(--ok); border-color: #9fdac2; background: #effcf6; }
+    .chip.run { color: var(--run); border-color: #9ec5e8; background: #eef7ff; }
+    .chip.warn { color: var(--warn); border-color: #ecd59b; background: #fff8e5; }
+    .chip.err { color: var(--err); border-color: #efc0c0; background: #fff0f0; }
+
+    .link {
+      color: #1f68aa;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .link:hover { text-decoration: underline; }
+
+    #tracker-locked {
+      border: 1px solid #f0cece;
+      background: #fff5f5;
+      border-radius: 12px;
+      color: #8a3434;
+      padding: 0.8rem;
+      font-size: 0.85rem;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+      .table-wrap { max-height: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="head">
+      <div class="head-top">
+        <h1>AI 流程追蹤（管理員）</h1>
+        <div class="actions">
+          <a class="link-btn" href="./index.html">回首頁</a>
+          <button id="tracker-refresh" class="btn" type="button">立即刷新</button>
+        </div>
+      </div>
+      <div id="tracker-updated" class="muted">最後更新：--</div>
+    </header>
+
+    <section id="tracker-locked" hidden>
+      你目前沒有管理員權限，這個頁面會隱藏。請先回首頁登入管理員後再開啟流程頁。
+    </section>
+
+    <main id="tracker-main" hidden>
+      <section class="card">
+        <h2>同步三段進度</h2>
+        <div id="tracker-run-meta" class="muted">--</div>
+        <div class="stage-row">
+          <div class="stage-head"><span>1. 掃描新卡片</span><span id="tracker-scan-label">0%</span></div>
+          <div class="bar"><i id="tracker-scan-bar"></i></div>
+        </div>
+        <div class="stage-row">
+          <div class="stage-head"><span>2. 整理卡片</span><span id="tracker-curation-label">0%</span></div>
+          <div class="bar"><i id="tracker-curation-bar"></i></div>
+        </div>
+        <div class="stage-row">
+          <div class="stage-head"><span>3. 翻譯卡片</span><span id="tracker-translation-label">0%</span></div>
+          <div class="bar"><i id="tracker-translation-bar"></i></div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <section class="card">
+          <h2>掃描到的新卡片</h2>
+          <ul id="tracker-scan-list" class="list"><li>等待資料...</li></ul>
+        </section>
+        <section class="card">
+          <h2>整理中 / 已整理</h2>
+          <ul id="tracker-curation-list" class="list"><li>等待資料...</li></ul>
+        </section>
+      </section>
+
+      <section class="card">
+        <h2>貼文連結分析任務（URL Analyze）</h2>
+        <ul id="tracker-job-list" class="list"><li>等待資料...</li></ul>
+      </section>
+
+      <section class="card">
+        <h2>翻譯中卡片</h2>
+        <ul id="tracker-translation-list" class="list"><li>等待資料...</li></ul>
+      </section>
+
+      <section class="card">
+        <h2>每則貼文目前階段</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>貼文</th>
+                <th>掃描</th>
+                <th>整理</th>
+                <th>翻譯</th>
+                <th>目前階段</th>
+              </tr>
+            </thead>
+            <tbody id="tracker-post-stage-body">
+              <tr><td colspan="5">等待資料...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="./assets/intel-pipeline.js?v=20260428-stage2"></script>
+</body>
+</html>

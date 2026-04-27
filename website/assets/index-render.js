@@ -58,13 +58,35 @@
         if (!rows || typeof rows !== "object") return;
         const next = String(rows[tag] || rows["zh-Hant"] || "").trim();
         if (!next) return;
-        const current = String(el.textContent || "");
+        const asHtml = String(el.getAttribute("data-i18n-html") || "") === "1";
+        const directTextNode = !asHtml && el.childElementCount > 0
+          ? Array.from(el.childNodes || []).find(
+              (node) => node && node.nodeType === Node.TEXT_NODE && String(node.nodeValue || "").trim().length > 0
+            )
+          : null;
+        const current = String(
+          asHtml
+            ? el.innerHTML
+            : directTextNode
+              ? directTextNode.nodeValue || ""
+              : el.textContent || ""
+        );
         el.setAttribute("data-no-i18n", "1");
         entries.push({
           from: current,
           to: next,
           anchor: el,
-          set(value) { el.textContent = String(value || ""); },
+          set(value) {
+            if (asHtml) {
+              el.innerHTML = String(value || "");
+              return;
+            }
+            if (directTextNode) {
+              directTextNode.nodeValue = String(value || "");
+              return;
+            }
+            el.textContent = String(value || "");
+          },
         });
       });
       return entries;
@@ -129,6 +151,54 @@
       el.textContent = text;
       el.classList.toggle("is-working", mode === "working");
       el.classList.toggle("is-ready", mode === "ready");
+    }
+
+    const INTEL_FEED_SNAPSHOT_PREFIX = "intel_feed_snapshot_v1:";
+
+    function intelFeedSnapshotKey(lang) {
+      return `${INTEL_FEED_SNAPSHOT_PREFIX}${normalizeUiLang(lang || "zh-Hant")}`;
+    }
+
+    function loadIntelFeedSnapshot(lang) {
+      try {
+        const raw = localStorage.getItem(intelFeedSnapshotKey(lang)) || "";
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        const feed = parsed && typeof parsed === "object" ? parsed.feed : null;
+        if (!feed || typeof feed !== "object") return null;
+        return feed;
+      } catch (_error) {
+        return null;
+      }
+    }
+
+    function saveIntelFeedSnapshot(lang, feed) {
+      if (!feed || typeof feed !== "object") return;
+      const cards = Array.isArray(feed.cards) ? feed.cards : null;
+      if (!cards || !cards.length) return;
+      const payload = {
+        saved_at: new Date().toISOString(),
+        feed,
+      };
+      try {
+        localStorage.setItem(intelFeedSnapshotKey(lang), JSON.stringify(payload));
+      } catch (_error) {
+      }
+    }
+
+    function readCachedIntelFeed(lang, allowBaseFallback = true) {
+      const tag = normalizeUiLang(lang || currentUiLang);
+      const inMemory = intelFeedLangCache.get(tag);
+      if (inMemory && typeof inMemory === "object") return inMemory;
+      const fromSnapshot = loadIntelFeedSnapshot(tag);
+      if (fromSnapshot) return fromSnapshot;
+      if (allowBaseFallback && tag !== "zh-Hant") {
+        const memoryBase = intelFeedLangCache.get("zh-Hant");
+        if (memoryBase && typeof memoryBase === "object") return memoryBase;
+        const snapshotBase = loadIntelFeedSnapshot("zh-Hant");
+        if (snapshotBase) return snapshotBase;
+      }
+      return null;
     }
 
     const LANG_MORPH_LATIN = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -273,7 +343,7 @@
       const mode = String(i18n?.mode || "");
       const lang = normalizeUiLang(payload?.lang || currentUiLang);
       const progress = i18n?.state?.lang_progress?.[lang] || {};
-      if (mode === "building") {
+      if (mode === "building" || mode === "building-stale") {
         const percent = Number(progress?.percent || 0);
         const remaining = Number(progress?.remaining || 0);
         const remainingLabel = currentUiLang === "en" ? "remaining" : (currentUiLang === "ko" ? "남음" : "剩");
@@ -357,7 +427,7 @@
         saveUiLang(next);
         updateLangSwitcherUi();
         applyUiLanguage().catch(() => {});
-        const cached = intelFeedLangCache.get(next);
+        const cached = readCachedIntelFeed(next, false);
         if (cached) {
           renderIntelFeed(cached);
           scheduleLangFeedRefresh(cached);
@@ -391,10 +461,50 @@
       return Boolean(intelAuthState.authConfigured && intelAuthState.authenticated);
     }
 
+    const INTEL_AUTH_TOKEN_KEY = "intel_admin_bearer_token_v1";
+
+    function readIntelAuthToken() {
+      try {
+        return String(window.localStorage.getItem(INTEL_AUTH_TOKEN_KEY) || "").trim();
+      } catch (_error) {
+        return "";
+      }
+    }
+
+    function saveIntelAuthToken(token) {
+      const value = String(token || "").trim();
+      if (!value) return;
+      try {
+        window.localStorage.setItem(INTEL_AUTH_TOKEN_KEY, value);
+      } catch (_error) {}
+    }
+
+    function clearIntelAuthToken() {
+      try {
+        window.localStorage.removeItem(INTEL_AUTH_TOKEN_KEY);
+      } catch (_error) {}
+    }
+
+    function buildIntelAuthHeaders(baseHeaders = {}) {
+      const headers = { ...(baseHeaders || {}) };
+      const token = readIntelAuthToken();
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
+      return headers;
+    }
+
+    function handleIntelUnauthorized() {
+      clearIntelAuthToken();
+      intelAuthState.authenticated = false;
+      updateIntelAuthUi();
+    }
+
     function updateIntelAuthUi() {
       const statusEl = document.getElementById("intel-auth-status");
       const adminPanel = document.getElementById("intel-admin-monitor");
       const adminOpenBtn = document.getElementById("nav-admin-monitor-btn");
+      const adminPipelineLink = document.getElementById("nav-admin-pipeline-link");
       const loginButtons = [
         document.getElementById("intel-login-btn"),
         document.getElementById("nav-intel-login-btn"),
@@ -418,6 +528,7 @@
       if (input) input.disabled = !editable;
       if (adminPanel) adminPanel.style.display = showAdminPanel ? "grid" : "none";
       if (adminOpenBtn) adminOpenBtn.style.display = showAdminPanel ? "inline-flex" : "none";
+      if (adminPipelineLink) adminPipelineLink.style.display = showAdminPanel ? "inline-flex" : "none";
       if (showAdminPanel) startIntelAdminPolling();
       else {
         stopIntelAdminPolling();
@@ -434,6 +545,7 @@
         loginButtons.forEach((btn) => { btn.style.display = "none"; });
         logoutButtons.forEach((btn) => { btn.style.display = "none"; });
         if (adminOpenBtn) adminOpenBtn.style.display = "none";
+        if (adminPipelineLink) adminPipelineLink.style.display = "none";
         return;
       }
       if (!intelAuthState.ready || intelAuthState.checking) {
@@ -445,6 +557,7 @@
         loginButtons.forEach((btn) => { btn.style.display = "none"; });
         logoutButtons.forEach((btn) => { btn.style.display = "none"; });
         if (adminOpenBtn) adminOpenBtn.style.display = "none";
+        if (adminPipelineLink) adminPipelineLink.style.display = "none";
         return;
       }
       if (!intelAuthState.authConfigured) {
@@ -453,6 +566,7 @@
         loginButtons.forEach((btn) => { btn.style.display = "none"; });
         logoutButtons.forEach((btn) => { btn.style.display = "none"; });
         if (adminOpenBtn) adminOpenBtn.style.display = "none";
+        if (adminPipelineLink) adminPipelineLink.style.display = "none";
         return;
       }
       if (intelAuthState.authenticated) {
@@ -473,11 +587,16 @@
         const response = await fetch(intelApiUrl("/api/auth/me"), {
           method: "GET",
           credentials: "include",
+          headers: buildIntelAuthHeaders(),
           cache: "no-store",
         });
         const data = await response.json().catch(() => ({}));
         if (!response.ok || !data?.ok) {
           throw new Error(data?.error || `HTTP ${response.status}`);
+        }
+        const token = String(data?.token || "").trim();
+        if (token) {
+          saveIntelAuthToken(token);
         }
         intelAuthState.ready = true;
         intelAuthState.authRequired = Boolean(data?.auth_required);
@@ -486,6 +605,9 @@
         intelAuthState.user = String(data?.user || "");
         intelAuthState.mode = String(data?.mode || "");
         intelAuthState.error = String(data?.error || "");
+        if (intelAuthState.authRequired && !intelAuthState.authenticated) {
+          clearIntelAuthToken();
+        }
       } catch (error) {
         intelAuthState.ready = true;
         intelAuthState.authRequired = false;
@@ -504,12 +626,16 @@
       const response = await fetch(intelApiUrl("/api/auth/login"), {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: buildIntelAuthHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({ username, password }),
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || !data?.ok) {
         throw new Error(data?.error || `HTTP ${response.status}`);
+      }
+      const token = String(data?.token || "").trim();
+      if (token) {
+        saveIntelAuthToken(token);
       }
       await fetchIntelAuthState();
       if (intelFeedCache) renderIntelFeed(intelFeedCache);
@@ -520,13 +646,14 @@
       const response = await fetch(intelApiUrl("/api/auth/logout"), {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: buildIntelAuthHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({}),
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || !data?.ok) {
         throw new Error(data?.error || `HTTP ${response.status}`);
       }
+      clearIntelAuthToken();
       await fetchIntelAuthState();
       if (intelFeedCache) renderIntelFeed(intelFeedCache);
       return data;
@@ -980,9 +1107,16 @@
     function renderIntelFeed(payload) {
       intelFeedCache = payload && typeof payload === "object" ? payload : null;
       const payloadLang = normalizeUiLang(payload?.lang || currentUiLang || "zh-Hant");
-      const i18nMode = String(payload?._i18n?.mode || "");
-      if (intelFeedCache && i18nMode !== "building") {
+      const payloadMode = String(payload?._i18n?.mode || "");
+      const shouldPersistSnapshot = !(
+        payloadLang !== "zh-Hant"
+        && (payloadMode === "building" || payloadMode === "building-stale" || payloadMode === "base-fallback")
+      );
+      if (intelFeedCache) {
         intelFeedLangCache.set(payloadLang, intelFeedCache);
+        if (shouldPersistSnapshot) {
+          saveIntelFeedSnapshot(payloadLang, intelFeedCache);
+        }
       }
       const generatedAt = document.getElementById("intel-generated-at");
       const latestSourceAt = document.getElementById("intel-latest-source-at");
@@ -1211,34 +1345,51 @@
     async function fetchIntelFeed(langOverride = "") {
       const requestLang = normalizeUiLang(langOverride || currentUiLang || document.documentElement.lang || "zh-Hant");
       const canUseApi = window.location.protocol !== "file:";
+      let apiError = null;
       if (canUseApi) {
-        const response = await fetch(intelApiUrl(`/api/intel/feed?lang=${encodeURIComponent(requestLang)}`), {
-          cache: "no-store",
-          credentials: "include",
-        });
-        const payload = await response.json().catch(() => ({}));
-        if (!response.ok || !payload?.ok || typeof payload?.feed !== "object") {
-          if (INTEL_API_BASE) {
-            throw new Error(payload?.error || `HTTP ${response.status}`);
+        try {
+          const controller = new AbortController();
+          const timeout = window.setTimeout(() => controller.abort(), 4500);
+          const response = await fetch(intelApiUrl(`/api/intel/feed?lang=${encodeURIComponent(requestLang)}`), {
+            cache: "no-store",
+            credentials: "include",
+            signal: controller.signal,
+          });
+          window.clearTimeout(timeout);
+          const payload = await response.json().catch(() => ({}));
+          if (response.ok && payload?.ok && typeof payload?.feed === "object") {
+            if (!payload.feed.lang) {
+              payload.feed.lang = requestLang;
+            }
+            return payload.feed;
           }
-        } else {
-          if (!payload.feed.lang) {
-            payload.feed.lang = requestLang;
-          }
-          return payload.feed;
+          apiError = new Error(payload?.error || `HTTP ${response.status}`);
+        } catch (error) {
+          apiError = error instanceof Error ? error : new Error(String(error || "api_fetch_failed"));
         }
       }
-      const response = await fetch("./data/x_intel_feed.json", { cache: "no-store" });
-      if (!response.ok) throw new Error("Failed to load x_intel_feed.json");
-      const fallback = await response.json();
-      if (fallback && typeof fallback === "object" && !fallback.lang) {
-        fallback.lang = "zh-Hant";
-      }
-      return fallback;
+      if (apiError) throw apiError;
+      throw new Error(`intel_api_unavailable:${requestLang}`);
     }
 
     async function refreshIntelFeedForCurrentLang() {
       const payload = await fetchIntelFeed(currentUiLang);
+      const requestLang = normalizeUiLang(currentUiLang);
+      const mode = String(payload?._i18n?.mode || "");
+      const cached = readCachedIntelFeed(requestLang, false);
+      if (
+        requestLang !== "zh-Hant"
+        && (mode === "building" || mode === "building-stale")
+        && cached
+        && typeof cached === "object"
+        && Array.isArray(cached.cards)
+        && cached.cards.length
+      ) {
+        const merged = { ...cached, _i18n: payload?._i18n || cached?._i18n, lang: requestLang };
+        renderIntelFeed(merged);
+        scheduleLangFeedRefresh(payload);
+        return merged;
+      }
       renderIntelFeed(payload);
       scheduleLangFeedRefresh(payload);
       return payload;
@@ -1266,14 +1417,13 @@
       const response = await fetch(intelApiUrl(path), {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: buildIntelAuthHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify(body || {}),
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || !data?.ok) {
         if (response.status === 401) {
-          intelAuthState.authenticated = false;
-          updateIntelAuthUi();
+          handleIntelUnauthorized();
         }
         throw new Error(data?.error || `HTTP ${response.status}`);
       }
@@ -1285,10 +1435,14 @@
       const response = await fetch(intelApiUrl(`/api/intel/admin-status?limit=${safeLimit}`), {
         method: "GET",
         credentials: "include",
+        headers: buildIntelAuthHeaders(),
         cache: "no-store",
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || !data?.ok || typeof data?.status !== "object") {
+        if (response.status === 401) {
+          handleIntelUnauthorized();
+        }
         throw new Error(data?.error || `HTTP ${response.status}`);
       }
       return data.status;
@@ -1297,6 +1451,11 @@
     async function triggerWebsiteBackup() {
       const data = await postIntel("/api/intel/backup", {});
       return data?.backup || {};
+    }
+
+    async function triggerWebsiteRestore(force = true) {
+      const data = await postIntel("/api/intel/restore", { force: Boolean(force) });
+      return data?.restore || {};
     }
 
     function renderIntelAdminList(el, rows, emptyText) {
@@ -1410,12 +1569,16 @@
       }
       const i18nProgress = i18n?.lang_progress && typeof i18n.lang_progress === "object" ? i18n.lang_progress : {};
       if (i18nEl) {
-        const i18nStatus = String(i18n?.status || "idle");
+        const i18nStatus = String(i18n?.status || "idle").toLowerCase();
         const publishedLangs = Array.isArray(i18n?.langs) ? i18n.langs.filter(Boolean) : [];
         if (i18nStatus === "running" || i18nStatus === "queued") {
-          i18nEl.textContent = `翻譯${i18nStatus === "running" ? "進行中" : "排隊中"} · 已發布 ${publishedLangs.length} 語言`;
+          i18nEl.textContent = `翻譯進行中 · 已發布 ${publishedLangs.length} 語言`;
+        } else if (i18nStatus === "ok") {
+          i18nEl.textContent = `翻譯完成 · 已發布 ${publishedLangs.length} 語言`;
+        } else if (i18nStatus === "failed") {
+          i18nEl.textContent = `翻譯異常 · 已發布 ${publishedLangs.length} 語言`;
         } else {
-          i18nEl.textContent = `翻譯${i18nStatus === "ok" ? "完成" : "待命"} · 已發布 ${publishedLangs.length} 語言`;
+          i18nEl.textContent = `仍有未翻譯內容 · 已發布 ${publishedLangs.length} 語言`;
         }
       }
       if (i18nMetaEl) {
@@ -1425,13 +1588,12 @@
           const row = i18nProgress[tag] || {};
           const done = Number(row?.done || 0);
           const total = Number(row?.total || 0);
-          const percent = Number(row?.percent || 0);
-          const rawStatus = String(row?.status || "pending");
+          const rawStatus = String(row?.status || "pending").toLowerCase();
           const cacheHits = Number(row?.cached_hits || 0);
           const pendingCount = Number(row?.pending_count || Math.max(0, total - done));
-          const finalizing = rawStatus === "running" && total > 0 && done >= total && !publishedLangs.includes(tag);
-          const status = finalizing ? "finalizing" : rawStatus;
-          return `${tag}:${status} ${percent}% (${done}/${total}) cache${cacheHits} pending${pendingCount}`;
+          const translated = total > 0 ? done >= total : rawStatus === "ok";
+          const stateLabel = translated ? "已翻譯" : "未翻譯";
+          return `${tag}:${stateLabel} (${done}/${total}) cache${cacheHits} pending${pendingCount}`;
         });
         i18nMetaEl.textContent = `已發布：${publishedLangs.length ? publishedLangs.join(", ") : "--"} · ${details.join(" · ")}`;
       }
@@ -1445,13 +1607,16 @@
       }
       const restore = storage?.restore || {};
       if (dataRepoEl) {
+        const runtimeStatus = String(restore?.status || "").trim().toLowerCase();
         const reason = String(restore?.reason || "").trim();
         const ok = restore?.ok !== false;
         const restored = Boolean(restore?.restored);
         const repoReady = Boolean(backup?.has_repo);
         if (!repoReady) dataRepoEl.textContent = "Repo 未設定";
+        else if (runtimeStatus === "running") dataRepoEl.textContent = "從 Repo 還原中";
         else if (!ok) dataRepoEl.textContent = "連線/還原失敗";
         else if (restored) dataRepoEl.textContent = "已從 Repo 還原";
+        else if (reason === "manual_only") dataRepoEl.textContent = "等待手動還原";
         else if (reason === "data_root_not_empty") dataRepoEl.textContent = "Repo 已設定，資料已存在";
         else if (reason === "disabled") dataRepoEl.textContent = "啟動還原未啟用";
         else dataRepoEl.textContent = "Repo 已設定";
@@ -1461,7 +1626,11 @@
         const subdir = String(restore?.subdir || backup?.subdir || "--");
         const branch = String(restore?.branch || backup?.branch || "--");
         const error = String(restore?.error || "").trim();
-        dataRepoMetaEl.textContent = `restore=${reason} · branch=${branch} · subdir=${subdir}${error ? ` · ${error}` : ""}`;
+        const status = String(restore?.status || "idle").trim() || "idle";
+        const trigger = String(restore?.trigger || "--").trim() || "--";
+        const force = restore?.force ? "yes" : "no";
+        const doneAt = toLocalTime(restore?.finished_at || restore?.last_success_at);
+        dataRepoMetaEl.textContent = `status=${status} · restore=${reason} · trigger=${trigger} · force=${force} · branch=${branch} · subdir=${subdir} · finished ${doneAt}${error ? ` · ${error}` : ""}`;
       }
       if (backupEl) {
         const runtimeStatus = String(backupRuntime?.status || "").trim();
@@ -1495,7 +1664,7 @@
       const backupRows = [];
       backupRows.push(`Data root：${String(storage?.website_data_root || backup?.data_root || "--")}`);
       backupRows.push(`Frontend data link：${String(storage?.data_dir || "--")} · symlink=${storage?.using_symlink ? "yes" : "no"}`);
-      backupRows.push(`Restore：ok=${restore?.ok === false ? "no" : "yes"} · restored=${restore?.restored ? "yes" : "no"} · reason=${String(restore?.reason || "--")} · branch=${String(restore?.branch || backup?.branch || "--")} · subdir=${String(restore?.subdir || backup?.subdir || "--")}`);
+      backupRows.push(`Restore：status=${String(restore?.status || "idle")} · ok=${restore?.ok === false ? "no" : "yes"} · restored=${restore?.restored ? "yes" : "no"} · reason=${String(restore?.reason || "--")} · trigger=${String(restore?.trigger || "--")} · force=${restore?.force ? "yes" : "no"} · branch=${String(restore?.branch || backup?.branch || "--")} · subdir=${String(restore?.subdir || backup?.subdir || "--")}`);
       if (String(restore?.error || "").trim()) backupRows.push(`Restore error：${String(restore.error)}`);
       backupRows.push(`Backup：enabled=${backup?.enabled ? "yes" : "no"} · provider=${String(backup?.provider || "--")} · branch=${String(backup?.branch || "--")} · subdir=${String(backup?.subdir || "--")}`);
       backupRows.push(`Repo：${backup?.has_repo ? "configured" : "missing"} · PAT：${backup?.has_pat ? "configured" : "missing"} · repo_dir=${String(backup?.repo_dir || "--")}`);
@@ -1535,13 +1704,12 @@
       monitorRows.push(`I18N feed ${i18nStatus} · langs ${i18nLangs} · finished ${i18nFinishedAt}`);
       ["zh-Hant", "zh-Hans", "en", "ko"].forEach((tag) => {
         const row = i18nProgress[tag] || {};
-        const status = String(row?.status || "pending");
-        const percent = Number(row?.percent || 0);
+        const status = String(row?.status || "pending").toLowerCase();
         const done = Number(row?.done || 0);
         const total = Number(row?.total || 0);
         const remaining = Number(row?.remaining || Math.max(0, total - done));
-        const mode = String(row?.mode || "");
-        monitorRows.push(`I18N[${tag}] ${status}${mode ? `/${mode}` : ""} · 完成 ${percent}% · ${done}/${total} · 剩餘 ${remaining}`);
+        const translated = total > 0 ? done >= total : status === "ok";
+        monitorRows.push(`I18N[${tag}] ${translated ? "已翻譯" : "未翻譯"} · ${done}/${total} · 剩餘 ${remaining}`);
       });
       renderIntelAdminList(monitorListEl, monitorRows, "目前沒有 monitor 狀態資料");
       applyUiLanguage().catch(() => {});
@@ -1822,6 +1990,11 @@
     }
 
     async function renderIntelOnLoad() {
+      const cached = readCachedIntelFeed(currentUiLang, false);
+      if (cached) {
+        renderIntelFeed(cached);
+        scheduleLangFeedRefresh(cached);
+      }
       try {
         await refreshIntelFeedForCurrentLang();
         prefetchIntelFeeds();
