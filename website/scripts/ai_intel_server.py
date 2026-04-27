@@ -26,7 +26,7 @@ from minimax_news import fetch_pokemon_latest_news, translate_pokemon_news_paylo
 from x_intel_core import add_classification_feedback, add_manual_tweet, feedback_memory_stats, load_environment, set_manual_selection, sync_accounts
 from website_backup import get_website_backup_status, restore_website_data_from_backup, run_website_backup, start_website_backup_scheduler
 from website_storage import get_website_data_dir, setup_website_storage
-from website_i18n_runtime import build_i18n_feed_bundle_async, configure_i18n_runtime, i18n_state_snapshot, localized_feed_from_bundle, translate_texts
+from website_i18n_runtime import build_i18n_feed_bundle_async, configure_i18n_runtime, i18n_state_snapshot, localized_feed_from_bundle, queue_i18n_retranslate, translate_texts
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -96,6 +96,7 @@ PROTECTED_POST_PATHS = {
     "/api/intel/feedback",
     "/api/intel/job-status",
     "/api/intel/backup",
+    "/api/intel/retranslate",
 }
 
 def _env_flag(name: str, default: bool = False) -> bool:
@@ -1160,6 +1161,7 @@ class Handler(SimpleHTTPRequestHandler):
             "/api/intel/feedback",
             "/api/intel/job-status",
             "/api/intel/backup",
+            "/api/intel/retranslate",
             "/api/intel/pokemon-news",
             "/api/intel/translate-texts",
         }:
@@ -1309,6 +1311,20 @@ class Handler(SimpleHTTPRequestHandler):
                 self._send_json({"ok": True, "started": started, "backup": _backup_state_snapshot()})
                 return
 
+            if path == "/api/intel/retranslate":
+                lang_raw = str(payload.get("lang") or "").strip().lower()
+                if not lang_raw or lang_raw == "all":
+                    target_langs = ["en", "ko", "zh-Hans"]
+                else:
+                    target_langs = [x.strip() for x in lang_raw.split(",") if x.strip()]
+                feed = _read_feed_snapshot()
+                if not isinstance(feed, dict) or not isinstance(feed.get("cards"), list):
+                    self._send_json({"ok": False, "error": "feed not ready"}, status=HTTPStatus.SERVICE_UNAVAILABLE)
+                    return
+                result = queue_i18n_retranslate(feed, target_langs=target_langs)
+                self._send_json({"ok": True, "retranslate": result, "i18n": i18n_state_snapshot()})
+                return
+
             if path == "/api/intel/pokemon-news":
                 force = bool(payload.get("force"))
                 max_items = int(payload.get("max_items", 8) or 8)
@@ -1404,7 +1420,7 @@ def main() -> int:
         "[ai-intel] API endpoints: "
         "GET /api/auth/me, POST /api/auth/login, POST /api/auth/logout, GET /api/intel/feed, GET /api/intel/admin-status, "
         "POST /api/intel/sync, POST /api/intel/analyze-url, POST /api/intel/pick, "
-        "POST /api/intel/feedback, POST /api/intel/job-status, POST /api/intel/backup, POST /api/intel/pokemon-news, "
+        "POST /api/intel/feedback, POST /api/intel/job-status, POST /api/intel/backup, POST /api/intel/retranslate, POST /api/intel/pokemon-news, "
         "POST /api/intel/translate-texts"
     )
     print(

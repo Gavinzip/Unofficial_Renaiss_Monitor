@@ -10,42 +10,25 @@
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "manual";
     }
-    (function forceTopOnReload() {
-      const navEntry = (performance.getEntriesByType && performance.getEntriesByType("navigation")[0]) || null;
-      const legacyReload = performance.navigation && performance.navigation.type === 1;
-      const isReload = navEntry ? navEntry.type === "reload" : legacyReload;
-      if (isReload && window.location.hash) {
-        history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
-      }
-      window.addEventListener("DOMContentLoaded", () => {
-        if (window.location.hash && window.scrollY > 24) {
-          history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
-          window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-        }
-      }, { once: true });
-      let userInteracted = false;
-      const markUserInteracted = () => { userInteracted = true; };
-      window.addEventListener("wheel", markUserInteracted, { passive: true, once: true });
-      window.addEventListener("touchstart", markUserInteracted, { passive: true, once: true });
-      window.addEventListener("pointerdown", markUserInteracted, { passive: true, once: true });
-      window.addEventListener("keydown", markUserInteracted, { passive: true, once: true });
-      const hardScrollTop = () => {
-        if (userInteracted) return;
-        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-        document.documentElement.scrollTop = 0;
-        if (document.body) {
-          document.body.scrollTop = 0;
-        }
+    (function normalizeInitialCategoryHash() {
+      const legacyToCategory = {
+        events: "events",
+        versions: "events",
+        intel: "official",
+        sbt: "sbt",
+        pipeline: "pokemon",
+        timeline: "alpha",
+        ops: "tools",
+        world: "other",
+        community: "other",
       };
-      hardScrollTop();
-      window.addEventListener("beforeunload", hardScrollTop, { capture: true });
+      const rawHash = String(window.location.hash || "").replace(/^#/, "").trim().toLowerCase();
+      const legacyCategory = legacyToCategory[rawHash] || "";
+      if (legacyCategory) {
+        history.replaceState(null, "", `${window.location.pathname}${window.location.search}#cat-${legacyCategory}`);
+      }
       window.addEventListener("pageshow", () => {
-        hardScrollTop();
-        window.requestAnimationFrame(hardScrollTop);
-      }, { once: true });
-      window.addEventListener("load", () => {
-        hardScrollTop();
-        window.requestAnimationFrame(hardScrollTop);
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       }, { once: true });
     })();
   </script>
@@ -65,13 +48,13 @@
         </a>
         <nav class="nav-links">
           <a id="nav-game-link" href="./game.html">Game</a>
-          <a href="#events" data-nav-category="events">活動</a>
-          <a href="#intel" data-nav-category="official">官方更新</a>
-          <a href="#sbt" data-nav-category="sbt">SBT</a>
-          <a href="#pipeline" data-nav-category="pokemon">寶可夢</a>
-          <a href="#timeline" data-nav-category="alpha">未來 Alpha</a>
-          <a href="#ops" data-nav-category="tools">工具</a>
-          <a href="#world" data-nav-category="other">社群精選</a>
+          <a href="#cat-events" data-nav-category="events" data-i18n-key="category.events">活動</a>
+          <a href="#cat-official" data-nav-category="official" data-i18n-key="category.officialShort">官方更新</a>
+          <a href="#cat-sbt" data-nav-category="sbt" data-i18n-key="category.sbt">SBT</a>
+          <a href="#cat-pokemon" data-nav-category="pokemon" data-i18n-key="category.pokemonShort">寶可夢</a>
+          <a href="#cat-alpha" data-nav-category="alpha" data-i18n-key="category.alpha">未來 Alpha</a>
+          <a href="#cat-tools" data-nav-category="tools" data-i18n-key="category.tools">工具</a>
+          <a href="#cat-other" data-nav-category="other" data-i18n-key="category.other">社群精選</a>
         </nav>
         <div class="nav-actions">
           <div id="lang-switcher" class="lang-switcher" aria-label="Language" data-no-i18n="1">
@@ -84,17 +67,17 @@
             </select>
             <span id="lang-build-status" class="lang-build-status" aria-live="polite"></span>
           </div>
-          <button id="nav-intel-login-btn" type="button" class="nav-auth-btn intel-auth-stealth">管理登入</button>
-          <button id="nav-intel-logout-btn" type="button" class="nav-auth-btn is-logout" style="display:none;">登出</button>
-          <button id="nav-admin-monitor-btn" type="button" class="nav-auth-btn is-monitor" style="display:none;">AI 監控</button>
-          <a class="nav-action" href="https://www.renaiss.xyz" target="_blank" rel="noreferrer">Open Renaiss</a>
+          <button id="nav-intel-login-btn" type="button" class="nav-auth-btn intel-auth-stealth" data-i18n-key="auth.login">管理登入</button>
+          <button id="nav-intel-logout-btn" type="button" class="nav-auth-btn is-logout" style="display:none;" data-i18n-key="auth.logout">登出</button>
+          <button id="nav-admin-monitor-btn" type="button" class="nav-auth-btn is-monitor" style="display:none;" data-i18n-key="auth.aiMonitor">AI 監控</button>
+          <a class="nav-action" href="https://www.renaiss.xyz" target="_blank" rel="noreferrer" data-i18n-key="home.openRenaiss">Open Renaiss</a>
         </div>
       </div>
     </header>
 
     <section id="hero" class="panel hero">
       <div data-lang-morph="1">
-        <span class="chip observe" style="--delay: 80ms;"><iconify-icon icon="lucide:gem"></iconify-icon>RWA on BNB Chain</span>
+        <span class="chip observe" style="--delay: 80ms;" data-i18n-key="home.rwaChip"><iconify-icon icon="lucide:gem"></iconify-icon>RWA on BNB Chain</span>
         <h1 class="observe" style="--delay: 140ms;">
           <span class="line">Renaiss</span>
           <span class="line"><span class="text-gradient">Aggregator</span></span>
@@ -107,11 +90,11 @@
           <a href="https://www.renaiss.xyz/" target="_blank" rel="noreferrer" class="btn btn-main">
             <span class="shine"></span>
             <iconify-icon icon="lucide:rocket"></iconify-icon>
-            <span>馬上開始 | Start Now</span>
+            <span data-i18n-key="home.startNow">馬上開始 | Start Now</span>
           </a>
           <a href="https://x.com/renaissxyz" target="_blank" rel="noreferrer" class="btn btn-sub">
             <iconify-icon icon="lucide:twitter"></iconify-icon>
-            <span>官方 X / Updates</span>
+            <span data-i18n-key="home.officialUpdates">官方 X / Updates</span>
           </a>
         </div>
 
@@ -130,93 +113,93 @@
     <section id="category-switcher" class="panel observe category-switcher-panel" style="--delay: 34ms;">
       <article class="category-switcher-card">
         <div class="category-switcher-head">
-          <h3><iconify-icon icon="lucide:layout-grid"></iconify-icon>主分類導覽</h3>
-          <p>從這裡切換分區，只顯示你要看的類別。</p>
+          <h3 data-i18n-key="category.mainTitle"><iconify-icon icon="lucide:layout-grid"></iconify-icon>主分類導覽</h3>
+          <p data-i18n-key="category.mainSub">從這裡切換分區，只顯示你要看的類別。</p>
         </div>
         <div id="category-tab-row" class="category-tab-row">
-          <button type="button" class="category-tab is-active" data-category-tab="events" data-category-target="events">活動</button>
-          <button type="button" class="category-tab" data-category-tab="official" data-category-target="intel">官方近期更新</button>
-          <button type="button" class="category-tab" data-category-tab="sbt" data-category-target="sbt">SBT</button>
-          <button type="button" class="category-tab" data-category-tab="pokemon" data-category-target="pipeline">寶可夢相關資訊</button>
-          <button type="button" class="category-tab" data-category-tab="alpha" data-category-target="timeline">未來 Alpha</button>
-          <button type="button" class="category-tab" data-category-tab="tools" data-category-target="ops">工具</button>
-          <button type="button" class="category-tab" data-category-tab="other" data-category-target="world">社群精選</button>
+          <button type="button" class="category-tab is-active" data-category-tab="events" data-category-target="events" data-i18n-key="category.events">活動</button>
+          <button type="button" class="category-tab" data-category-tab="official" data-category-target="intel" data-i18n-key="category.official">官方近期更新</button>
+          <button type="button" class="category-tab" data-category-tab="sbt" data-category-target="sbt" data-i18n-key="category.sbt">SBT</button>
+          <button type="button" class="category-tab" data-category-tab="pokemon" data-category-target="pipeline" data-i18n-key="category.pokemon">寶可夢相關資訊</button>
+          <button type="button" class="category-tab" data-category-tab="alpha" data-category-target="timeline" data-i18n-key="category.alpha">未來 Alpha</button>
+          <button type="button" class="category-tab" data-category-tab="tools" data-category-target="ops" data-i18n-key="category.tools">工具</button>
+          <button type="button" class="category-tab" data-category-tab="other" data-category-target="world" data-i18n-key="category.other">社群精選</button>
         </div>
-        <p id="category-switcher-hint" class="category-switcher-hint">目前顯示：活動。</p>
+        <p id="category-switcher-hint" class="category-switcher-hint" data-i18n-key="category.hintDefault">目前顯示：活動。</p>
       </article>
     </section>
 
     <section id="events" class="panel observe category-panel" data-category-section="events" style="--delay: 36ms;">
       <div class="section-head">
         <div>
-          <h2 class="section-title">活動主時間軸 / <span class="text-gradient">Events</span></h2>
-          <p class="section-sub">這裡只放活動相關貼文，包含時間、地點、參與方式與獎勵重點。</p>
+          <h2 class="section-title" data-i18n-key="events.title" data-i18n-html="1">活動主時間軸 / <span class="text-gradient">Events</span></h2>
+          <p class="section-sub" data-i18n-key="events.sub">這裡只放活動相關貼文，包含時間、地點、參與方式與獎勵重點。</p>
         </div>
         <span class="chip"><iconify-icon icon="lucide:calendar-range"></iconify-icon>Event Radar</span>
       </div>
 
       <article class="card observe intel-masterline-card" style="--delay: 70ms;">
         <div class="intel-masterline-head">
-          <h3><iconify-icon icon="lucide:route"></iconify-icon>活動主時間軸（左右滑動）</h3>
-          <p class="intel-masterline-hint">滑動卡片或點上方時間點，即可快轉查看該日期內容（僅顯示活動，前後 7 天）。<span id="intel-master-today-date"></span></p>
+          <h3 data-i18n-key="events.timelineTitle"><iconify-icon icon="lucide:route"></iconify-icon>活動主時間軸（左右滑動）</h3>
+          <p class="intel-masterline-hint" data-i18n-key="events.timelineHint" data-i18n-html="1">滑動卡片或點上方時間點，即可快轉查看該日期內容（僅顯示活動，前後 7 天）。<span id="intel-master-today-date"></span></p>
         </div>
         <div id="intel-master-rail" class="intel-masterline-rail"></div>
         <div id="intel-master-stage" class="intel-masterline-stage">
-          <p class="intel-masterline-empty">等待時間軸資料...</p>
+          <p class="intel-masterline-empty" data-i18n-key="events.timelineEmpty">等待時間軸資料...</p>
         </div>
       </article>
 
       <div class="grid-2 intel-digest-wrap">
         <article class="card observe" style="--delay: 90ms;">
-          <h3><iconify-icon icon="lucide:calendar-check-2"></iconify-icon>近期活動重點</h3>
+          <h3 data-i18n-key="events.recentTitle"><iconify-icon icon="lucide:calendar-check-2"></iconify-icon>近期活動重點</h3>
           <ul id="intel-events-list" class="source-list"><li>等待資料...</li></ul>
         </article>
         <article class="card observe" style="--delay: 110ms;">
-          <h3><iconify-icon icon="lucide:clock-3"></iconify-icon>即將開放 / 功能追蹤</h3>
+          <h3 data-i18n-key="events.upcomingTitle"><iconify-icon icon="lucide:clock-3"></iconify-icon>即將開放 / 功能追蹤</h3>
           <ul id="intel-features-list" class="source-list"><li>等待資料...</li></ul>
         </article>
       </div>
 
       <div id="intel-events-cards" class="intel-grid"></div>
-      <p id="intel-events-empty" class="source-empty" style="display:none;">目前沒有可顯示的活動貼文。</p>
+      <p id="intel-events-empty" class="source-empty" style="display:none;" data-i18n-key="events.empty">目前沒有可顯示的活動貼文。</p>
     </section>
 
     <section id="world" class="panel observe category-panel category-hidden" data-category-section="other" style="--delay: 40ms;">
       <div class="section-head">
         <div>
-          <h2 class="section-title">社群精選 / <span class="text-gradient">Community Picks</span></h2>
-          <p class="section-sub">這裡只放玩家與社群看得懂的補充內容；遊戲細節請從上方 <strong>Game</strong> 入口查看。</p>
+          <h2 class="section-title" data-i18n-key="other.title" data-i18n-html="1">社群精選 / <span class="text-gradient">Community Picks</span></h2>
+          <p class="section-sub" data-i18n-key="other.sub" data-i18n-html="1">這裡只放玩家與社群看得懂的補充內容；遊戲細節請從上方 <strong>Game</strong> 入口查看。</p>
         </div>
-        <span class="chip"><iconify-icon icon="lucide:users"></iconify-icon>Community Focus</span>
+        <span class="chip" data-i18n-key="other.focusChip"><iconify-icon icon="lucide:users"></iconify-icon>Community Focus</span>
       </div>
 
       <article class="card observe" style="--delay: 66ms; margin-bottom: 0.66rem;">
-        <h3><iconify-icon icon="lucide:box"></iconify-icon>社群精選貼文</h3>
+        <h3 data-i18n-key="other.postsTitle"><iconify-icon icon="lucide:box"></iconify-icon>社群精選貼文</h3>
         <div id="intel-other-cards" class="intel-grid"></div>
-        <p id="intel-other-empty" class="source-empty" style="display:none;">目前沒有可顯示的社群精選貼文。</p>
+        <p id="intel-other-empty" class="source-empty" style="display:none;" data-i18n-key="other.empty">目前沒有可顯示的社群精選貼文。</p>
       </article>
 
       <div class="grid-2" style="margin-top: 0.72rem;">
         <article class="card observe" style="--delay: 110ms;">
-          <h3><iconify-icon icon="lucide:gamepad-2"></iconify-icon>Game 專區入口</h3>
+          <h3 data-i18n-key="other.gameEntryTitle"><iconify-icon icon="lucide:gamepad-2"></iconify-icon>Game 專區入口</h3>
           <ul>
-            <li>遊戲世界觀、玩法與互動展示，統一在獨立的 <strong>Game</strong> 頁面。</li>
-            <li>這個整理頁只負責情報彙整，不混入遊戲開發內容。</li>
-            <li>想看完整遊戲介紹，直接從下方按鈕進入。</li>
+            <li data-i18n-key="other.gameEntry1" data-i18n-html="1">遊戲世界觀、玩法與互動展示，統一在獨立的 <strong>Game</strong> 頁面。</li>
+            <li data-i18n-key="other.gameEntry2">這個整理頁只負責情報彙整，不混入遊戲開發內容。</li>
+            <li data-i18n-key="other.gameEntry3">想看完整遊戲介紹，直接從下方按鈕進入。</li>
           </ul>
           <a href="game.html" class="btn btn-sub" style="margin-top: 0.5rem; width: fit-content;">
             <iconify-icon icon="lucide:arrow-right-circle"></iconify-icon>
-            <span>前往 Game 頁面</span>
+            <span data-i18n-key="other.goGame">前往 Game 頁面</span>
           </a>
         </article>
 
         <article class="card observe" style="--delay: 160ms;">
-          <h3><iconify-icon icon="lucide:sparkles"></iconify-icon>如何看這個區塊</h3>
+          <h3 data-i18n-key="other.howToReadTitle"><iconify-icon icon="lucide:sparkles"></iconify-icon>如何看這個區塊</h3>
           <ul>
-            <li>優先看貼文標題、重點摘要與原始來源連結。</li>
-            <li>遇到活動資訊時，先確認時間、獎勵與參與方式。</li>
-            <li>遇到觀點型內容時，建議多來源比對再下判斷。</li>
-            <li>不確定分類可用「保留 / 排除 / 回饋分類 / 頂選 / 置底」手動微調。</li>
+            <li data-i18n-key="other.how1">優先看貼文標題、重點摘要與原始來源連結。</li>
+            <li data-i18n-key="other.how2">遇到活動資訊時，先確認時間、獎勵與參與方式。</li>
+            <li data-i18n-key="other.how3">遇到觀點型內容時，建議多來源比對再下判斷。</li>
+            <li data-i18n-key="other.how4">不確定分類可用「保留 / 排除 / 回饋分類 / 頂選 / 置底」手動微調。</li>
           </ul>
         </article>
       </div>
@@ -225,27 +208,27 @@
     <section id="pipeline" class="panel observe category-panel category-hidden" data-category-section="pokemon" style="--delay: 40ms;">
       <div class="section-head">
         <div>
-          <h2 class="section-title">寶可夢相關資訊 / TCG Pro Pipeline</h2>
-          <p class="section-sub">這裡整理寶可夢 / TCG 的可讀情報：先看摘要重點，再點開看完整分析與原始連結。</p>
+          <h2 class="section-title" data-i18n-key="pokemon.title">寶可夢相關資訊 / TCG Pro Pipeline</h2>
+          <p class="section-sub" data-i18n-key="pokemon.sub">這裡整理寶可夢 / TCG 的可讀情報：先看摘要重點，再點開看完整分析與原始連結。</p>
         </div>
         <span class="chip"><iconify-icon icon="lucide:factory"></iconify-icon>Production Flow</span>
       </div>
 
       <article class="card observe" style="--delay: 66ms; margin-bottom: 0.66rem;">
-        <h3><iconify-icon icon="lucide:target"></iconify-icon>寶可夢 / TCG 貼文整理</h3>
+        <h3 data-i18n-key="pokemon.postsTitle"><iconify-icon icon="lucide:target"></iconify-icon>寶可夢 / TCG 貼文整理</h3>
         <div id="intel-pokemon-cards" class="intel-grid"></div>
-        <p id="intel-pokemon-empty" class="source-empty" style="display:none;">目前沒有寶可夢相關貼文。</p>
+        <p id="intel-pokemon-empty" class="source-empty" style="display:none;" data-i18n-key="pokemon.empty">目前沒有寶可夢相關貼文。</p>
       </article>
 
       <article class="card observe" style="--delay: 78ms; margin-bottom: 0.66rem;">
         <div class="pokemon-news-head">
-          <h3><iconify-icon icon="lucide:newspaper"></iconify-icon>最新消息</h3>
-          <button id="pokemon-news-refresh-btn" type="button" class="intel-sync-btn">更新最新消息</button>
+          <h3 data-i18n-key="pokemon.newsTitle"><iconify-icon icon="lucide:newspaper"></iconify-icon>最新消息</h3>
+          <button id="pokemon-news-refresh-btn" type="button" class="intel-sync-btn" data-i18n-key="pokemon.newsRefresh">更新最新消息</button>
         </div>
         <div id="pokemon-news-list" class="pokemon-news-grid">
-          <article class="pokemon-news-card"><p class="pokemon-news-summary">等待 AI 最新消息...</p></article>
+          <article class="pokemon-news-card"><p class="pokemon-news-summary" data-i18n-key="pokemon.newsWaiting">等待 AI 最新消息...</p></article>
         </div>
-        <p id="pokemon-news-meta" class="intel-note">來源：MiniMax NewsAgent</p>
+        <p id="pokemon-news-meta" class="intel-note" data-i18n-key="pokemon.newsSource">來源：MiniMax NewsAgent</p>
       </article>
 
     </section>
@@ -253,45 +236,45 @@
     <section id="sbt" class="panel observe category-panel category-hidden" data-category-section="sbt" style="--delay: 40ms;">
       <div class="section-head">
         <div>
-          <h2 class="section-title"><span class="text-gradient">SBT</span> 系統整理（可獲取 / 已結束 / 進階）</h2>
-          <p class="section-sub"><strong>SBT = 專案參與度與貢獻的鏈上紀錄</strong>。以下將資料整理成可快速判讀版本。</p>
+          <h2 class="section-title" data-i18n-key="sbt.title" data-i18n-html="1"><span class="text-gradient">SBT</span> 系統整理（可獲取 / 已結束 / 進階）</h2>
+          <p class="section-sub" data-i18n-key="sbt.sub" data-i18n-html="1"><strong>SBT = 專案參與度與貢獻的鏈上紀錄</strong>。以下將資料整理成可快速判讀版本。</p>
         </div>
-        <span class="chip"><iconify-icon icon="lucide:badge-check"></iconify-icon>SBT Matrix</span>
+        <span class="chip" data-i18n-key="sbt.matrixChip"><iconify-icon icon="lucide:badge-check"></iconify-icon>SBT Matrix</span>
       </div>
 
       <article class="card observe" style="--delay: 66ms; margin-bottom: 0.66rem;">
-        <h3><iconify-icon icon="lucide:shield-check"></iconify-icon>SBT 貼文整理</h3>
-        <p class="intel-note">預設顯示前後 14 天內的內容；若要長期保留舊文，請在卡片上按「頂選」，它會同步出現在「社群精選」。</p>
+        <h3 data-i18n-key="sbt.postsTitle"><iconify-icon icon="lucide:shield-check"></iconify-icon>SBT 貼文整理</h3>
+        <p class="intel-note" data-i18n-key="sbt.postsNote">預設顯示前後 14 天內的內容；若要長期保留舊文，請在卡片上按「頂選」，它會同步出現在「社群精選」。</p>
         <div id="intel-sbt-cards" class="intel-grid"></div>
-        <p id="intel-sbt-empty" class="source-empty" style="display:none;">目前沒有 SBT 相關貼文。</p>
+        <p id="intel-sbt-empty" class="source-empty" style="display:none;" data-i18n-key="sbt.empty">目前沒有 SBT 相關貼文。</p>
       </article>
 
       <div class="grid-2" style="margin-top: 0.2rem;">
         <article class="card observe" style="--delay: 90ms;">
-          <h3><iconify-icon icon="lucide:lightbulb"></iconify-icon>SBT 實戰建議</h3>
+          <h3 data-i18n-key="sbt.adviceTitle"><iconify-icon icon="lucide:lightbulb"></iconify-icon>SBT 實戰建議</h3>
           <ul>
-            <li><strong>基礎路線</strong>：Link 帳號 → 充值 → 開包 → 交易。</li>
-            <li><strong>內容路線</strong>：X 長文 + DC 活躍互動 + AMA 參與。</li>
-            <li><strong>開發路線</strong>：提交工具或 AI 系統，爭取 Community Developer。</li>
+            <li data-i18n-key="sbt.advice1" data-i18n-html="1"><strong>基礎路線</strong>：Link 帳號 → 充值 → 開包 → 交易。</li>
+            <li data-i18n-key="sbt.advice2" data-i18n-html="1"><strong>內容路線</strong>：X 長文 + DC 活躍互動 + AMA 參與。</li>
+            <li data-i18n-key="sbt.advice3" data-i18n-html="1"><strong>開發路線</strong>：提交工具或 AI 系統，爭取 Community Developer。</li>
           </ul>
         </article>
 
         <article class="card observe" style="--delay: 120ms;">
-          <h3><iconify-icon icon="lucide:megaphone"></iconify-icon>任務節奏</h3>
-          <p>
+          <h3 data-i18n-key="sbt.paceTitle"><iconify-icon icon="lucide:megaphone"></iconify-icon>任務節奏</h3>
+          <p data-i18n-key="sbt.paceBody" data-i18n-html="1">
             大部分限時 SBT 都有<strong>「活動窗 + 指定行為」</strong>條件，建議把官方 X、Discord 通知打開（含鈴鐺），避免錯過瞬時任務。
           </p>
         </article>
 
         <article class="card observe" style="--delay: 140ms;">
-          <h3><iconify-icon icon="lucide:sparkles"></iconify-icon>即將改版：積分制</h3>
-          <p>SBT 系統未來將全面升級為<strong>積分制</strong>，現有的 SBT 成就將在改版後轉化為相應的積分累積。</p>
+          <h3 data-i18n-key="sbt.pointsTitle"><iconify-icon icon="lucide:sparkles"></iconify-icon>即將改版：積分制</h3>
+          <p data-i18n-key="sbt.pointsBody" data-i18n-html="1">SBT 系統未來將全面升級為<strong>積分制</strong>，現有的 SBT 成就將在改版後轉化為相應的積分累積。</p>
           <ul style="margin-top: 0.5rem;">
-            <li><strong>積分獲取</strong>：完成各類 SBT 任務即可持續累積積分</li>
-            <li><strong>積分用途</strong>：可兌換豐富獎勵，包括限定抽獎券、官方周邊商品等</li>
-            <li><strong>抽獎券應用</strong>：積分兌換的抽獎券可用於特殊卡機活動</li>
+            <li data-i18n-key="sbt.points1" data-i18n-html="1"><strong>積分獲取</strong>：完成各類 SBT 任務即可持續累積積分</li>
+            <li data-i18n-key="sbt.points2" data-i18n-html="1"><strong>積分用途</strong>：可兌換豐富獎勵，包括限定抽獎券、官方周邊商品等</li>
+            <li data-i18n-key="sbt.points3" data-i18n-html="1"><strong>抽獎券應用</strong>：積分兌換的抽獎券可用於特殊卡機活動</li>
           </ul>
-          <p style="margin-top: 0.5rem; color: var(--text-soft); font-size: 0.85rem;">
+          <p style="margin-top: 0.5rem; color: var(--text-soft); font-size: 0.85rem;" data-i18n-key="sbt.pointsNote">
             建議現在就開始積極完成各項 SBT 任務，為未來的積分時代做好準備！
           </p>
         </article>
@@ -300,7 +283,7 @@
       <div class="sbt-groups observe" style="--delay: 110ms;">
         <article class="sbt-group">
           <div class="sbt-group-head">
-            <h3 class="sbt-group-title">✅ 還能得到 | Available</h3>
+            <h3 class="sbt-group-title" data-i18n-key="sbt.availableTitle">✅ 還能得到 | Available</h3>
             <span id="sbt-available-count" class="chip"><iconify-icon icon="lucide:clock-3"></iconify-icon>0 items</span>
           </div>
           <div id="sbt-available-list" class="sbt-list"></div>
@@ -308,7 +291,7 @@
 
         <article class="sbt-group">
           <div class="sbt-group-head">
-            <h3 class="sbt-group-title">❌ 目前拿不到 / 邀請制</h3>
+            <h3 class="sbt-group-title" data-i18n-key="sbt.unavailableTitle">❌ 目前拿不到 / 邀請制</h3>
             <span id="sbt-unavailable-count" class="chip"><iconify-icon icon="lucide:archive-x"></iconify-icon>0 items</span>
           </div>
           <div id="sbt-unavailable-list" class="sbt-list"></div>
@@ -316,7 +299,7 @@
 
       </div>
 
-      <p class="sbt-caption observe" style="--delay: 135ms;">
+      <p class="sbt-caption observe" style="--delay: 135ms;" data-i18n-key="sbt.caption" data-i18n-html="1">
         顯示邏輯：只保留已整理出取得條件的 SBT；<strong>`Invite`、`Closed`、限時活動已結束</strong>歸在「目前拿不到」。未分類圖示不在前台顯示。
       </p>
     </section>
@@ -324,22 +307,22 @@
     <section id="ops" class="panel observe category-panel category-hidden" data-category-section="tools" style="--delay: 40ms;">
       <div class="section-head">
         <div>
-          <h2 class="section-title">工具 / <span class="text-gradient">Community Toolbox</span></h2>
-          <p class="section-sub">這區是社群常用工具與功能入口，幫你快速完成查價、整理、貼文分析與追蹤。</p>
+          <h2 class="section-title" data-i18n-key="tools.title" data-i18n-html="1">工具 / <span class="text-gradient">Community Toolbox</span></h2>
+          <p class="section-sub" data-i18n-key="tools.sub">這區是社群常用工具與功能入口，幫你快速完成查價、整理、貼文分析與追蹤。</p>
         </div>
         <span class="chip"><iconify-icon icon="lucide:server-cog"></iconify-icon>Practical Tools</span>
       </div>
 
       <article class="card observe" style="--delay: 66ms; margin-bottom: 0.66rem;">
-        <h3><iconify-icon icon="lucide:wrench"></iconify-icon>工具 / 攻略貼文整理</h3>
+        <h3 data-i18n-key="tools.postsTitle"><iconify-icon icon="lucide:wrench"></iconify-icon>工具 / 攻略貼文整理</h3>
         <div id="intel-tools-cards" class="intel-grid"></div>
-        <p id="intel-tools-empty" class="source-empty" style="display:none;">目前沒有工具或攻略貼文。</p>
+        <p id="intel-tools-empty" class="source-empty" style="display:none;" data-i18n-key="tools.empty">目前沒有工具或攻略貼文。</p>
       </article>
 
       <div class="section-head" style="margin-top: 0.72rem; margin-bottom: 0.66rem;">
         <div>
-          <h3 class="section-title" style="font-size: clamp(1.08rem, 2vw, 1.34rem);">市場研究堆疊 / Research Stack</h3>
-          <p class="section-sub">研究層維持原本實戰工具：<strong>先看成交，再做決策</strong>。</p>
+          <h3 class="section-title" style="font-size: clamp(1.08rem, 2vw, 1.34rem);" data-i18n-key="tools.researchTitle">市場研究堆疊 / Research Stack</h3>
+          <p class="section-sub" data-i18n-key="tools.researchSub" data-i18n-html="1">研究層維持原本實戰工具：<strong>先看成交，再做決策</strong>。</p>
         </div>
         <span class="chip"><iconify-icon icon="lucide:search"></iconify-icon>Market Tools</span>
       </div>
@@ -347,27 +330,27 @@
       <div class="tools">
         <article class="tool observe" style="--delay: 300ms;">
           <h4><iconify-icon icon="lucide:shoe"></iconify-icon>SNKRDUNK</h4>
-          <p>日版卡價格常用平台，可看近期成交與市場指數曲線。</p>
+          <p data-i18n-key="tools.snkrdunkDesc">日版卡價格常用平台，可看近期成交與市場指數曲線。</p>
           <a href="http://snkrdunk.com" target="_blank" rel="noreferrer">http://snkrdunk.com</a>
         </article>
 
         <article class="tool observe" style="--delay: 330ms;">
           <h4><iconify-icon icon="lucide:chart-no-axes-combined"></iconify-icon>PriceCharting</h4>
-          <p>查 PSA10 / PSA9 / Raw 歷史成交，適合看中長期趨勢。</p>
+          <p data-i18n-key="tools.pricechartingDesc">查 PSA10 / PSA9 / Raw 歷史成交，適合看中長期趨勢。</p>
           <a href="https://pricecharting.com" target="_blank" rel="noreferrer">https://pricecharting.com</a>
         </article>
 
         <article class="tool observe" style="--delay: 360ms;">
           <h4><iconify-icon icon="lucide:shopping-cart"></iconify-icon>eBay Sold</h4>
-          <p>請切到 <strong>Completed / Sold</strong>，不要只看在售掛單。</p>
+          <p data-i18n-key="tools.ebayDesc" data-i18n-html="1">請切到 <strong>Completed / Sold</strong>，不要只看在售掛單。</p>
           <a href="https://www.ebay.com" target="_blank" rel="noreferrer">https://www.ebay.com</a>
         </article>
       </div>
 
       <div class="section-head" style="margin-top: 0.72rem; margin-bottom: 0.66rem;">
         <div>
-          <h3 class="section-title" style="font-size: clamp(1.08rem, 2vw, 1.34rem);">TCG Pro Discord 指令清單</h3>
-          <p class="section-sub">以下只列可在 Discord 直接使用的 slash 指令（<strong>不顯示檔案路徑</strong>）；你後續給圖片我再逐一補到工具卡上。</p>
+          <h3 class="section-title" style="font-size: clamp(1.08rem, 2vw, 1.34rem);" data-i18n-key="tools.commandsTitle">TCG Pro Discord 指令清單</h3>
+          <p class="section-sub" data-i18n-key="tools.commandsSub" data-i18n-html="1">以下只列可在 Discord 直接使用的 slash 指令（<strong>不顯示檔案路徑</strong>）；你後續給圖片我再逐一補到工具卡上。</p>
         </div>
         <span class="chip"><iconify-icon icon="lucide:terminal-square"></iconify-icon>Slash Commands</span>
       </div>
@@ -375,71 +358,71 @@
       <div class="tools">
         <article class="tool observe" style="--delay: 240ms;">
           <h4><iconify-icon icon="lucide:user-square-2"></iconify-icon>Profile Poster</h4>
-          <p>輸入錢包地址並開啟互動式海報設定面板。</p>
+          <p data-i18n-key="tools.cmdProfileDesc">輸入錢包地址並開啟互動式海報設定面板。</p>
           <div class="tool-meta">Command: <code>/profile</code></div>
         </article>
 
         <article class="tool observe" style="--delay: 270ms;">
           <h4><iconify-icon icon="lucide:layout-template"></iconify-icon>Flex Pack Poster</h4>
-          <p>指定卡包生成 Flex 海報（剛抽排版 / 天堂地獄）。</p>
+          <p data-i18n-key="tools.cmdFlexDesc">指定卡包生成 Flex 海報（剛抽排版 / 天堂地獄）。</p>
           <div class="tool-meta">Command: <code>/flex_pack</code></div>
         </article>
 
         <article class="tool observe" style="--delay: 300ms;">
           <h4><iconify-icon icon="lucide:scan-search"></iconify-icon>Manual Analyze</h4>
-          <p>手動選擇版本後，生成報告與海報。</p>
+          <p data-i18n-key="tools.cmdAnalyzeDesc">手動選擇版本後，生成報告與海報。</p>
           <div class="tool-meta">Command: <code>/manual_analyze</code></div>
         </article>
 
         <article class="tool observe" style="--delay: 330ms;">
           <h4><iconify-icon icon="lucide:package-search"></iconify-icon>Cardset Report</h4>
-          <p>輸入系列代號（如 op15）生成卡盒 Top10 報告與海報。</p>
+          <p data-i18n-key="tools.cmdCardsetDesc">輸入系列代號（如 op15）生成卡盒 Top10 報告與海報。</p>
           <div class="tool-meta">Command: <code>/cardset</code></div>
         </article>
 
         <article class="tool observe" style="--delay: 390ms;">
           <h4><iconify-icon icon="lucide:store"></iconify-icon>Market Threads</h4>
-          <p>瀏覽市場討論串（WTS / WTB）與快取資訊。</p>
+          <p data-i18n-key="tools.cmdMarketDesc">瀏覽市場討論串（WTS / WTB）與快取資訊。</p>
           <div class="tool-meta">Command: <code>/market</code></div>
         </article>
 
         <article class="tool observe" style="--delay: 480ms;">
           <h4><iconify-icon icon="lucide:wallet-cards"></iconify-icon>User Settings</h4>
-          <p>設定你的預設錢包地址，方便後續指令直接帶入。</p>
+          <p data-i18n-key="tools.cmdSettingsDesc">設定你的預設錢包地址，方便後續指令直接帶入。</p>
           <div class="tool-meta">Command: <code>/settings</code></div>
         </article>
 
         <article class="tool observe" style="--delay: 510ms;">
           <h4><iconify-icon icon="lucide:trophy"></iconify-icon>Top Ranking</h4>
-          <p>查看各項排名 Top 10（文字版）。</p>
+          <p data-i18n-key="tools.cmdRankingDesc">查看各項排名 Top 10（文字版）。</p>
           <div class="tool-meta">Command: <code>/ranking</code></div>
         </article>
 
         <article class="tool observe" style="--delay: 600ms;">
           <h4><iconify-icon icon="lucide:chart-column-big"></iconify-icon>Bot Usage</h4>
-          <p>查看機器人使用次數（總次數 + 各指令）。</p>
+          <p data-i18n-key="tools.cmdUsageDesc">查看機器人使用次數（總次數 + 各指令）。</p>
           <div class="tool-meta">Command: <code>/bot_usage</code></div>
         </article>
       </div>
 
       <div class="grid-2" style="margin-top: 0.7rem;">
         <article class="card observe" style="--delay: 240ms;">
-          <h3><iconify-icon icon="lucide:play-circle"></iconify-icon>官方教學 / AMA</h3>
+          <h3 data-i18n-key="tools.tutorialTitle"><iconify-icon icon="lucide:play-circle"></iconify-icon>官方教學 / AMA</h3>
           <ul>
-            <li>Superliquid 教學（Bid / List / Trade / 積分）：
+            <li data-i18n-key="tools.tutorial1">Superliquid 教學（Bid / List / Trade / 積分）：
               <a href="https://x.com/renaissxyz/status/2011015569546625077" target="_blank" rel="noreferrer">x.com/renaissxyz/status/2011015569546625077</a>
             </li>
-            <li>One Piece AMA 回顧：
+            <li data-i18n-key="tools.tutorial2">One Piece AMA 回顧：
               <a href="https://x.com/Renaiss_CN/status/2019031940134023597" target="_blank" rel="noreferrer">x.com/Renaiss_CN/status/2019031940134023597</a>
             </li>
           </ul>
         </article>
 
         <article class="card observe" style="--delay: 280ms;">
-          <h3><iconify-icon icon="lucide:smartphone"></iconify-icon>行動端工具</h3>
+          <h3 data-i18n-key="tools.mobileTitle"><iconify-icon icon="lucide:smartphone"></iconify-icon>行動端工具</h3>
           <ul>
-            <li>Collectr：拍照識別與持倉追蹤方便（部分功能需會員）。</li>
-            <li>集換社：中文玩家常用，查價與社群內容都完整。</li>
+            <li data-i18n-key="tools.mobile1">Collectr：拍照識別與持倉追蹤方便（部分功能需會員）。</li>
+            <li data-i18n-key="tools.mobile2">集換社：中文玩家常用，查價與社群內容都完整。</li>
           </ul>
         </article>
       </div>
@@ -448,36 +431,36 @@
     <section id="timeline" class="panel observe category-panel category-hidden" data-category-section="alpha" style="--delay: 40ms;">
       <div class="section-head">
         <div>
-          <h2 class="section-title">未來 Alpha / <span class="text-gradient">Release Timeline</span></h2>
-          <p class="section-sub">這裡只放玩家會在意的未來更新：上線時間、影響範圍、你該提前準備什麼。</p>
+          <h2 class="section-title" data-i18n-key="alpha.title" data-i18n-html="1">未來 Alpha / <span class="text-gradient">Release Timeline</span></h2>
+          <p class="section-sub" data-i18n-key="alpha.sub">這裡只放玩家會在意的未來更新：上線時間、影響範圍、你該提前準備什麼。</p>
         </div>
         <span class="chip"><iconify-icon icon="lucide:history"></iconify-icon>Player-facing Roadmap</span>
       </div>
 
       <article class="card observe" style="--delay: 66ms; margin-bottom: 0.66rem;">
-        <h3><iconify-icon icon="lucide:rocket"></iconify-icon>未來 Alpha 貼文整理</h3>
+        <h3 data-i18n-key="alpha.postsTitle"><iconify-icon icon="lucide:rocket"></iconify-icon>未來 Alpha 貼文整理</h3>
         <div id="intel-alpha-cards" class="intel-grid"></div>
-        <p id="intel-alpha-empty" class="source-empty" style="display:none;">目前沒有未來功能 / Alpha 相關貼文。</p>
+        <p id="intel-alpha-empty" class="source-empty" style="display:none;" data-i18n-key="alpha.empty">目前沒有未來功能 / Alpha 相關貼文。</p>
       </article>
 
       <div class="grid-2" style="margin-top: 0.72rem;">
         <article class="card observe" style="--delay: 110ms;">
-          <h3><iconify-icon icon="lucide:list-checks"></iconify-icon>Alpha 卡片會顯示什麼</h3>
+          <h3 data-i18n-key="alpha.cardsTitle"><iconify-icon icon="lucide:list-checks"></iconify-icon>Alpha 卡片會顯示什麼</h3>
           <ul>
-            <li><strong>預計時間：</strong>預告何時開放，並標示是否接近當前日期。</li>
-            <li><strong>內容重點：</strong>一句話說明這次更新改了什麼。</li>
-            <li><strong>影響範圍：</strong>誰會受影響（新手、持有 SBT、一般玩家等）。</li>
-            <li><strong>行動建議：</strong>要不要提前報名、準備資產或關注公告。</li>
+            <li data-i18n-key="alpha.cards1" data-i18n-html="1"><strong>預計時間：</strong>預告何時開放，並標示是否接近當前日期。</li>
+            <li data-i18n-key="alpha.cards2" data-i18n-html="1"><strong>內容重點：</strong>一句話說明這次更新改了什麼。</li>
+            <li data-i18n-key="alpha.cards3" data-i18n-html="1"><strong>影響範圍：</strong>誰會受影響（新手、持有 SBT、一般玩家等）。</li>
+            <li data-i18n-key="alpha.cards4" data-i18n-html="1"><strong>行動建議：</strong>要不要提前報名、準備資產或關注公告。</li>
           </ul>
         </article>
 
         <article class="card observe" style="--delay: 160ms;">
-          <h3><iconify-icon icon="lucide:alarm-clock-check"></iconify-icon>如何判斷優先追蹤</h3>
+          <h3 data-i18n-key="alpha.priorityTitle"><iconify-icon icon="lucide:alarm-clock-check"></iconify-icon>如何判斷優先追蹤</h3>
           <ul>
-            <li>有時間與門檻條件（白名單 / 抽選 / 限時）的更新，優先看。</li>
-            <li>有獎勵（SBT、積分、空投、限量周邊）的更新，優先看。</li>
-            <li>如果貼文偏觀點，請搭配官方來源交叉確認。</li>
-            <li>可點卡片查看完整 AI 整理與原文連結，避免只看標題。</li>
+            <li data-i18n-key="alpha.priority1">有時間與門檻條件（白名單 / 抽選 / 限時）的更新，優先看。</li>
+            <li data-i18n-key="alpha.priority2">有獎勵（SBT、積分、空投、限量周邊）的更新，優先看。</li>
+            <li data-i18n-key="alpha.priority3">如果貼文偏觀點，請搭配官方來源交叉確認。</li>
+            <li data-i18n-key="alpha.priority4">可點卡片查看完整 AI 整理與原文連結，避免只看標題。</li>
           </ul>
         </article>
       </div>
@@ -486,8 +469,8 @@
     <section id="intel" class="panel observe category-panel" data-category-section="official" style="--delay: 40ms;">
       <div class="section-head">
         <div>
-          <h2 class="section-title">官方近期更新 / <span class="text-gradient">X Intel</span></h2>
-          <p class="section-sub">
+          <h2 class="section-title" data-i18n-key="official.title" data-i18n-html="1">官方近期更新 / <span class="text-gradient">X Intel</span></h2>
+          <p class="section-sub" data-i18n-key="official.sub" data-i18n-html="1">
             以 <strong>@TCGRWA</strong>、<strong>@ChenYichiao</strong>、<strong>@renaissxyz</strong>、<strong>@davidcheang99</strong> 為核心，
             自動抓最近 30 天內容後，先過濾低訊號回覆，再統整成「官方新情報 / 近期活動 / 即將開放 / 社群焦點」。
           </p>
@@ -502,34 +485,34 @@
       <div class="card observe intel-control-card" style="--delay: 80ms;">
         <div class="intel-toolbar">
           <div class="intel-form">
-            <label for="intel-url-input">手動加入貼文：貼上 X 連結後，會在背景分析並放進精選（可刷新頁面，不影響進度）</label>
+            <label for="intel-url-input" data-i18n-key="official.manualLabel">手動加入貼文：貼上 X 連結後，會在背景分析並放進精選（可刷新頁面，不影響進度）</label>
             <div class="intel-input-row">
               <input id="intel-url-input" type="url" placeholder="https://x.com/username/status/1234567890" />
-              <button id="intel-analyze-btn" type="button">分析並加入</button>
+              <button id="intel-analyze-btn" type="button" data-i18n-key="official.analyzeBtn">分析並加入</button>
             </div>
           </div>
-          <button id="intel-sync-btn" class="intel-sync-btn" type="button">同步最近 30 天</button>
+          <button id="intel-sync-btn" class="intel-sync-btn" type="button" data-i18n-key="official.syncBtn">同步最近 30 天</button>
         </div>
         <div id="intel-auth-stealth-line" class="intel-auth-bar">
-          <div id="intel-auth-status" class="intel-auth-status">管理模式：檢查登入狀態中...</div>
+          <div id="intel-auth-status" class="intel-auth-status" data-i18n-key="official.authStatus">管理模式：檢查登入狀態中...</div>
           <div class="intel-auth-actions">
-            <button id="intel-login-btn" type="button" class="intel-auth-btn intel-auth-stealth">管理員登入</button>
-            <button id="intel-logout-btn" type="button" class="intel-auth-btn is-logout" style="display:none;">登出</button>
+            <button id="intel-login-btn" type="button" class="intel-auth-btn intel-auth-stealth" data-i18n-key="auth.adminLogin">管理員登入</button>
+            <button id="intel-logout-btn" type="button" class="intel-auth-btn is-logout" style="display:none;" data-i18n-key="auth.logout">登出</button>
           </div>
         </div>
-        <p id="intel-action-message" class="intel-action-msg">提示：送出分析後會在背景執行，可直接刷新頁面；若按鈕沒反應，先執行 `python website/scripts/ai_intel_server.py --port 8787`。</p>
+        <p id="intel-action-message" class="intel-action-msg" data-i18n-key="official.actionMessage">提示：送出分析後會在背景執行，可直接刷新頁面；若按鈕沒反應，先執行 `python website/scripts/ai_intel_server.py --port 8787`。</p>
       </div>
 
       <article class="card observe" style="--delay: 96ms;">
-        <h3><iconify-icon icon="lucide:newspaper"></iconify-icon><span id="intel-official-overview-title">近 7 天官方總結</span></h3>
-        <p id="intel-official-overview-summary" class="intel-conclusion">等待官方總結資料...</p>
+        <h3><iconify-icon icon="lucide:newspaper"></iconify-icon><span id="intel-official-overview-title" data-i18n-key="official.overviewTitle">近 7 天官方總結</span></h3>
+        <p id="intel-official-overview-summary" class="intel-conclusion" data-i18n-key="official.overviewSummaryWaiting">等待官方總結資料...</p>
         <ul id="intel-official-overview-bullets" class="source-list">
-          <li>同步完成後會顯示官方近期重點。</li>
+          <li data-i18n-key="official.overviewBulletWaiting">同步完成後會顯示官方近期重點。</li>
         </ul>
       </article>
 
       <div id="intel-cards" class="intel-grid"></div>
-      <p id="intel-empty" class="source-empty" style="display:none;">尚未取得可顯示的情報卡片。</p>
+      <p id="intel-empty" class="source-empty" style="display:none;" data-i18n-key="official.empty">尚未取得可顯示的情報卡片。</p>
 
       <div class="grid-2 intel-digest-wrap">
         <article class="card observe" style="--delay: 110ms;">
@@ -542,30 +525,30 @@
           <div id="intel-format-templates" class="intel-template-grid" style="margin-top:0.68rem;"></div>
         </article>
         <article class="card observe" style="--delay: 140ms;">
-          <h3><iconify-icon icon="lucide:database-zap"></iconify-icon>來源狀態</h3>
+          <h3 data-i18n-key="official.sourceStatusTitle"><iconify-icon icon="lucide:database-zap"></iconify-icon>來源狀態</h3>
           <div id="intel-source-status" class="source-links"></div>
-          <p class="intel-note">系統會保留原始貼文連結，避免只看 AI 結論。</p>
+          <p class="intel-note" data-i18n-key="official.sourceStatusNote">系統會保留原始貼文連結，避免只看 AI 結論。</p>
         </article>
       </div>
 
       <div class="grid-2 intel-digest-wrap">
         <article class="card observe" style="--delay: 160ms;">
-          <h3><iconify-icon icon="lucide:badge-info"></iconify-icon>官方新情報</h3>
+          <h3 data-i18n-key="official.latestTitle"><iconify-icon icon="lucide:badge-info"></iconify-icon>官方新情報</h3>
           <ul id="intel-official-list" class="source-list"><li>等待資料...</li></ul>
         </article>
         <article class="card observe" style="--delay: 180ms;">
-          <h3><iconify-icon icon="lucide:users"></iconify-icon>社群焦點</h3>
+          <h3 data-i18n-key="official.communityTitle"><iconify-icon icon="lucide:users"></iconify-icon>社群焦點</h3>
           <ul id="intel-community-list" class="source-list"><li>等待資料...</li></ul>
         </article>
       </div>
 
       <div class="grid-2 intel-agenda-grid">
         <article class="card observe" style="--delay: 240ms;">
-          <h3><iconify-icon icon="lucide:trending-up"></iconify-icon>近期增長訊號</h3>
+          <h3 data-i18n-key="official.growthTitle"><iconify-icon icon="lucide:trending-up"></iconify-icon>近期增長訊號</h3>
           <ul id="intel-growth-list" class="intel-agenda-list"><li class="source-empty">等待資料...</li></ul>
         </article>
         <article class="card observe" style="--delay: 260ms;">
-          <h3><iconify-icon icon="lucide:clock-3"></iconify-icon>最近官方更新</h3>
+          <h3 data-i18n-key="official.recentTitle"><iconify-icon icon="lucide:clock-3"></iconify-icon>最近官方更新</h3>
           <ul id="intel-recent-list" class="intel-agenda-list"><li class="source-empty">等待資料...</li></ul>
         </article>
       </div>
@@ -574,14 +557,14 @@
     <section id="community" class="panel observe category-panel category-hidden" data-category-section="other" style="--delay: 40ms;">
       <div class="section-head">
         <div>
-          <h2 class="section-title">其他 / Community</h2>
-          <p class="section-sub">把通知打開，任務和活動通常更新很快。想拿 SBT，最重要是<strong>持續參與並保持輸出</strong>。</p>
+          <h2 class="section-title" data-i18n-key="community.title">其他 / Community</h2>
+          <p class="section-sub" data-i18n-key="community.sub" data-i18n-html="1">把通知打開，任務和活動通常更新很快。想拿 SBT，最重要是<strong>持續參與並保持輸出</strong>。</p>
         </div>
       </div>
 
       <div class="grid-2">
         <article class="card observe" style="--delay: 90ms;">
-          <h3><iconify-icon icon="lucide:link"></iconify-icon>官方入口</h3>
+          <h3 data-i18n-key="community.officialLinks"><iconify-icon icon="lucide:link"></iconify-icon>官方入口</h3>
           <div class="official-links">
             <a class="official-link" href="https://www.renaiss.xyz/" target="_blank" rel="noreferrer" aria-label="Renaiss Website">
               <iconify-icon icon="lucide:globe"></iconify-icon>
@@ -599,8 +582,8 @@
         </article>
 
         <article class="card observe" style="--delay: 130ms;">
-          <h3><iconify-icon icon="lucide:users"></iconify-icon>本頁資料來源</h3>
-          <p>
+          <h3 data-i18n-key="community.sourceTitle"><iconify-icon icon="lucide:users"></iconify-icon>本頁資料來源</h3>
+          <p data-i18n-key="community.sourceBody" data-i18n-html="1">
             根據「Renaiss 新手入門資料包」重整，包含<strong>玩法、SBT、查價工具與近期市場觀察</strong>。
             內容可持續迭代成社群知識庫版本。
           </p>
@@ -611,11 +594,11 @@
         <a href="#hero" class="btn btn-main">
           <span class="shine"></span>
           <iconify-icon icon="lucide:arrow-up"></iconify-icon>
-          <span>回到頂部 | Back to Top</span>
+          <span data-i18n-key="community.backTop">回到頂部 | Back to Top</span>
         </a>
         <a href="https://www.renaiss.xyz" target="_blank" rel="noreferrer" class="btn btn-sub">
           <iconify-icon icon="lucide:external-link"></iconify-icon>
-          <span>前往官網 | Visit Official Site</span>
+          <span data-i18n-key="community.visitOfficial">前往官網 | Visit Official Site</span>
         </a>
       </div>
 
@@ -663,6 +646,7 @@
           <div class="intel-auth-sub" style="margin:0;">登入後可查看各工作狀態、同步進度與新貼文整理情況。</div>
           <div style="display:flex; gap:8px; flex-wrap:wrap;">
             <button id="intel-admin-sync-now" type="button" class="intel-auth-btn">立即掃描（30 天）</button>
+            <button id="intel-admin-retranslate" type="button" class="intel-auth-btn">全部重新翻譯</button>
             <button id="intel-admin-refresh" type="button" class="intel-auth-btn">刷新看板</button>
           </div>
         </div>
@@ -780,9 +764,9 @@
     }
   </script>
 
-  <script src="./assets/index-i18n.js?v=20260426-i18n1"></script>
-  <script src="./assets/index-data.js?v=20260426-i18n1"></script>
-  <script src="./assets/index-render.js?v=20260426-i18n4"></script>
-  <script src="./assets/index-actions.js?v=20260426-lang7"></script>
+  <script src="./assets/index-i18n.js?v=20260427-i18n3"></script>
+  <script src="./assets/index-data.js?v=20260427-intelfast2"></script>
+  <script src="./assets/index-render.js?v=20260427-intelfast6"></script>
+  <script src="./assets/index-actions.js?v=20260427-intelfast4"></script>
 </body>
 </html>
