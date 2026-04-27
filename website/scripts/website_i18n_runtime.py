@@ -74,7 +74,7 @@ I18N_FEED_LIST_KEYS = {
 I18N_MAX_TARGET_TEXTS = int(os.getenv("I18N_MAX_TARGET_TEXTS", "0") or "0")
 I18N_MAX_LIST_ITEMS_PER_FIELD = int(os.getenv("I18N_MAX_LIST_ITEMS_PER_FIELD", "0") or "0")
 I18N_MIN_ACCEPTABLE_COVERAGE = float(os.getenv("I18N_MIN_ACCEPTABLE_COVERAGE", "0.98") or "0.98")
-I18N_FEED_CHUNK_SIZE = max(3, int(os.getenv("I18N_FEED_CHUNK_SIZE", "36") or "36"))
+I18N_FEED_CHUNK_SIZE = max(3, int(os.getenv("I18N_FEED_CHUNK_SIZE", "12") or "12"))
 I18N_FEED_FALLBACK_MODE = str(os.getenv("I18N_FEED_FALLBACK_MODE", "base") or "base").strip().lower()
 I18N_SKIP_KEYS = {
     "id",
