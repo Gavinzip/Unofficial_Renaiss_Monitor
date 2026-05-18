@@ -24,6 +24,7 @@ python3 scripts/market_api_server.py
 1. Service type: HTTP service
 2. Dockerfile: `Dockerfile.api`
 3. Env vars:
+   - `APP_MODE=api`
    - `PORT=8080`
    - `PRICE_DIFF_PERCENT_THRESHOLD=-10`
    - `WINDOW_DAYS=30`
