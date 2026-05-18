@@ -172,3 +172,24 @@ TWITTER_ACCOUNTS="pokegetinfomain,other_account,third_account"
 | `scripts/market_monitor.py` | Renaiss arbitrage detection | Continuous (5min loop) |
 | `scripts/twitter_monitor.py` | Twitter news monitoring | Continuous (30min loop) |
 | `scripts/market_report_vision.py` | Image analysis engine | On-demand |
+
+---
+
+# 🌐 Market API (Agent Wallet Integration)
+
+Run as HTTP API:
+
+```bash
+pip install -r requirements.api.txt
+python3 scripts/market_api_server.py
+```
+
+Core endpoints:
+- `GET /health`
+- `GET /v1/listings/latest`
+- `POST /v1/analyze/item-id`
+- `POST /v1/opportunities/scan`
+
+Wallet signal push:
+- Set `AGENT_WALLET_WEBHOOK_URL` in `.env`
+- Send `notify_wallet=true` in `/v1/opportunities/scan`

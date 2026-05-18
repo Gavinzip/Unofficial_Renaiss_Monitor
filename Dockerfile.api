@@ -1,0 +1,18 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+ENV PYTHONUNBUFFERED=1
+ENV PORT=8080
+
+COPY requirements.api.txt /app/requirements.api.txt
+RUN pip install --no-cache-dir -r /app/requirements.api.txt
+
+COPY scripts/market_monitor.py /app/scripts/market_monitor.py
+COPY scripts/market_report_vision.py /app/scripts/market_report_vision.py
+COPY scripts/whitelist.txt /app/scripts/whitelist.txt
+COPY scripts/market_api_server.py /app/scripts/market_api_server.py
+
+EXPOSE 8080
+
+CMD ["python", "scripts/market_api_server.py"]
