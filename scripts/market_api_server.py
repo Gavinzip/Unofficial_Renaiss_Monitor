@@ -33,6 +33,52 @@ def _safe_pct(avg_price: Optional[float], ask_price: float) -> Optional[float]:
     return ((avg_price - ask_price) / avg_price) * 100.0
 
 
+def _safe_float(value: Any) -> Optional[float]:
+    try:
+        if value is None:
+            return None
+        return float(value)
+    except Exception:
+        return None
+
+
+def _normalize_source_records(
+    records: List[Dict[str, Any]],
+    source: str,
+    jpy_rate: float,
+) -> List[Dict[str, Any]]:
+    normalized: List[Dict[str, Any]] = []
+    for rec in records or []:
+        raw = dict(rec or {})
+        raw_date = str(raw.get("date") or "").strip()
+        dt = mm.parse_date_string(raw_date) if raw_date else None
+        price = _safe_float(raw.get("price"))
+
+        if source == "snkrdunk":
+            price_jpy = price
+            price_usd = (price / jpy_rate) if (price is not None and jpy_rate > 0) else None
+            currency = "JPY"
+        else:
+            price_jpy = None
+            price_usd = price
+            currency = "USD"
+
+        normalized.append(
+            {
+                "date_raw": raw.get("date"),
+                "date_iso": dt.isoformat() if dt else None,
+                "grade": raw.get("grade"),
+                "price": price,
+                "price_usd": price_usd,
+                "price_jpy": price_jpy,
+                "currency": currency,
+                "note": raw.get("note"),
+                "record": raw,
+            }
+        )
+    return normalized
+
+
 def _pick_best_market(
     ask_price: float,
     pc_avg: Optional[float],
@@ -60,7 +106,11 @@ def _pick_best_market(
     return max(candidates, key=lambda item: float(item["profit_usd"]))
 
 
-def _analyze_listing(item: Dict[str, Any], threshold_pct: float) -> Dict[str, Any]:
+def _analyze_listing(
+    item: Dict[str, Any],
+    threshold_pct: float,
+    include_full_records: bool = True,
+) -> Dict[str, Any]:
     item_id = str(item.get("item_id") or "")
     full_name = str(item.get("name") or "")
     ask = float(item.get("ask_price") or 0.0)
@@ -80,9 +130,16 @@ def _analyze_listing(item: Dict[str, Any], threshold_pct: float) -> Dict[str, An
         year=year,
         current_jpy_rate=current_jpy_rate,
         attributes=item.get("attributes"),
+        include_records=include_full_records,
     )
-    pc_avg, pc_count, pc_url = pc_info
-    snkr_avg, snkr_count, snkr_url = snkr_info
+    if include_full_records:
+        pc_avg, pc_count, pc_url, pc_records = pc_info
+        snkr_avg, snkr_count, snkr_url, snkr_records = snkr_info
+    else:
+        pc_avg, pc_count, pc_url = pc_info
+        snkr_avg, snkr_count, snkr_url = snkr_info
+        pc_records = []
+        snkr_records = []
 
     pc_diff_pct = _safe_pct(pc_avg, ask)
     snkr_diff_pct = _safe_pct(snkr_avg, ask)
@@ -93,7 +150,7 @@ def _analyze_listing(item: Dict[str, Any], threshold_pct: float) -> Dict[str, An
     best = _pick_best_market(ask, pc_avg, snkr_avg)
     estimated_profit_usd = best["profit_usd"]
 
-    return {
+    result = {
         "item_id": item_id,
         "name": full_name,
         "grade": item.get("grade"),
@@ -107,6 +164,7 @@ def _analyze_listing(item: Dict[str, Any], threshold_pct: float) -> Dict[str, An
                 "diff_pct": pc_diff_pct,
                 "url": pc_url,
                 "meets_threshold": meets_pc,
+                "records_total": len(pc_records),
             },
             "snkrdunk": {
                 "avg_price_usd": snkr_avg,
@@ -114,6 +172,7 @@ def _analyze_listing(item: Dict[str, Any], threshold_pct: float) -> Dict[str, An
                 "diff_pct": snkr_diff_pct,
                 "url": snkr_url,
                 "meets_threshold": meets_snkr,
+                "records_total": len(snkr_records),
             },
         },
         "best_market": best["market"],
@@ -121,6 +180,18 @@ def _analyze_listing(item: Dict[str, Any], threshold_pct: float) -> Dict[str, An
         "estimated_diff_pct": best["diff_pct"],
         "is_opportunity": bool(meets_pc or meets_snkr),
     }
+
+    if include_full_records:
+        result["sources"]["pricecharting"]["records_raw"] = pc_records
+        result["sources"]["snkrdunk"]["records_raw"] = snkr_records
+        result["sources"]["pricecharting"]["records_normalized"] = _normalize_source_records(
+            pc_records, "pricecharting", current_jpy_rate
+        )
+        result["sources"]["snkrdunk"]["records_normalized"] = _normalize_source_records(
+            snkr_records, "snkrdunk", current_jpy_rate
+        )
+
+    return result
 
 
 def _wallet_actionable(
@@ -155,6 +226,7 @@ class ScanRequest(BaseModel):
     threshold_percent: Optional[float] = None
     min_profit_usd: float = Field(default=0.0, ge=0.0)
     wallet_budget_usd: Optional[float] = Field(default=None, ge=0.0)
+    include_full_records: bool = True
     only_actionable: bool = True
     notify_wallet: bool = False
     reference_id: Optional[str] = None
@@ -165,6 +237,7 @@ class AnalyzeByItemIdRequest(BaseModel):
     threshold_percent: Optional[float] = None
     min_profit_usd: float = Field(default=0.0, ge=0.0)
     wallet_budget_usd: Optional[float] = Field(default=None, ge=0.0)
+    include_full_records: bool = True
 
 
 app = FastAPI(
@@ -211,7 +284,11 @@ def analyze_by_item_id(req: AnalyzeByItemIdRequest) -> Dict[str, Any]:
     if not matched:
         raise HTTPException(status_code=404, detail=f"item_id not found: {req.item_id}")
 
-    analyzed = _analyze_listing(matched, threshold_pct)
+    analyzed = _analyze_listing(
+        matched,
+        threshold_pct,
+        include_full_records=req.include_full_records,
+    )
     analyzed["actionable"] = _wallet_actionable(
         analyzed=analyzed,
         min_profit_usd=req.min_profit_usd,
@@ -224,6 +301,7 @@ def analyze_by_item_id(req: AnalyzeByItemIdRequest) -> Dict[str, Any]:
         "threshold_percent": threshold_pct,
         "min_profit_usd": req.min_profit_usd,
         "wallet_budget_usd": req.wallet_budget_usd,
+        "include_full_records": req.include_full_records,
         "result": analyzed,
     }
 
@@ -239,7 +317,11 @@ def scan_opportunities(req: ScanRequest) -> Dict[str, Any]:
 
     analyzed_items: List[Dict[str, Any]] = []
     for item in selected:
-        analyzed = _analyze_listing(item, threshold_pct)
+        analyzed = _analyze_listing(
+            item,
+            threshold_pct,
+            include_full_records=req.include_full_records,
+        )
         actionable = _wallet_actionable(
             analyzed=analyzed,
             min_profit_usd=req.min_profit_usd,
@@ -258,6 +340,7 @@ def scan_opportunities(req: ScanRequest) -> Dict[str, Any]:
         "threshold_percent": threshold_pct,
         "min_profit_usd": req.min_profit_usd,
         "wallet_budget_usd": req.wallet_budget_usd,
+        "include_full_records": req.include_full_records,
         "count": len(analyzed_items),
         "opportunities": analyzed_items,
     }

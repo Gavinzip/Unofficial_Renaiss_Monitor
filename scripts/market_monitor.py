@@ -418,7 +418,15 @@ def fetch_market_data():
         print(f"[{datetime.now().strftime('%H:%M:%S')}] 網路請求失敗: {e}")
         return []
 
-def fetch_and_analyze_realtime(item_id, full_name, grading_company, year, current_jpy_rate=150.0, attributes=None):
+def fetch_and_analyze_realtime(
+    item_id,
+    full_name,
+    grading_company,
+    year,
+    current_jpy_rate=150.0,
+    attributes=None,
+    include_records=False,
+):
     """現場發動爬蟲並分析價格 (分開回傳 PC 與 SNKR 的數據)"""
     print(f"  🔍 正在對 {full_name} 進行實時市場分析... (匯率: 1 USD = {current_jpy_rate} JPY)")
     
@@ -525,6 +533,19 @@ def fetch_and_analyze_realtime(item_id, full_name, grading_company, year, curren
     )
     snkr_avg_jpy, snkr_count = calculate_source_average(snkr_records, grade_tag, window_days=WINDOW_DAYS)
     snkr_avg_usd = (snkr_avg_jpy / current_jpy_rate) if snkr_avg_jpy else None
+
+    if include_records:
+        return (
+            pc_avg,
+            pc_count,
+            pc_url,
+            pc_records or [],
+        ), (
+            snkr_avg_usd,
+            snkr_count,
+            snkr_url,
+            snkr_records or [],
+        )
 
     return (pc_avg, pc_count, pc_url), (snkr_avg_usd, snkr_count, snkr_url)
 

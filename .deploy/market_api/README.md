@@ -7,6 +7,14 @@
 - `POST /v1/analyze/item-id`
 - `POST /v1/opportunities/scan`
 
+By default, analysis endpoints return full source records:
+- `sources.pricecharting.records_raw`
+- `sources.pricecharting.records_normalized`
+- `sources.snkrdunk.records_raw`
+- `sources.snkrdunk.records_normalized`
+
+You can disable this with `include_full_records=false` in request body.
+
 ## Quick local run
 
 ```bash
