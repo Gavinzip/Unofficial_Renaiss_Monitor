@@ -14,6 +14,10 @@ By default, analysis endpoints return full source records:
 - `sources.snkrdunk.records_raw`
 - `sources.snkrdunk.records_normalized`
 
+Important:
+- Returned records are filtered to the listing's target grade only (`target_grade`).
+- Each record includes its original `date` and normalized `date_iso` when parseable.
+
 You can disable this with `include_full_records=false` in request body.
 
 `/v1/opportunities/scan` behavior:
@@ -55,6 +59,18 @@ python3 scripts/market_api_server.py
 - Warmup size defaults:
   - `OPPORTUNITY_WARMUP_SCAN_LIMIT=30`
   - `OPPORTUNITY_WARMUP_KEEP_LIMIT=10`
+
+## Auto refresh (every 5 minutes)
+
+- Enabled by default, no external POST needed.
+- Interval: `OPPORTUNITY_AUTO_REFRESH_INTERVAL_SECONDS=300`
+- Toggle: `OPPORTUNITY_AUTO_REFRESH_ENABLED=true`
+- Auto scan defaults:
+  - `OPPORTUNITY_AUTO_SCAN_LIMIT=30`
+  - `OPPORTUNITY_AUTO_KEEP_LIMIT=10`
+  - `OPPORTUNITY_AUTO_THRESHOLD_PERCENT=10`
+  - `OPPORTUNITY_AUTO_INCLUDE_FULL_RECORDS=true`
+  - `OPPORTUNITY_AUTO_ONLY_ACTIONABLE=true`
 
 ## Zeabur deploy
 

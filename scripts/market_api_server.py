@@ -82,6 +82,38 @@ def _normalize_source_records(
     return normalized
 
 
+def _target_grade_from_name(full_name: str) -> str:
+    try:
+        _, _, _, _, grade_tag = mm.parse_renaiss_name(full_name)
+        return str(grade_tag or "Unknown")
+    except Exception:
+        return "Unknown"
+
+
+def _filter_records_by_target_grade(
+    records: List[Dict[str, Any]],
+    target_grade: str,
+) -> List[Dict[str, Any]]:
+    if not records:
+        return []
+
+    grade_key = str(target_grade or "Unknown")
+    grade_key_compact = grade_key.replace(" ", "")
+    matched: List[Dict[str, Any]] = []
+    for rec in records:
+        r_grade = str((rec or {}).get("grade") or "")
+        if r_grade == grade_key:
+            matched.append(rec)
+            continue
+        if grade_key == "Unknown" and r_grade in ("Ungraded", "裸卡", "A"):
+            matched.append(rec)
+            continue
+        if r_grade == grade_key_compact:
+            matched.append(rec)
+            continue
+    return matched
+
+
 def _pick_best_market(
     ask_price: float,
     pc_avg: Optional[float],
@@ -144,6 +176,10 @@ def _analyze_listing(
         pc_records = []
         snkr_records = []
 
+    target_grade = _target_grade_from_name(full_name)
+    pc_records_filtered = _filter_records_by_target_grade(pc_records, target_grade)
+    snkr_records_filtered = _filter_records_by_target_grade(snkr_records, target_grade)
+
     pc_diff_pct = _safe_pct(pc_avg, ask)
     snkr_diff_pct = _safe_pct(snkr_avg, ask)
 
@@ -157,6 +193,7 @@ def _analyze_listing(
         "item_id": item_id,
         "name": full_name,
         "grade": item.get("grade"),
+        "target_grade": target_grade,
         "ask_price_usd": ask,
         "renaiss_url": item.get("renaiss_url"),
         "image_url": item.get("image_url"),
@@ -167,7 +204,7 @@ def _analyze_listing(
                 "diff_pct": pc_diff_pct,
                 "url": pc_url,
                 "meets_threshold": meets_pc,
-                "records_total": len(pc_records),
+                "records_total": len(pc_records_filtered),
             },
             "snkrdunk": {
                 "avg_price_usd": snkr_avg,
@@ -175,7 +212,7 @@ def _analyze_listing(
                 "diff_pct": snkr_diff_pct,
                 "url": snkr_url,
                 "meets_threshold": meets_snkr,
-                "records_total": len(snkr_records),
+                "records_total": len(snkr_records_filtered),
             },
         },
         "best_market": best["market"],
@@ -185,13 +222,13 @@ def _analyze_listing(
     }
 
     if include_full_records:
-        result["sources"]["pricecharting"]["records_raw"] = pc_records
-        result["sources"]["snkrdunk"]["records_raw"] = snkr_records
+        result["sources"]["pricecharting"]["records_raw"] = pc_records_filtered
+        result["sources"]["snkrdunk"]["records_raw"] = snkr_records_filtered
         result["sources"]["pricecharting"]["records_normalized"] = _normalize_source_records(
-            pc_records, "pricecharting", current_jpy_rate
+            pc_records_filtered, "pricecharting", current_jpy_rate
         )
         result["sources"]["snkrdunk"]["records_normalized"] = _normalize_source_records(
-            snkr_records, "snkrdunk", current_jpy_rate
+            snkr_records_filtered, "snkrdunk", current_jpy_rate
         )
 
     return result
@@ -256,11 +293,23 @@ app = FastAPI(
 )
 
 _CACHE_LOCK = threading.Lock()
+_SCAN_LOCK = threading.Lock()
 _CACHE_FILE = os.getenv(
     "OPPORTUNITY_CACHE_FILE",
     os.path.join(os.path.dirname(__file__), "cache", "opportunities_latest.json"),
 )
 _CACHE_TTL_SECONDS = int(os.getenv("OPPORTUNITY_CACHE_TTL_SECONDS", "300"))
+_AUTO_REFRESH_ENABLED = os.getenv("OPPORTUNITY_AUTO_REFRESH_ENABLED", "true").strip().lower() in (
+    "1",
+    "true",
+    "yes",
+    "on",
+)
+_AUTO_REFRESH_INTERVAL_SECONDS = int(os.getenv("OPPORTUNITY_AUTO_REFRESH_INTERVAL_SECONDS", "300"))
+
+
+def _truthy_env(name: str, default: str = "false") -> bool:
+    return os.getenv(name, default).strip().lower() in ("1", "true", "yes", "on")
 
 
 def _scan_cache_key(
@@ -426,43 +475,103 @@ def _build_scan_payload(req: ScanRequest) -> Dict[str, Any]:
     return payload
 
 
+def _optional_float_env(name: str) -> Optional[float]:
+    raw = os.getenv(name)
+    if raw is None or not raw.strip():
+        return None
+    try:
+        return float(raw)
+    except Exception:
+        return None
+
+
+def _build_scan_request_from_env(
+    prefix: str,
+    include_full_records_default: str = "true",
+    only_actionable_default: str = "true",
+) -> ScanRequest:
+    return ScanRequest(
+        scan_limit=int(os.getenv(f"{prefix}_SCAN_LIMIT", "30")),
+        keep_limit=int(os.getenv(f"{prefix}_KEEP_LIMIT", "10")),
+        threshold_percent=float(
+            os.getenv(f"{prefix}_THRESHOLD_PERCENT", os.getenv("PRICE_DIFF_PERCENT_THRESHOLD", "10"))
+        ),
+        min_profit_usd=float(os.getenv(f"{prefix}_MIN_PROFIT_USD", "0")),
+        wallet_budget_usd=_optional_float_env(f"{prefix}_WALLET_BUDGET_USD"),
+        include_full_records=_truthy_env(
+            f"{prefix}_INCLUDE_FULL_RECORDS", include_full_records_default
+        ),
+        only_actionable=_truthy_env(
+            f"{prefix}_ONLY_ACTIONABLE", only_actionable_default
+        ),
+        use_cache=False,
+        force_refresh=True,
+        cache_ttl_seconds=0,
+    )
+
+
+def _refresh_cache_with_request(req: ScanRequest, refresh_reason: str) -> Dict[str, Any]:
+    keep_limit = int(req.limit) if req.limit is not None else int(req.keep_limit)
+    scan_limit = int(req.scan_limit)
+    threshold_pct = float(req.threshold_percent)
+    cache_key = _scan_cache_key(
+        scan_limit=scan_limit,
+        keep_limit=keep_limit,
+        threshold_percent=threshold_pct,
+        min_profit_usd=req.min_profit_usd,
+        wallet_budget_usd=req.wallet_budget_usd,
+        include_full_records=req.include_full_records,
+        only_actionable=req.only_actionable,
+    )
+    with _SCAN_LOCK:
+        payload = _build_scan_payload(req)
+        _set_cached_scan_payload(cache_key, payload)
+    print(
+        f"[market_api] cache refresh reason={refresh_reason} "
+        f"count={payload.get('count')} scan_limit={scan_limit} keep_limit={keep_limit}"
+    )
+    return payload
+
+
 def _warmup_cache_on_startup() -> None:
     try:
-        req = ScanRequest(
-            scan_limit=int(os.getenv("OPPORTUNITY_WARMUP_SCAN_LIMIT", "30")),
-            keep_limit=int(os.getenv("OPPORTUNITY_WARMUP_KEEP_LIMIT", "10")),
-            threshold_percent=float(os.getenv("PRICE_DIFF_PERCENT_THRESHOLD", "10")),
-            include_full_records=os.getenv("OPPORTUNITY_WARMUP_INCLUDE_FULL_RECORDS", "true").strip().lower()
-            in ("1", "true", "yes", "on"),
-            only_actionable=True,
-            use_cache=False,
-            force_refresh=True,
-            cache_ttl_seconds=0,
+        req = _build_scan_request_from_env(
+            prefix="OPPORTUNITY_WARMUP",
+            include_full_records_default="true",
+            only_actionable_default="true",
         )
-        payload = _build_scan_payload(req)
-        cache_key = _scan_cache_key(
-            scan_limit=req.scan_limit,
-            keep_limit=req.keep_limit,
-            threshold_percent=req.threshold_percent,
-            min_profit_usd=req.min_profit_usd,
-            wallet_budget_usd=req.wallet_budget_usd,
-            include_full_records=req.include_full_records,
-            only_actionable=req.only_actionable,
-        )
-        _set_cached_scan_payload(cache_key, payload)
+        _refresh_cache_with_request(req, refresh_reason="startup_warmup")
     except Exception as exc:
         print(f"[market_api] warmup cache failed: {exc}")
 
 
+def _auto_refresh_loop() -> None:
+    interval = _AUTO_REFRESH_INTERVAL_SECONDS
+    if interval < 1:
+        interval = 1
+    print(f"[market_api] auto refresh started interval={interval}s")
+    while True:
+        started = time.time()
+        try:
+            req = _build_scan_request_from_env(
+                prefix="OPPORTUNITY_AUTO",
+                include_full_records_default="true",
+                only_actionable_default="true",
+            )
+            _refresh_cache_with_request(req, refresh_reason="auto_interval")
+        except Exception as exc:
+            print(f"[market_api] auto refresh failed: {exc}")
+        elapsed = time.time() - started
+        sleep_seconds = max(1.0, float(interval) - elapsed)
+        time.sleep(sleep_seconds)
+
+
 @app.on_event("startup")
 def startup_event() -> None:
-    warmup_enabled = os.getenv("OPPORTUNITY_WARMUP_ON_STARTUP", "true").strip().lower() in (
-        "1",
-        "true",
-        "yes",
-        "on",
-    )
-    if warmup_enabled:
+    warmup_enabled = _truthy_env("OPPORTUNITY_WARMUP_ON_STARTUP", "true")
+    if _AUTO_REFRESH_ENABLED:
+        threading.Thread(target=_auto_refresh_loop, daemon=True).start()
+    elif warmup_enabled:
         threading.Thread(target=_warmup_cache_on_startup, daemon=True).start()
 
 
@@ -473,6 +582,9 @@ def health() -> Dict[str, Any]:
         "time_utc": _utc_now_iso(),
         "default_threshold_percent": mm.PRICE_DIFF_PERCENT_THRESHOLD,
         "window_days": mm.WINDOW_DAYS,
+        "cache_ttl_seconds": _CACHE_TTL_SECONDS,
+        "auto_refresh_enabled": _AUTO_REFRESH_ENABLED,
+        "auto_refresh_interval_seconds": _AUTO_REFRESH_INTERVAL_SECONDS if _AUTO_REFRESH_ENABLED else None,
     }
 
 
@@ -626,8 +738,7 @@ def scan_opportunities(req: ScanRequest) -> Dict[str, Any]:
             cached["wallet_notify"] = {"sent": False, "reason": "served from cache"}
             return cached
 
-    payload = _build_scan_payload(req)
-    _set_cached_scan_payload(cache_key, payload)
+    payload = _refresh_cache_with_request(req, refresh_reason="manual_scan")
     payload["cache"] = {
         "hit": False,
         "saved": True,
