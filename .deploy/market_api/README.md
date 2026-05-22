@@ -33,6 +33,6 @@ python3 scripts/market_api_server.py
 2. Dockerfile: `Dockerfile.api`
 3. Env vars:
    - `PORT=8080`
-   - `PRICE_DIFF_PERCENT_THRESHOLD=-10`
+   - `PRICE_DIFF_PERCENT_THRESHOLD=10`
    - `WINDOW_DAYS=30`
    - `AGENT_WALLET_WEBHOOK_URL` (optional)

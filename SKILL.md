@@ -43,11 +43,10 @@ A high-performance, real-time monitoring tool designed to detect price gaps betw
 - **SNKRDUNK (SNKR)**: Uses native API for Japanese market prices, matching specific variants (Manga/Parallel/Special Card).
 
 ### 4. Alert Trigger
-- **Threshold**: Controlled by `PRICE_DIFF_PERCENT_THRESHOLD` (default: `-10.0`).
+- **Threshold**: Controlled by `PRICE_DIFF_PERCENT_THRESHOLD` (default: `10.0`).
 - **Logic**: `Alert = ((AVG - Ask) / AVG * 100 >= PRICE_DIFF_PERCENT_THRESHOLD)` on either source.
 - Example:
   - `PRICE_DIFF_PERCENT_THRESHOLD=10` means only alert when ask is at least `10%` below average.
-  - `PRICE_DIFF_PERCENT_THRESHOLD=-10` means also allow "near-average" opportunities (up to `10%` above average).
 
 ### 5. Instant Whitelist Alerts
 - Automatically loads `scripts/whitelist.txt` on every cycle.
@@ -74,7 +73,7 @@ A high-performance, real-time monitoring tool designed to detect price gaps betw
 - `DISCORD_WEBHOOK_URL_2`: Optional second Discord channel.
 - `DISCORD_WEBHOOK_URLS`: Optional multi-webhook list (comma/space/newline separated). All configured webhooks will be notified.
 - `DISCORD_WEBHOOK_URL_NOMARKET_ERROR`: Discord webhook for "no market data found" alerts (sent when both PriceCharting and SNKRDUNK return no data).
-- `PRICE_DIFF_PERCENT_THRESHOLD`: Percentage price-gap alert threshold (default: `-10.0`).
+- `PRICE_DIFF_PERCENT_THRESHOLD`: Percentage price-gap alert threshold (default: `10.0`).
 - `WINDOW_DAYS`: Rolling average window in days (default: 30).
 
 ### 🔄 Card Suffix Fallback Search

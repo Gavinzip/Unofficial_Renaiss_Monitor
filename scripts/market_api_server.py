@@ -222,8 +222,8 @@ def _post_wallet_signal(payload: Dict[str, Any]) -> Dict[str, Any]:
 
 
 class ScanRequest(BaseModel):
-    limit: int = Field(default=5, ge=1, le=30)
-    threshold_percent: Optional[float] = None
+    limit: int = Field(default=10, ge=1, le=30)
+    threshold_percent: float = 10.0
     min_profit_usd: float = Field(default=0.0, ge=0.0)
     wallet_budget_usd: Optional[float] = Field(default=None, ge=0.0)
     include_full_records: bool = True
@@ -234,7 +234,7 @@ class ScanRequest(BaseModel):
 
 class AnalyzeByItemIdRequest(BaseModel):
     item_id: str = Field(min_length=1)
-    threshold_percent: Optional[float] = None
+    threshold_percent: float = 10.0
     min_profit_usd: float = Field(default=0.0, ge=0.0)
     wallet_budget_usd: Optional[float] = Field(default=None, ge=0.0)
     include_full_records: bool = True
@@ -271,9 +271,7 @@ def list_latest(limit: int = 20) -> Dict[str, Any]:
 
 @app.post("/v1/analyze/item-id")
 def analyze_by_item_id(req: AnalyzeByItemIdRequest) -> Dict[str, Any]:
-    threshold_pct = req.threshold_percent
-    if threshold_pct is None:
-        threshold_pct = mm.PRICE_DIFF_PERCENT_THRESHOLD
+    threshold_pct = float(req.threshold_percent)
 
     listings = _dedupe_cheapest(mm.fetch_market_data())
     matched = None
@@ -308,9 +306,7 @@ def analyze_by_item_id(req: AnalyzeByItemIdRequest) -> Dict[str, Any]:
 
 @app.post("/v1/opportunities/scan")
 def scan_opportunities(req: ScanRequest) -> Dict[str, Any]:
-    threshold_pct = req.threshold_percent
-    if threshold_pct is None:
-        threshold_pct = mm.PRICE_DIFF_PERCENT_THRESHOLD
+    threshold_pct = float(req.threshold_percent)
 
     listings = _dedupe_cheapest(mm.fetch_market_data())
     selected = listings[: req.limit]

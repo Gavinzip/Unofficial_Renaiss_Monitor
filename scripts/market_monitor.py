@@ -19,7 +19,7 @@ load_dotenv(dotenv_path)
 # ---------------------------------------------------------
 DEFAULT_DISCORD_WEBHOOK = ""  # 在此填入 Webhook 網址
 DEFAULT_WINDOW_DAYS = 30                        # 價格計算窗口 (天)
-DEFAULT_PRICE_DIFF_PERCENT_THRESHOLD = -10.0      # 報警價差門檻 (%)；+10=至少便宜10%才報，-10=高於均價10%內也可提示
+DEFAULT_PRICE_DIFF_PERCENT_THRESHOLD = 10.0       # 報警價差門檻 (%)；+10=至少便宜10%才報
 # ---------------------------------------------------------
 
 def _collect_webhook_urls(*raw_values):
