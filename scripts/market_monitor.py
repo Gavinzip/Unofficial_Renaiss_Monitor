@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 import os
 import sys
 import argparse
+from urllib.parse import urlencode
 
 # Import search functions locally
 import market_report_vision as mrv
@@ -375,8 +376,20 @@ def clean_price(v):
 def _price_to_cents(price):
     return int(round(float(price) * 100))
 
-def fetch_market_data():
-    url = f"https://www.renaiss.xyz/marketplace?_t={int(time.time())}"
+def fetch_market_data(
+    page=1,
+    step=96,
+    card_type="Card",
+    order_by="listedDateDesc",
+):
+    query = {
+        "page": int(page),
+        "step": int(step),
+        "cardType": str(card_type),
+        "orderBy": str(order_by),
+        "_t": int(time.time()),
+    }
+    url = f"https://www.renaiss.xyz/marketplace?{urlencode(query)}"
     headers = {
         "User-Agent": "Mozilla/5.0",
         "Cache-Control": "no-cache",

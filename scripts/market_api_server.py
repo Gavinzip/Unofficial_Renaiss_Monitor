@@ -1,10 +1,13 @@
 import os
+import json
+import threading
 import time
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
+from urllib.parse import urlencode
 
 import requests
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel, Field
 
 import market_monitor as mm
@@ -222,13 +225,19 @@ def _post_wallet_signal(payload: Dict[str, Any]) -> Dict[str, Any]:
 
 
 class ScanRequest(BaseModel):
-    limit: int = Field(default=10, ge=1, le=30)
+    # Deprecated alias: if provided, it will override keep_limit for compatibility.
+    limit: Optional[int] = Field(default=None, ge=1, le=30)
+    scan_limit: int = Field(default=30, ge=1, le=100)
+    keep_limit: int = Field(default=10, ge=1, le=30)
     threshold_percent: float = 10.0
     min_profit_usd: float = Field(default=0.0, ge=0.0)
     wallet_budget_usd: Optional[float] = Field(default=None, ge=0.0)
     include_full_records: bool = True
     only_actionable: bool = True
     notify_wallet: bool = False
+    use_cache: bool = True
+    force_refresh: bool = False
+    cache_ttl_seconds: Optional[int] = Field(default=None, ge=0, le=86400)
     reference_id: Optional[str] = None
 
 
@@ -246,6 +255,216 @@ app = FastAPI(
     description="HTTP API for market opportunities, built for agent wallet integration.",
 )
 
+_CACHE_LOCK = threading.Lock()
+_CACHE_FILE = os.getenv(
+    "OPPORTUNITY_CACHE_FILE",
+    os.path.join(os.path.dirname(__file__), "cache", "opportunities_latest.json"),
+)
+_CACHE_TTL_SECONDS = int(os.getenv("OPPORTUNITY_CACHE_TTL_SECONDS", "300"))
+
+
+def _scan_cache_key(
+    *,
+    scan_limit: int,
+    keep_limit: int,
+    threshold_percent: float,
+    min_profit_usd: float,
+    wallet_budget_usd: Optional[float],
+    include_full_records: bool,
+    only_actionable: bool,
+) -> str:
+    key_obj = {
+        "scan_limit": scan_limit,
+        "keep_limit": keep_limit,
+        "threshold_percent": round(float(threshold_percent), 6),
+        "min_profit_usd": round(float(min_profit_usd), 6),
+        "wallet_budget_usd": None if wallet_budget_usd is None else round(float(wallet_budget_usd), 6),
+        "include_full_records": bool(include_full_records),
+        "only_actionable": bool(only_actionable),
+    }
+    return json.dumps(key_obj, sort_keys=True, separators=(",", ":"))
+
+
+def _read_cache_store() -> Dict[str, Any]:
+    if not os.path.exists(_CACHE_FILE):
+        return {"entries": {}, "latest_key": None}
+    try:
+        with open(_CACHE_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        if not isinstance(data, dict):
+            return {"entries": {}, "latest_key": None}
+        data.setdefault("entries", {})
+        data.setdefault("latest_key", None)
+        return data
+    except Exception:
+        return {"entries": {}, "latest_key": None}
+
+
+def _write_cache_store(store: Dict[str, Any]) -> None:
+    cache_dir = os.path.dirname(_CACHE_FILE)
+    if cache_dir:
+        os.makedirs(cache_dir, exist_ok=True)
+    with open(_CACHE_FILE, "w", encoding="utf-8") as f:
+        json.dump(store, f, ensure_ascii=False)
+
+
+def _get_cached_scan_payload(cache_key: str, max_age_seconds: int) -> Optional[Dict[str, Any]]:
+    with _CACHE_LOCK:
+        store = _read_cache_store()
+        entry = (store.get("entries") or {}).get(cache_key)
+        if not entry:
+            return None
+        saved_at_unix = int(entry.get("saved_at_unix") or 0)
+        age = int(time.time()) - saved_at_unix
+        if max_age_seconds >= 0 and age > max_age_seconds:
+            return None
+        payload = entry.get("payload")
+        if not isinstance(payload, dict):
+            return None
+        result = dict(payload)
+        result["cache"] = {
+            "hit": True,
+            "saved_at_unix": saved_at_unix,
+            "saved_at_utc": datetime.fromtimestamp(saved_at_unix, tz=timezone.utc).isoformat()
+            if saved_at_unix > 0
+            else None,
+            "age_seconds": max(age, 0),
+            "ttl_seconds": max_age_seconds,
+            "cache_key": cache_key,
+        }
+        return result
+
+
+def _set_cached_scan_payload(cache_key: str, payload: Dict[str, Any]) -> None:
+    with _CACHE_LOCK:
+        store = _read_cache_store()
+        entries = store.setdefault("entries", {})
+        entries[cache_key] = {
+            "saved_at_unix": int(time.time()),
+            "payload": payload,
+        }
+        store["latest_key"] = cache_key
+        _write_cache_store(store)
+
+
+def _get_latest_cached_scan_payload() -> Optional[Dict[str, Any]]:
+    with _CACHE_LOCK:
+        store = _read_cache_store()
+        latest_key = store.get("latest_key")
+        if not latest_key:
+            return None
+        entry = (store.get("entries") or {}).get(latest_key)
+        if not entry:
+            return None
+        saved_at_unix = int(entry.get("saved_at_unix") or 0)
+        payload = entry.get("payload")
+        if not isinstance(payload, dict):
+            return None
+        result = dict(payload)
+        result["cache"] = {
+            "hit": True,
+            "saved_at_unix": saved_at_unix,
+            "saved_at_utc": datetime.fromtimestamp(saved_at_unix, tz=timezone.utc).isoformat()
+            if saved_at_unix > 0
+            else None,
+            "age_seconds": max(int(time.time()) - saved_at_unix, 0),
+            "cache_key": latest_key,
+        }
+        return result
+
+
+def _build_scan_payload(req: ScanRequest) -> Dict[str, Any]:
+    threshold_pct = float(req.threshold_percent)
+    keep_limit = int(req.limit) if req.limit is not None else int(req.keep_limit)
+    scan_limit = int(req.scan_limit)
+
+    listings = _dedupe_cheapest(mm.fetch_market_data())
+    selected = listings[:scan_limit]
+
+    analyzed_items: List[Dict[str, Any]] = []
+    for item in selected:
+        analyzed = _analyze_listing(
+            item,
+            threshold_pct,
+            include_full_records=req.include_full_records,
+        )
+        actionable = _wallet_actionable(
+            analyzed=analyzed,
+            min_profit_usd=req.min_profit_usd,
+            wallet_budget_usd=req.wallet_budget_usd,
+        )
+        analyzed["actionable"] = actionable
+        analyzed["action"] = "BUY_CANDIDATE" if actionable else "WATCH"
+        analyzed_items.append(analyzed)
+
+    if req.only_actionable:
+        analyzed_items = [item for item in analyzed_items if item.get("actionable")]
+
+    analyzed_items.sort(
+        key=lambda item: (
+            float(item.get("estimated_profit_usd") or -1e18),
+            float(item.get("estimated_diff_pct") or -1e18),
+        ),
+        reverse=True,
+    )
+    kept_items = analyzed_items[:keep_limit]
+
+    payload = {
+        "time_utc": _utc_now_iso(),
+        "reference_id": req.reference_id,
+        "threshold_percent": threshold_pct,
+        "min_profit_usd": req.min_profit_usd,
+        "wallet_budget_usd": req.wallet_budget_usd,
+        "scan_limit": scan_limit,
+        "keep_limit": keep_limit,
+        "total_scanned": len(selected),
+        "total_after_filter": len(analyzed_items),
+        "include_full_records": req.include_full_records,
+        "count": len(kept_items),
+        "opportunities": kept_items,
+    }
+    return payload
+
+
+def _warmup_cache_on_startup() -> None:
+    try:
+        req = ScanRequest(
+            scan_limit=int(os.getenv("OPPORTUNITY_WARMUP_SCAN_LIMIT", "30")),
+            keep_limit=int(os.getenv("OPPORTUNITY_WARMUP_KEEP_LIMIT", "10")),
+            threshold_percent=float(os.getenv("PRICE_DIFF_PERCENT_THRESHOLD", "10")),
+            include_full_records=os.getenv("OPPORTUNITY_WARMUP_INCLUDE_FULL_RECORDS", "true").strip().lower()
+            in ("1", "true", "yes", "on"),
+            only_actionable=True,
+            use_cache=False,
+            force_refresh=True,
+            cache_ttl_seconds=0,
+        )
+        payload = _build_scan_payload(req)
+        cache_key = _scan_cache_key(
+            scan_limit=req.scan_limit,
+            keep_limit=req.keep_limit,
+            threshold_percent=req.threshold_percent,
+            min_profit_usd=req.min_profit_usd,
+            wallet_budget_usd=req.wallet_budget_usd,
+            include_full_records=req.include_full_records,
+            only_actionable=req.only_actionable,
+        )
+        _set_cached_scan_payload(cache_key, payload)
+    except Exception as exc:
+        print(f"[market_api] warmup cache failed: {exc}")
+
+
+@app.on_event("startup")
+def startup_event() -> None:
+    warmup_enabled = os.getenv("OPPORTUNITY_WARMUP_ON_STARTUP", "true").strip().lower() in (
+        "1",
+        "true",
+        "yes",
+        "on",
+    )
+    if warmup_enabled:
+        threading.Thread(target=_warmup_cache_on_startup, daemon=True).start()
+
 
 @app.get("/health")
 def health() -> Dict[str, Any]:
@@ -258,14 +477,95 @@ def health() -> Dict[str, Any]:
 
 
 @app.get("/v1/listings/latest")
-def list_latest(limit: int = 20) -> Dict[str, Any]:
-    if limit < 1 or limit > 100:
-        raise HTTPException(status_code=400, detail="limit must be between 1 and 100")
-    listings = _dedupe_cheapest(mm.fetch_market_data())
+def list_latest(
+    limit: int = 20,
+    page: int = 1,
+    pages: int = 1,
+    step: int = 96,
+    card_type: str = Query(default="Card", alias="cardType"),
+    order_by: str = Query(default="listedDateDesc", alias="orderBy"),
+    dedupe: bool = True,
+    q: Optional[str] = None,
+    min_ask: Optional[float] = Query(default=None, alias="minAsk"),
+    max_ask: Optional[float] = Query(default=None, alias="maxAsk"),
+) -> Dict[str, Any]:
+    if limit < 1 or limit > 200:
+        raise HTTPException(status_code=400, detail="limit must be between 1 and 200")
+    if page < 1:
+        raise HTTPException(status_code=400, detail="page must be >= 1")
+    if pages < 1 or pages > 10:
+        raise HTTPException(status_code=400, detail="pages must be between 1 and 10")
+    if step < 1 or step > 200:
+        raise HTTPException(status_code=400, detail="step must be between 1 and 200")
+    if min_ask is not None and min_ask < 0:
+        raise HTTPException(status_code=400, detail="min_ask must be >= 0")
+    if max_ask is not None and max_ask < 0:
+        raise HTTPException(status_code=400, detail="max_ask must be >= 0")
+    if min_ask is not None and max_ask is not None and min_ask > max_ask:
+        raise HTTPException(status_code=400, detail="min_ask cannot be greater than max_ask")
+
+    listings: List[Dict[str, Any]] = []
+    source_urls: List[str] = []
+    for current_page in range(page, page + pages):
+        fetched = mm.fetch_market_data(
+            page=current_page,
+            step=step,
+            card_type=card_type,
+            order_by=order_by,
+        )
+        listings.extend(fetched)
+        source_urls.append(
+            "https://www.renaiss.xyz/marketplace?"
+            + urlencode(
+                {
+                    "page": current_page,
+                    "step": step,
+                    "cardType": card_type,
+                    "orderBy": order_by,
+                }
+            )
+        )
+
+    before_dedupe_count = len(listings)
+    if dedupe:
+        listings = _dedupe_cheapest(listings)
+    before_filter_count = len(listings)
+
+    q_lower = (q or "").strip().lower()
+    filtered: List[Dict[str, Any]] = []
+    for item in listings:
+        ask = float(item.get("ask_price") or 0.0)
+        if q_lower and q_lower not in str(item.get("name") or "").lower():
+            continue
+        if min_ask is not None and ask < min_ask:
+            continue
+        if max_ask is not None and ask > max_ask:
+            continue
+        filtered.append(item)
+
+    final_items = filtered[:limit]
     return {
         "time_utc": _utc_now_iso(),
-        "count": min(limit, len(listings)),
-        "items": listings[:limit],
+        "count": len(final_items),
+        "query": {
+            "limit": limit,
+            "page": page,
+            "pages": pages,
+            "step": step,
+            "card_type": card_type,
+            "order_by": order_by,
+            "dedupe": dedupe,
+            "q": q,
+            "min_ask": min_ask,
+            "max_ask": max_ask,
+        },
+        "stats": {
+            "raw_total": before_dedupe_count,
+            "after_dedupe": before_filter_count,
+            "after_filter": len(filtered),
+        },
+        "source_urls": source_urls,
+        "items": final_items,
     }
 
 
@@ -306,39 +606,33 @@ def analyze_by_item_id(req: AnalyzeByItemIdRequest) -> Dict[str, Any]:
 
 @app.post("/v1/opportunities/scan")
 def scan_opportunities(req: ScanRequest) -> Dict[str, Any]:
+    keep_limit = int(req.limit) if req.limit is not None else int(req.keep_limit)
+    scan_limit = int(req.scan_limit)
     threshold_pct = float(req.threshold_percent)
+    cache_key = _scan_cache_key(
+        scan_limit=scan_limit,
+        keep_limit=keep_limit,
+        threshold_percent=threshold_pct,
+        min_profit_usd=req.min_profit_usd,
+        wallet_budget_usd=req.wallet_budget_usd,
+        include_full_records=req.include_full_records,
+        only_actionable=req.only_actionable,
+    )
+    ttl_seconds = _CACHE_TTL_SECONDS if req.cache_ttl_seconds is None else int(req.cache_ttl_seconds)
 
-    listings = _dedupe_cheapest(mm.fetch_market_data())
-    selected = listings[: req.limit]
+    if req.use_cache and not req.force_refresh:
+        cached = _get_cached_scan_payload(cache_key=cache_key, max_age_seconds=ttl_seconds)
+        if cached:
+            cached["wallet_notify"] = {"sent": False, "reason": "served from cache"}
+            return cached
 
-    analyzed_items: List[Dict[str, Any]] = []
-    for item in selected:
-        analyzed = _analyze_listing(
-            item,
-            threshold_pct,
-            include_full_records=req.include_full_records,
-        )
-        actionable = _wallet_actionable(
-            analyzed=analyzed,
-            min_profit_usd=req.min_profit_usd,
-            wallet_budget_usd=req.wallet_budget_usd,
-        )
-        analyzed["actionable"] = actionable
-        analyzed["action"] = "BUY_CANDIDATE" if actionable else "WATCH"
-        analyzed_items.append(analyzed)
-
-    if req.only_actionable:
-        analyzed_items = [item for item in analyzed_items if item.get("actionable")]
-
-    payload = {
-        "time_utc": _utc_now_iso(),
-        "reference_id": req.reference_id,
-        "threshold_percent": threshold_pct,
-        "min_profit_usd": req.min_profit_usd,
-        "wallet_budget_usd": req.wallet_budget_usd,
-        "include_full_records": req.include_full_records,
-        "count": len(analyzed_items),
-        "opportunities": analyzed_items,
+    payload = _build_scan_payload(req)
+    _set_cached_scan_payload(cache_key, payload)
+    payload["cache"] = {
+        "hit": False,
+        "saved": True,
+        "cache_key": cache_key,
+        "ttl_seconds": ttl_seconds,
     }
 
     wallet_notify = {"sent": False, "reason": "notify_wallet is false"}
@@ -346,6 +640,15 @@ def scan_opportunities(req: ScanRequest) -> Dict[str, Any]:
         wallet_notify = _post_wallet_signal(payload)
     payload["wallet_notify"] = wallet_notify
     return payload
+
+
+@app.get("/v1/opportunities/latest")
+def get_latest_opportunities_cache() -> Dict[str, Any]:
+    cached = _get_latest_cached_scan_payload()
+    if not cached:
+        raise HTTPException(status_code=404, detail="no cached opportunities yet")
+    cached["wallet_notify"] = {"sent": False, "reason": "cache snapshot endpoint"}
+    return cached
 
 
 if __name__ == "__main__":

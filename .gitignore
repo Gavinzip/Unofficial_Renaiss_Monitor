@@ -14,3 +14,4 @@ scripts/debug_specific_cards/
 
 # Runtime state
 scripts/seen_ids.txt
+scripts/cache/
